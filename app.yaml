@@ -1,0 +1,55 @@
+application: victorique
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+
+skip_files:
+- ^(.*/)?#.*#
+- ^(.*/)?.*~
+- ^(.*/)?.*\.py[co]
+- ^(.*/)?\..*
+- ^(.*/)?\.DS_Store
+- ^(.*/)?tests/.*
+- ^(.*/)?test\.py
+- ^README\.md
+- ^\.gitignore
+- ^\.gitmodules
+- ^\.git/.*
+- ^bower\.json
+- ^package\.json
+- ^pip_requirements\.txt
+- ^\node_modules/.*
+- ^\.idea/.*
+- ^_images/.*
+- ^(.*/)?.*\.coffee
+- ^(.*/)?.*\.scss
+- ^(.*/)?.*\.sass
+- ^(.*/)?.*\.rb
+- ^\.sass-cache/.*
+
+
+handlers:
+# icon
+- url: /favicon\.ico
+  static_files: application/static/icons/favicon.ico
+  upload: application/static/icons/favicon\.ico
+# font
+- url: /fonts/
+  static_dir: application/static/fonts
+# images
+- url: /images/
+  static_dir: application/static/images
+# CSS
+- url: /css/
+  static_dir: application/static/css
+# JavaScript
+- url: /javascript/
+  static_dir: application/static/javascript
+# Angular Templates
+- url: /views/
+  static_dir: application/static/views
+
+- url: .*
+  script: application.app
