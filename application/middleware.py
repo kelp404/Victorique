@@ -1,14 +1,12 @@
 import threading
+from application.models.datastore.user_model import UserModel
 
 
 g = threading.local()
 
 class AuthenticationMiddleware(object):
     def process_request(self, request):
-        from application.models.datastore.user_model import *
-        request.user = UserModel()
-        # acs = AccountService()
-        # request.user = acs.authorization()
+        request.user = UserModel.authorization()
 
 class GlobalMiddleware(object):
     def process_request(self, request):
