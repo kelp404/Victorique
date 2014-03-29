@@ -25,11 +25,24 @@ module.exports = (grunt) ->
                 ]
                 options:
                     logConcurrentOutput: yes
+            minify:
+                tasks: [
+                    'cssmin:build'
+                    'uglify:build'
+                ]
+                options:
+                    logConcurrentOutput: yes
 
-        clean:
-            build: [
-                'application/static/javascript/app.min.js'
-            ]
+        cssmin:
+            build:
+                options:
+                    keepSpecialComments: 0
+                files:
+                    'application/static/css/site.min.css': [
+                        'application/static/css/bootstrap.css'
+                        'application/static/css/nprogress.css'
+                        'application/static/css/site.css'
+                    ]
 
         uglify:
             build:
@@ -48,7 +61,7 @@ module.exports = (grunt) ->
 
         watch:
             compass:
-                files: ['application/static/scss/**/*.scss']
+                files: ['application/static/sass/**/*.sass']
                 tasks: ['compass']
                 options:
                     spawn: no
@@ -66,17 +79,16 @@ module.exports = (grunt) ->
         'watch'
     ]
     grunt.registerTask 'build', [
-        'clean:build'
         'concurrent:build'
-        'uglify'
+        'concurrent:minify'
     ]
 
     # -----------------------------------
     # tasks
     # -----------------------------------
-    grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-compass'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-contrib-uglify'
+    grunt.loadNpmTasks 'grunt-contrib-cssmin'
     grunt.loadNpmTasks 'grunt-concurrent'
