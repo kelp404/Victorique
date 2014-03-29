@@ -6,13 +6,13 @@ module.exports = (grunt) ->
         compass:
             build:
                 options:
-                    sassDir: 'application/static/sass'
-                    cssDir: 'application/static/css'
+                    sassDir: 'application/frontend/sass'
+                    cssDir: 'application/frontend/css'
 
         coffee:
             build:
                 files:
-                    'application/static/javascript/app.js': ['application/static/coffeescript/**/*.coffee']
+                    'application/frontend/javascript/app.js': ['application/frontend/coffeescript/**/*.coffee']
 
         concurrent:
             build:
@@ -38,38 +38,42 @@ module.exports = (grunt) ->
                 options:
                     keepSpecialComments: 0
                 files:
-                    'application/static/css/site.min.css': [
-                        'application/static/css/bootstrap.css'
-                        'application/static/css/nprogress.css'
-                        'application/static/css/site.css'
+                    'application/frontend/css/site.min.css': [
+                        'application/frontend/css/bootstrap.css'
+                        'application/frontend/css/nprogress.css'
+                        'application/frontend/css/site.css'
                     ]
 
         uglify:
             build:
                 files:
-                    'application/static/javascript/site.min.js': [
+                    'application/frontend/javascript/site.min.js': [
                         # jquery
-                        'application/static/javascript/jquery.js'
-                        'application/static/javascript/alert_view.js'
-                        'application/static/javascript/nprogress.js'
+                        'application/frontend/javascript/jquery.js'
+                        'application/frontend/javascript/alert_view.js'
+                        'application/frontend/javascript/nprogress.js'
                         # angular
-                        'application/static/javascript/angular.js'
-                        'application/static/javascript/angular-ui-router.js'
-                        'application/static/javascript/angular-validator.js'
-                        'application/static/javascript/app.js'
+                        'application/frontend/javascript/angular.js'
+                        'application/frontend/javascript/angular-ui-router.js'
+                        'application/frontend/javascript/angular-validator.js'
+                        'application/frontend/javascript/app.js'
                     ]
 
         watch:
             compass:
-                files: ['application/static/sass/**/*.sass']
+                files: ['application/frontend/sass/**/*.sass']
                 tasks: ['compass']
                 options:
                     spawn: no
             coffee:
-                files: ['application/static/coffeescript/**/*.coffee']
+                files: ['application/frontend/coffeescript/**/*.coffee']
                 tasks: ['coffee']
                 options:
                     spawn: no
+
+        karma:
+            testFrontend:
+                configFile: 'application/frontend/tests/karma.config.coffee'
 
     # -----------------------------------
     # register task
@@ -82,6 +86,9 @@ module.exports = (grunt) ->
         'concurrent:build'
         'concurrent:minify'
     ]
+    grunt.registerTask 'test', [
+        'karma:testFrontend'
+    ]
 
     # -----------------------------------
     # tasks
@@ -92,3 +99,4 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-cssmin'
     grunt.loadNpmTasks 'grunt-concurrent'
+    grunt.loadNpmTasks 'grunt-karma'

@@ -33,23 +33,23 @@ skip_files:
 handlers:
 # icon
 - url: /favicon\.ico
-  static_files: application/static/icons/favicon.ico
-  upload: application/static/icons/favicon\.ico
+  static_files: application/frontend/icons/favicon.ico
+  upload: application/frontend/icons/favicon\.ico
 # font
 - url: /fonts/
-  static_dir: application/static/fonts
+  static_dir: application/frontend/fonts
 # images
 - url: /images/
-  static_dir: application/static/images
+  static_dir: application/frontend/images
 # CSS
 - url: /css/
-  static_dir: application/static/css
+  static_dir: application/frontend/css
 # JavaScript
 - url: /javascript/
-  static_dir: application/static/javascript
+  static_dir: application/frontend/javascript
 # Angular Templates
 - url: /views/
-  static_dir: application/static/views
+  static_dir: application/frontend/views
 
 - url: .*
   script: application.app
