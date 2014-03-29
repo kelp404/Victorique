@@ -1,0 +1,30 @@
+language:
+  - python
+  - node_js
+
+python:
+  - 2.7
+node_js:
+  - 0.10
+
+install:
+  # google app engine
+  - curl -O https://googleappengine.googlecode.com/files/google_appengine_1.8.9.zip
+  - unzip -q google_appengine_1.8.9.zip
+  # pip requirements
+  pip install -r pip_requirements.txt
+  # node modules
+  - npm install -g grunt-cli
+  - npm install -g bower
+  - npm install
+  # bower componetns
+  - bower install
+
+before_script:
+  - node -v
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+script:
+  - python test.py
+  - grunt test
