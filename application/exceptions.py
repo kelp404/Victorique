@@ -5,6 +5,7 @@ from application.views.error import bad_request, permission_denied,\
 class ApplicationException(Exception):
     def __init__(self, *args, **kwargs):
         super(ApplicationException, self).__init__(*args, **kwargs)
+        self.view = server_error
 
 class Http400(ApplicationException):
     def __init__(self, *args, **kwargs):
