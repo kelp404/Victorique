@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="app">
+<html ng-app="v">
     <head>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -9,14 +9,17 @@
         <link type="text/css" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css"/>
         <link type="text/css" rel="stylesheet" href="/css/alert_view.css"/>
         <link type="text/css" rel="stylesheet" href="/css/site.css"/>
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
-        <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/javascript/alert_view.js"></script>
-        <script type="text/javascript" src="/javascript/angular-ui-router.js"></script>
-        <script type="text/javascript" src="/javascript/angular-validator.js"></script>
-        <script type="text/javascript" src="/javascript/nprogress.js"></script>
-        <script type="text/javascript" src="/javascript/site.js"></script>
+        {% if DEBUG %}
+            <script type="text/javascript" src="/javascript/jquery.js"></script>
+            <script type="text/javascript" src="/javascript/alert_view.js"></script>
+            <script type="text/javascript" src="/javascript/nprogress.js"></script>
+            <script type="text/javascript" src="/javascript/angular.js"></script>
+            <script type="text/javascript" src="/javascript/angular-ui-router.js"></script>
+            <script type="text/javascript" src="/javascript/angular-validator.js"></script>
+            <script type="text/javascript" src="/javascript/app.js"></script>
+        {% else %}
+            <script type="text/javascript" src="/javascript/site.min.js"></script>
+        {% endif %}
     </head>
     {% load filters %}
     <script type="text/javascript">

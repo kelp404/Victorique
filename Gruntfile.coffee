@@ -4,13 +4,15 @@ module.exports = (grunt) ->
     # -----------------------------------
     grunt.config.init
         compass:
-            options:
-                sassDir: 'application/static/sass'
-                cssDir: 'application/static/css'
+            build:
+                options:
+                    sassDir: 'application/static/sass'
+                    cssDir: 'application/static/css'
 
         coffee:
-            files:
-                'application/static/javascript/app.js': ['application/static/coffeescript/**/*.coffee']
+            build:
+                files:
+                    'application/static/javascript/app.js': ['application/static/coffeescript/**/*.coffee']
 
         concurrent:
             build:
@@ -32,7 +34,17 @@ module.exports = (grunt) ->
         uglify:
             build:
                 files:
-                    'application/static/javascript/app.min.js': ['application/static/javascript/*.js']
+                    'application/static/javascript/site.min.js': [
+                        # jquery
+                        'application/static/javascript/jquery.js'
+                        'application/static/javascript/alert_view.js'
+                        'application/static/javascript/nprogress.js'
+                        # angular
+                        'application/static/javascript/angular.js'
+                        'application/static/javascript/angular-ui-router.js'
+                        'application/static/javascript/angular-validator.js'
+                        'application/static/javascript/app.js'
+                    ]
 
         watch:
             compass:

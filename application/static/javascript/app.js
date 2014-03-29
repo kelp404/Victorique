@@ -1,4 +1,14 @@
 (function() {
+  angular.module('v.directive', []);
+
+}).call(this);
+
+(function() {
+  angular.module('v', ['v.router', 'v.directive']);
+
+}).call(this);
+
+(function() {
   angular.module('v.provider', []).provider('$v', function() {
     this.user = window.user;
     this.$get = [
@@ -15,6 +25,6 @@
 }).call(this);
 
 (function() {
-
+  angular.module('v.router', ['v.provider']);
 
 }).call(this);
