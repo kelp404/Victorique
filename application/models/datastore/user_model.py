@@ -55,7 +55,8 @@ class UserModel(db.Model):
 
         return UserModel()
 
-    def __register_user(self, google_user, permission=UserPermission.normal):
+    @classmethod
+    def __register_user(cls, google_user, permission=UserPermission.normal):
         """
         Register the user.
         :param google_user: The google.appengine.api.users.get_current_user().
