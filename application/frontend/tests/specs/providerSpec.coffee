@@ -16,3 +16,5 @@ describe 'v.provider', ->
     describe '$v', ->
         it '$v.user and $vProvider.user are the same object', inject ($v) ->
             expect($v.user).toBe vProvider.user
+        it '$v.url and $vProvider.url are the same object', inject ($v) ->
+            expect($v.url).toBe vProvider.url

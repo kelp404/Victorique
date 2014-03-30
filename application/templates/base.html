@@ -25,6 +25,7 @@
         {% endif %}
         <script type="text/javascript">
             var user = {{ user|json }};
+            var url = {{ url|json }};
         </script>
     </head>
 <!--
@@ -65,10 +66,6 @@
           .++'';;::,.`
 -->
 <body>
-    <div class="container">
-        <div class="row">
-
-        </div>
-    </div>
+    <div ui-view autoscroll="false"></div>
 </body>
 </html>

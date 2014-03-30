@@ -14,5 +14,7 @@ def get_json(object):
     """
     if 'dict' in dir(object) and callable(object.dict):
         return mark_safe(json.dumps(object.dict()))
+    elif isinstance(object, dict):
+        return mark_safe(json.dumps(object))
     else:
         return mark_safe(json.dumps(object.__dict__))

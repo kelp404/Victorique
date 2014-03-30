@@ -5,7 +5,7 @@ angular.module 'v.provider', []
     # public methods
     # -----------------------------------------------------
     @user = window.user
-
+    @url = window.url
 
     # -----------------------------------------------------
     # $get
@@ -13,6 +13,7 @@ angular.module 'v.provider', []
     @$get = ['$injector', ($injector) =>
 
         user: @user
+        url: @url
     ]
 
     return
