@@ -6,12 +6,19 @@
       $scope.user = $v.user;
       return $scope.url = $v.url;
     }
-  ]);
+  ]).controller('NavigationController', ['$scope', function($scope) {}]);
 
 }).call(this);
 
 (function() {
-  angular.module('v.directive', []);
+  angular.module('v.directive', []).directive('vNavigation', function() {
+    return {
+      restrict: 'A',
+      templateUrl: '/views/shared/navigation.html',
+      replace: true,
+      controller: 'NavigationController'
+    };
+  });
 
 }).call(this);
 
@@ -43,10 +50,13 @@
     '$stateProvider', '$urlRouterProvider', '$locationProvider', '$vProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $vProvider) {
       $locationProvider.html5Mode(true);
       $urlRouterProvider.otherwise('/');
-      return $stateProvider.state('v', {
-        url: '/',
+      $stateProvider.state('v', {
+        url: '',
         templateUrl: '/views/shared/layout.html',
         controller: 'BaseController'
+      });
+      return $stateProvider.state('v.index', {
+        url: '/'
       });
     }
   ]);

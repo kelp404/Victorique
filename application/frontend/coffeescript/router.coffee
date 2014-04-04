@@ -9,10 +9,16 @@ angular.module 'v.router', ['v.provider', 'v.controller', 'ui.router']
     $urlRouterProvider.otherwise '/'
 
     # ---------------------------------------------------------
-    # /
+    #
     # ---------------------------------------------------------
     $stateProvider.state 'v',
-        url: '/'
+        url: ''
         templateUrl: '/views/shared/layout.html'
         controller: 'BaseController'
+
+    # ---------------------------------------------------------
+    # /
+    # ---------------------------------------------------------
+    $stateProvider.state 'v.index',
+        url: '/'
 ]

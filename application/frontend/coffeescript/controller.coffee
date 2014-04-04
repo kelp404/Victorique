@@ -6,3 +6,7 @@ angular.module 'v.controller', []
     $scope.user = $v.user
     $scope.url = $v.url
 ]
+
+.controller 'NavigationController', ['$scope', ($scope) ->
+
+]
