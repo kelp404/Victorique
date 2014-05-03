@@ -16,3 +16,10 @@ class TestUtilsModels(unittest.TestCase):
 
         for patcher in self.patchers:
             patcher.stop()
+
+    def test_utils_get_iso_format(self):
+        dt = MagicMock()
+        dt.strftime.return_value = 'strftime'
+        result = utils.get_iso_format(dt)
+        dt.strftime.assert_called_with('%Y-%m-%dT%H:%M:%S.%fZ')
+        self.assertEqual(result, 'strftime')

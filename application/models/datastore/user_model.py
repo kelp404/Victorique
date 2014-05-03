@@ -1,5 +1,6 @@
 from google.appengine.ext import db
 from google.appengine.api import users
+from application import utils
 
 
 class UserPermission(object):
@@ -21,7 +22,7 @@ class UserModel(db.Model):
             'name': self.name,
             'email': self.email,
             'permission': self.permission,
-            'create_time': self.create_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+            'create_time': utils.get_iso_format(self.create_time)
         }
 
     @classmethod
