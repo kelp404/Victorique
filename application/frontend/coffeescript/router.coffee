@@ -14,11 +14,19 @@ angular.module 'v.router', ['v.provider', 'v.controller', 'ui.router']
     $stateProvider.state 'v',
         url: ''
         templateUrl: '/views/shared/layout.html'
-        controller: 'BaseController'
 
     # ---------------------------------------------------------
     # /
     # ---------------------------------------------------------
     $stateProvider.state 'v.index',
         url: '/'
+]
+
+.run ['$injector', ($injector) ->
+    $rootScope = $injector.get '$rootScope'
+    $stateParams = $injector.get '$stateParams'
+    $state = $injector.get '$state'
+
+    $rootScope.$stateParams = $stateParams
+    $rootScope.$state = $state
 ]

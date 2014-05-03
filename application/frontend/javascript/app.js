@@ -1,12 +1,12 @@
 (function() {
-  angular.module('v.controller', []).controller('BaseController', [
+  angular.module('v.controller', []).controller('NavigationController', [
     '$scope', '$injector', function($scope, $injector) {
       var $v;
       $v = $injector.get('$v');
       $scope.user = $v.user;
       return $scope.url = $v.url;
     }
-  ]).controller('NavigationController', ['$scope', function($scope) {}]);
+  ]);
 
 }).call(this);
 
@@ -52,12 +52,20 @@
       $urlRouterProvider.otherwise('/');
       $stateProvider.state('v', {
         url: '',
-        templateUrl: '/views/shared/layout.html',
-        controller: 'BaseController'
+        templateUrl: '/views/shared/layout.html'
       });
       return $stateProvider.state('v.index', {
         url: '/'
       });
+    }
+  ]).run([
+    '$injector', function($injector) {
+      var $rootScope, $state, $stateParams;
+      $rootScope = $injector.get('$rootScope');
+      $stateParams = $injector.get('$stateParams');
+      $state = $injector.get('$state');
+      $rootScope.$stateParams = $stateParams;
+      return $rootScope.$state = $state;
     }
   ]);
 
