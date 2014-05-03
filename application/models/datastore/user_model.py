@@ -9,11 +9,14 @@ class UserPermission(object):
     normal = 2
 
 class UserModel(db.Model):
-    is_login = False
     email = db.EmailProperty()
     name = db.StringProperty(indexed=False)
     permission = db.IntegerProperty(default=UserPermission.normal)
     create_time = db.DateTimeProperty(auto_now_add=True)
+
+    @property
+    def is_login(self):
+        return not not self.has_key()
 
     def dict(self):
         return {
@@ -39,7 +42,6 @@ class UserModel(db.Model):
         if UserModel.all().count(1) == 0:
             # set up default user with google account
             user = cls.__register_user(google_user, UserPermission.root)
-            user.is_login = True
             return user
 
         if google_user:
@@ -51,7 +53,6 @@ class UserModel(db.Model):
             else:
                 # register a new user
                 user = cls.__register_user(google_user, UserPermission.normal)
-            user.is_login = True
             return user
 
         return UserModel()
