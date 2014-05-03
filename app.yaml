@@ -35,6 +35,9 @@ handlers:
 - url: /favicon\.ico
   static_files: application/frontend/icons/favicon.ico
   upload: application/frontend/icons/favicon\.ico
+# bower_components
+- url: /bower_components/
+  static_dir: application/frontend/bower_components
 # font
 - url: /fonts/
   static_dir: application/frontend/fonts

@@ -1,1 +1,0 @@
-../../../bower_components/angular-validator/dist/angular-validator.js

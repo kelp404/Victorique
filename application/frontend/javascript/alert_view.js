@@ -1,1 +1,0 @@
-../../../bower_components/AlertView/dist/alert_view.js

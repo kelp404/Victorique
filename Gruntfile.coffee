@@ -39,7 +39,7 @@ module.exports = (grunt) ->
                     keepSpecialComments: 0
                 files:
                     'application/frontend/css/site.min.css': [
-                        'application/frontend/css/bootstrap.css'
+                        'bower_components/bootstrap/dist/css/bootstrap-theme.css'
                         'application/frontend/css/nprogress.css'
                         'application/frontend/css/site.css'
                     ]
@@ -49,13 +49,13 @@ module.exports = (grunt) ->
                 files:
                     'application/frontend/javascript/site.min.js': [
                         # jquery
-                        'application/frontend/javascript/jquery.js'
-                        'application/frontend/javascript/alert_view.js'
-                        'application/frontend/javascript/nprogress.js'
+                        'bower_components/jquery/dist/jquery.js'
+                        'bower_components/AlertView/dist/alert_view.js'
+                        'bower_components/nprogress/nprogress.js'
                         # angular
-                        'application/frontend/javascript/angular.js'
-                        'application/frontend/javascript/angular-ui-router.js'
-                        'application/frontend/javascript/angular-validator.js'
+                        'bower_components/angular/angular.js'
+                        'bower_components/angular-ui-router/release/angular-ui-router.js'
+                        'bower_components/angular-validator/dist/angular-validator.js'
                         'application/frontend/javascript/app.js'
                     ]
 
