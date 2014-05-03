@@ -8,14 +8,15 @@ module.exports = (config) ->
 
         # list of files / patterns to load in the browser
         files: [
-            'javascript/jquery.js'
-            'javascript/alert_view.js'
-            'javascript/nprogress.js'
+            # jquery
+            'bower_components/jquery/dist/jquery.js'
+            'bower_components/AlertView/dist/alert_view.js'
+            'bower_components/nprogress/nprogress.js'
             # angular
-            'javascript/angular.js'
+            'bower_components/angular/angular.js'
+            'bower_components/angular-ui-router/release/angular-ui-router.js'
+            'bower_components/angular-validator/dist/angular-validator.js'
             'tests/lib/angular-mocks/angular-mocks.js'
-            'javascript/angular-ui-router.js'
-            'javascript/angular-validator.js'
             'javascript/app.js'    # app
             'tests/specs/**/*.coffee'
         ]
