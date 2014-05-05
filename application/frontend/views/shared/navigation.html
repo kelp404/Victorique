@@ -11,7 +11,9 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/settings">Settings</a></li>
+                <li ng-class="{active: $state.current.name.indexOf('v.settings')>=0}">
+                    <a href="/settings">Settings</a>
+                </li>
                 <li ng-if="!user.is_login"><a href="{{url.login}}" target="_self">Sign in</a></li>
                 <li ng-if="user.is_login"><a href="{{url.logout}}" target="_self">Sign out</a></li>
             </ul>

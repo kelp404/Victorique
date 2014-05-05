@@ -6,7 +6,7 @@ module.exports = (grunt) ->
         compass:
             build:
                 options:
-                    sassDir: 'application/frontend/sass'
+                    sassDir: 'application/frontend/sass/site'
                     cssDir: 'application/frontend/css'
 
         coffee:
