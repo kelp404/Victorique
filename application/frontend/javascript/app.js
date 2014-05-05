@@ -6,7 +6,7 @@
       $scope.user = $v.user;
       return $scope.url = $v.url;
     }
-  ]);
+  ]).controller('SettingsController', ['$scope', '$injector', function($scope, $injector) {}]);
 
 }).call(this);
 
@@ -29,14 +29,40 @@
 
 (function() {
   angular.module('v.provider', []).provider('$v', function() {
+    var $http, $injector;
+    $injector = null;
+    $http = null;
+    this.setupProviders = function(injector) {
+      $injector = injector;
+      return $http = $injector.get('$http');
+    };
     this.user = window.user;
     this.url = window.url;
+    this.http = (function(_this) {
+      return function(args) {
+        return $http(args);
+      };
+    })(this);
+    this.api = {
+      settings: {
+        getSettings: (function(_this) {
+          return function() {
+            return _this.http({
+              method: 'get',
+              url: '/settings'
+            });
+          };
+        })(this)
+      }
+    };
     this.$get = [
       '$injector', (function(_this) {
         return function($injector) {
+          _this.setupProviders($injector);
           return {
             user: _this.user,
-            url: _this.url
+            url: _this.url,
+            api: _this.api
           };
         };
       })(this)
@@ -54,8 +80,23 @@
         url: '',
         templateUrl: '/views/shared/layout.html'
       });
-      return $stateProvider.state('v.index', {
+      $stateProvider.state('v.index', {
         url: '/'
+      });
+      return $stateProvider.state('v.settings', {
+        url: '/settings',
+        resolve: {
+          settings: function() {
+            return null;
+          },
+          settings: [
+            '$v', function($v) {
+              return $v.api.settings.getSettings();
+            }
+          ]
+        },
+        templateUrl: '/views/settings/settings.html',
+        controller: 'SettingsController'
       });
     }
   ]).run([

@@ -5,3 +5,7 @@ angular.module 'v.controller', []
     $scope.user = $v.user
     $scope.url = $v.url
 ]
+
+.controller 'SettingsController', ['$scope', '$injector', ($scope, $injector) ->
+    
+]

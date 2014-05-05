@@ -20,6 +20,19 @@ angular.module 'v.router', ['v.provider', 'v.controller', 'ui.router']
     # ---------------------------------------------------------
     $stateProvider.state 'v.index',
         url: '/'
+
+    # ---------------------------------------------------------
+    # /settings
+    # ---------------------------------------------------------
+    $stateProvider.state 'v.settings',
+        url: '/settings'
+        resolve:
+            settings: -> null
+            settings: ['$v', ($v) ->
+                $v.api.settings.getSettings()
+            ]
+        templateUrl: '/views/settings/settings.html'
+        controller: 'SettingsController'
 ]
 
 .run ['$injector', ($injector) ->
