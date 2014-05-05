@@ -7,5 +7,5 @@ angular.module 'v.controller', []
 ]
 
 .controller 'SettingsController', ['$scope', '$injector', ($scope, $injector) ->
-    
+
 ]
