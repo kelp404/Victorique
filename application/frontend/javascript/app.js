@@ -73,7 +73,7 @@
 
 (function() {
   angular.module('v.router', ['v.provider', 'v.controller', 'ui.router']).config([
-    '$stateProvider', '$urlRouterProvider', '$locationProvider', '$vProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $vProvider) {
+    '$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
       $locationProvider.html5Mode(true);
       $urlRouterProvider.otherwise('/');
       $stateProvider.state('v', {
@@ -106,7 +106,19 @@
       $stateParams = $injector.get('$stateParams');
       $state = $injector.get('$state');
       $rootScope.$stateParams = $stateParams;
-      return $rootScope.$state = $state;
+      $rootScope.$state = $state;
+      NProgress.configure({
+        showSpinner: false
+      });
+      $rootScope.$on('$stateChangeStart', function() {
+        return NProgress.start();
+      });
+      $rootScope.$on('$stateChangeSuccess', function() {
+        return NProgress.done();
+      });
+      return $rootScope.$on('$stateChangeError', function() {
+        return NProgress.done();
+      });
     }
   ]);
 

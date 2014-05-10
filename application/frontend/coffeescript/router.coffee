@@ -1,6 +1,6 @@
 angular.module 'v.router', ['v.provider', 'v.controller', 'ui.router']
 
-.config ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$vProvider', ($stateProvider, $urlRouterProvider, $locationProvider, $vProvider) ->
+.config ['$stateProvider', '$urlRouterProvider', '$locationProvider', ($stateProvider, $urlRouterProvider, $locationProvider) ->
 
     # html5 mode
     $locationProvider.html5Mode yes
@@ -42,4 +42,16 @@ angular.module 'v.router', ['v.provider', 'v.controller', 'ui.router']
 
     $rootScope.$stateParams = $stateParams
     $rootScope.$state = $state
+
+    # setup NProgress
+    NProgress.configure
+        showSpinner: no
+
+    # ui.router state change event
+    $rootScope.$on '$stateChangeStart', ->
+        NProgress.start()
+    $rootScope.$on '$stateChangeSuccess', ->
+        NProgress.done()
+    $rootScope.$on '$stateChangeError', ->
+        NProgress.done()
 ]

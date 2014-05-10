@@ -1,16 +1,18 @@
 /* Make clicks pass-through */
+$them-color: #444
+
 #nprogress
     pointer-events: none
     -webkit-pointer-events: none
 
 #nprogress .bar
-    background: #633
+    background: $them-color
     position: fixed
     z-index: 10000
     top: 0
     left: 0
     width: 100%
-    height: 3px
+    height: 2px
 
 
 /* Fancy blur effect */
@@ -20,7 +22,7 @@
     right: 0px
     width: 100px
     height: 100%
-    box-shadow: 0 0 10px #633, 0 0 5px #633
+    box-shadow: 0 0 10px $them-color, 0 0 5px $them-color
     opacity: 1.0
 
     -webkit-transform: rotate(3deg) translate(0px, -4px)
@@ -43,16 +45,16 @@
     width: 14px
     height: 14px
 
-    border:  solid 2px transparent
-    border-top-color:  #633
-    border-left-color: #633
+    border: solid 2px transparent
+    border-top-color: $them-color
+    border-left-color: $them-color
     border-radius: 10px
 
     -webkit-animation: nprogress-spinner 400ms linear infinite
-    -moz-animation:    nprogress-spinner 400ms linear infinite
-    -ms-animation:     nprogress-spinner 400ms linear infinite
-    -o-animation:      nprogress-spinner 400ms linear infinite
-    animation:         nprogress-spinner 400ms linear infinite
+    -moz-animation: nprogress-spinner 400ms linear infinite
+    -ms-animation: nprogress-spinner 400ms linear infinite
+    -o-animation: nprogress-spinner 400ms linear infinite
+    animation: nprogress-spinner 400ms linear infinite
 
 
 @-webkit-keyframes nprogress-spinner
