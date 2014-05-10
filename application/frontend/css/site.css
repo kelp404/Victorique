@@ -21,3 +21,14 @@ body {
 .v-content {
   padding-top: 60px;
 }
+
+/* line 21, ../sass/site/site.sass */
+ul.nav-pills > li.active > a {
+  background-color: #eeeeee;
+  color: #2a6496;
+}
+/* line 24, ../sass/site/site.sass */
+ul.nav-pills > li.active > a:hover {
+  background-color: #eeeeee;
+  color: #2a6496;
+}

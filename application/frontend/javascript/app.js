@@ -18,12 +18,60 @@
       replace: true,
       controller: 'NavigationController'
     };
+  }).directive('vFocus', function() {
+    return {
+      restrict: 'A',
+      link: function(scope, element) {
+        return $(element).select();
+      }
+    };
+  }).directive('vScrollTo', function() {
+    return {
+      restrict: 'A',
+      link: function(scope, element) {
+        var link, _i, _len, _ref;
+        _ref = $(element).find('a');
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          link = _ref[_i];
+          $(link).click(function(event) {
+            var $target;
+            event.preventDefault();
+            $target = $($(this).attr('href'));
+            if (!$target.length) {
+              return;
+            }
+            $(element).find('li.active').removeClass('active');
+            $(this).parent('li').addClass('active');
+            return $('html,body').animate({
+              scrollTop: $target.offset().top - 60
+            }, 500, 'easeOutExpo', function() {
+              return $target.find('input:not([type=hidden]):first').select();
+            });
+          });
+        }
+      }
+    };
   });
 
 }).call(this);
 
 (function() {
-  angular.module('v', ['v.router', 'v.directive']);
+  angular.module('v.initial', []).config(function() {
+    return $.extend($.easing, {
+      easeOutExpo: function(x, t, b, c, d) {
+        if (t === d) {
+          return b + c;
+        } else {
+          return c * (-Math.pow(2, -10 * t / d) + 1) + b;
+        }
+      }
+    });
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('v', ['v.initial', 'v.router', 'v.directive']);
 
 }).call(this);
 

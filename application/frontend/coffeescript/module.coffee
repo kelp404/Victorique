@@ -1,1 +1,5 @@
-angular.module 'v', ['v.router', 'v.directive']
+angular.module 'v', [
+    'v.initial'
+    'v.router'
+    'v.directive'
+]
