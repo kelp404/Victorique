@@ -27,9 +27,9 @@ angular.module 'v.router', ['v.provider', 'v.controller', 'ui.router']
     $stateProvider.state 'v.settings',
         url: '/settings'
         resolve:
-            settings: -> null
             settings: ['$v', ($v) ->
-                $v.api.settings.getSettings()
+                $v.api.settings.getSettings().then (response) ->
+                    response.data
             ]
         templateUrl: '/views/settings/settings.html'
         controller: 'SettingsController'

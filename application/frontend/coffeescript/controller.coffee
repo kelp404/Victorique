@@ -6,6 +6,10 @@ angular.module 'v.controller', []
     $scope.url = $v.url
 ]
 
-.controller 'SettingsController', ['$scope', '$injector', ($scope, $injector) ->
-
+.controller 'SettingsController', ['$scope', '$injector', 'settings', ($scope, $injector, settings) ->
+    $scope.profile =
+        model: settings.user
+        submit: ($event) ->
+            $event.preventDefault()
+            console.log $scope.profile.model
 ]

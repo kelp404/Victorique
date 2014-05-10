@@ -6,7 +6,17 @@
       $scope.user = $v.user;
       return $scope.url = $v.url;
     }
-  ]).controller('SettingsController', ['$scope', '$injector', function($scope, $injector) {}]);
+  ]).controller('SettingsController', [
+    '$scope', '$injector', 'settings', function($scope, $injector, settings) {
+      return $scope.profile = {
+        model: settings.user,
+        submit: function($event) {
+          $event.preventDefault();
+          return console.log($scope.profile.model);
+        }
+      };
+    }
+  ]);
 
 }).call(this);
 
@@ -134,12 +144,11 @@
       return $stateProvider.state('v.settings', {
         url: '/settings',
         resolve: {
-          settings: function() {
-            return null;
-          },
           settings: [
             '$v', function($v) {
-              return $v.api.settings.getSettings();
+              return $v.api.settings.getSettings().then(function(response) {
+                return response.data;
+              });
             }
           ]
         },
