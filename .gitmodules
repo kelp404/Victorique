@@ -1,3 +1,6 @@
 [submodule "submodules/django"]
 	path = submodules/django
 	url = https://github.com/django/django.git
+[submodule "submodules/wtforms"]
+	path = submodules/wtforms
+	url = https://github.com/wtforms/wtforms.git
