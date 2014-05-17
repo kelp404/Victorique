@@ -38,7 +38,7 @@ handlers:
 # bower_components
 - url: /bower_components/
   static_dir: application/frontend/bower_components
-# font
+# fonts
 - url: /fonts/
   static_dir: application/frontend/fonts
 # images
