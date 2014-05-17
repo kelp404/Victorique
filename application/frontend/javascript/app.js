@@ -1,12 +1,22 @@
 (function() {
-  angular.module('v.controller', []).controller('NavigationController', [
+  angular.module('v.controllers', ['v.controllers.navigation', 'v.controllers.settings']);
+
+}).call(this);
+
+(function() {
+  angular.module('v.controllers.navigation', []).controller('NavigationController', [
     '$scope', '$injector', function($scope, $injector) {
       var $v;
       $v = $injector.get('$v');
       $scope.user = $v.user;
       return $scope.url = $v.url;
     }
-  ]).controller('SettingsController', [
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('v.controllers.settings', []).controller('SettingsController', [
     '$scope', '$injector', 'settings', function($scope, $injector, settings) {
       return $scope.profile = {
         model: settings.user,
@@ -130,7 +140,7 @@
 }).call(this);
 
 (function() {
-  angular.module('v.router', ['v.provider', 'v.controller', 'ui.router']).config([
+  angular.module('v.router', ['v.provider', 'v.controllers', 'ui.router']).config([
     '$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
       $locationProvider.html5Mode(true);
       $urlRouterProvider.otherwise('/');

@@ -1,4 +1,8 @@
-angular.module 'v.router', ['v.provider', 'v.controller', 'ui.router']
+angular.module 'v.router', [
+    'v.provider'
+    'v.controllers'
+    'ui.router'
+]
 
 .config ['$stateProvider', '$urlRouterProvider', '$locationProvider', ($stateProvider, $urlRouterProvider, $locationProvider) ->
 
