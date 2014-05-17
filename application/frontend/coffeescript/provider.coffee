@@ -20,6 +20,9 @@ angular.module 'v.provider', []
 
     @alert =
         saved: (message='Saved successful.') ->
+            ###
+            Pop the message to tell user the data hade been saved.
+            ###
             $.av.pop
                 title: 'Success'
                 message: message

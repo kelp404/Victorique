@@ -125,6 +125,10 @@
         if (message == null) {
           message = 'Saved successful.';
         }
+
+        /*
+        Pop the message to tell user the data hade been saved.
+         */
         return $.av.pop({
           title: 'Success',
           message: message,
