@@ -16,8 +16,6 @@ def authorization(*permissions):
             if request.user.permission == UserPermission.root:
                 return f(request, *args, **kwargs)
 
-            import logging
-            logging.error(request.user.dict())
             if request.user.permission in permissions:
                 return f(request, *args, **kwargs)
             else:
