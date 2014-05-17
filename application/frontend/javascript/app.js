@@ -18,11 +18,20 @@
 (function() {
   angular.module('v.controllers.settings', []).controller('SettingsController', [
     '$scope', '$injector', 'settings', function($scope, $injector, settings) {
+      var $v, $validator;
+      $v = $injector.get('$v');
+      $validator = $injector.get('$validator');
       return $scope.profile = {
         model: settings.user,
         submit: function($event) {
           $event.preventDefault();
-          return console.log($scope.profile.model);
+          return $validator.validate($scope, 'profile.model').success(function() {
+            return $v.api.settings.updateProfile({
+              name: $scope.profile.model.name
+            }).success(function() {
+              return $v.alert.saved();
+            });
+          });
         }
       };
     }
@@ -91,7 +100,7 @@
 }).call(this);
 
 (function() {
-  angular.module('v', ['v.initial', 'v.router', 'v.directive']);
+  angular.module('v', ['v.initial', 'v.router', 'v.directive', 'v.validations']);
 
 }).call(this);
 
@@ -106,6 +115,18 @@
     };
     this.user = window.user;
     this.url = window.url;
+    this.alert = {
+      saved: function(message) {
+        if (message == null) {
+          message = 'Saved successful.';
+        }
+        return $.av.pop({
+          title: 'Success',
+          message: message,
+          expire: 3000
+        });
+      }
+    };
     this.http = (function(_this) {
       return function(args) {
         return $http(args);
@@ -120,6 +141,20 @@
               url: '/settings'
             });
           };
+        })(this),
+        updateProfile: (function(_this) {
+          return function(profile) {
+
+            /*
+            @param profile:
+                name: {string}
+             */
+            return _this.http({
+              method: 'put',
+              url: '/settings/profile',
+              data: profile
+            });
+          };
         })(this)
       }
     };
@@ -130,6 +165,7 @@
           return {
             user: _this.user,
             url: _this.url,
+            alert: _this.alert,
             api: _this.api
           };
         };
@@ -185,6 +221,18 @@
       });
       return $rootScope.$on('$stateChangeError', function() {
         return NProgress.done();
+      });
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('v.validations', ['validator']).config([
+    '$validatorProvider', function($validatorProvider) {
+      return $validatorProvider.register('required', {
+        validator: /.+/,
+        error: 'This field is required.'
       });
     }
   ]);

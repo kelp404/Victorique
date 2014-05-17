@@ -18,6 +18,13 @@ angular.module 'v.provider', []
     @user = window.user
     @url = window.url
 
+    @alert =
+        saved: (message='Saved successful.') ->
+            $.av.pop
+                title: 'Success'
+                message: message
+                expire: 3000
+
     @http = (args) =>
         $http args
 
@@ -27,6 +34,15 @@ angular.module 'v.provider', []
                 @http
                     method: 'get'
                     url: '/settings'
+            updateProfile: (profile) =>
+                ###
+                @param profile:
+                    name: {string}
+                ###
+                @http
+                    method: 'put'
+                    url: '/settings/profile'
+                    data: profile
 
     # -----------------------------------------------------
     # $get
@@ -37,6 +53,7 @@ angular.module 'v.provider', []
 
         user: @user
         url: @url
+        alert: @alert
         api: @api
     ]
 

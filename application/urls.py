@@ -14,7 +14,13 @@ handler500 = server_error
 # routers
 urlpatterns = patterns('',
     url(r'^$', dispatch(GET=base_view)),
+
+    # /settings
     url(r'^settings$', api_dispatch(
         GET=get_settings,
+    )),
+    # /settings/profile
+    url(r'^settings/profile$', api_dispatch(
+        PUT=update_profile,
     )),
 )

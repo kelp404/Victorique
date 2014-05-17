@@ -11,7 +11,7 @@ class UserPermission(object):
 class UserModel(db.Model):
     email = db.EmailProperty()
     name = db.StringProperty(indexed=False)
-    permission = db.IntegerProperty(default=UserPermission.normal)
+    permission = db.IntegerProperty(default=UserPermission.anonymous)
     create_time = db.DateTimeProperty(auto_now_add=True)
 
     @property
