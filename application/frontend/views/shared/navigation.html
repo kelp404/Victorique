@@ -11,6 +11,9 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
             <ul class="nav navbar-nav navbar-right">
+                <li ng-class="{active: $state.current.name.indexOf('v.applications')>=0}">
+                    <a href="/applications">Applications</a>
+                </li>
                 <li ng-class="{active: $state.current.name.indexOf('v.settings')>=0}">
                     <a href="/settings">Settings</a>
                 </li>

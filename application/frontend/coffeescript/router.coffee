@@ -26,6 +26,17 @@ angular.module 'v.router', [
         url: '/'
 
     # ---------------------------------------------------------
+    # /applications
+    # ---------------------------------------------------------
+    $stateProvider.state 'v.applications',
+        url: '/applications'
+        resolve: ['$v', ($v) ->
+            null
+        ]
+        templateUrl: '/views/applications/applications.html'
+        controller: 'ApplicationsController'
+
+    # ---------------------------------------------------------
     # /settings
     # ---------------------------------------------------------
     $stateProvider.state 'v.settings',

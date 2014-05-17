@@ -1,5 +1,10 @@
 (function() {
-  angular.module('v.controllers', ['v.controllers.navigation', 'v.controllers.settings']);
+  angular.module('v.controllers.applications', []).controller('ApplicationsController', ['$scope', function($scope) {}]);
+
+}).call(this);
+
+(function() {
+  angular.module('v.controllers', ['v.controllers.navigation', 'v.controllers.settings', 'v.controllers.applications']);
 
 }).call(this);
 
@@ -186,6 +191,16 @@
       });
       $stateProvider.state('v.index', {
         url: '/'
+      });
+      $stateProvider.state('v.applications', {
+        url: '/applications',
+        resolve: [
+          '$v', function($v) {
+            return null;
+          }
+        ],
+        templateUrl: '/views/applications/applications.html',
+        controller: 'ApplicationsController'
       });
       return $stateProvider.state('v.settings', {
         url: '/settings',

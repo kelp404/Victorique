@@ -3,6 +3,7 @@ from application.exceptions import *
 from application.dispatches import api_dispatch, dispatch
 from application.views.base import base_view
 from application.views.settings import *
+from application.views.applications import *
 
 
 # error handlers
@@ -14,6 +15,11 @@ handler500 = server_error
 # routers
 urlpatterns = patterns('',
     url(r'^$', dispatch(GET=base_view)),
+
+    # /applications
+    url(r'^applications$', api_dispatch(
+        GET=get_applications
+    )),
 
     # /settings
     url(r'^settings$', api_dispatch(
