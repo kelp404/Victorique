@@ -22,11 +22,12 @@ urlpatterns = patterns('',
     )),
 
     # /settings
-    url(r'^settings$', api_dispatch(
-        GET=get_settings,
+    url(r'^settings$', dispatch(
+        GET=base_view,
     )),
     # /settings/profile
     url(r'^settings/profile$', api_dispatch(
+        GET=get_profile,
         PUT=update_profile,
     )),
 )

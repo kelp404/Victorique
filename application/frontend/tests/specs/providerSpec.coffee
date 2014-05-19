@@ -30,12 +30,12 @@ describe 'v.provider', ->
                 expire: 3000
 
     describe '$v.api.settings', ->
-        it '$v.api.settings.getSettings() should call vProvider.http()', inject ($v) ->
+        it '$v.api.settings.getProfile() should call vProvider.http()', inject ($v) ->
             spyOn vProvider, 'http'
-            $v.api.settings.getSettings()
+            $v.api.settings.getProfile()
             expect(vProvider.http).toHaveBeenCalledWith
                 method: 'get'
-                url: '/settings'
+                url: '/settings/profile'
 
 
     describe '$v', ->

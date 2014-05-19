@@ -33,10 +33,10 @@ angular.module 'v.provider', []
 
     @api =
         settings:
-            getSettings: =>
+            getProfile: =>
                 @http
                     method: 'get'
-                    url: '/settings'
+                    url: '/settings/profile'
             updateProfile: (profile) =>
                 ###
                 @param profile:

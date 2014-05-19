@@ -1,11 +1,16 @@
 angular.module 'v.controllers.settings', []
 
-.controller 'SettingsController', ['$scope', '$injector', 'settings', ($scope, $injector, settings) ->
+.controller 'SettingsController', ['$scope', '$injector', ($scope, $injector) ->
+    $state = $injector.get '$state'
+    $state.go 'v.settings-profile'
+]
+
+.controller 'SettingsProfileController', ['$scope', '$injector', 'profile', ($scope, $injector, profile) ->
     $v = $injector.get '$v'
     $validator = $injector.get '$validator'
 
     $scope.profile =
-        model: settings.user
+        model: profile
         submit: ($event) ->
             $event.preventDefault()
             $validator.validate($scope, 'profile.model').success ->

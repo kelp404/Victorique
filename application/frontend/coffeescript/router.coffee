@@ -41,13 +41,19 @@ angular.module 'v.router', [
     # ---------------------------------------------------------
     $stateProvider.state 'v.settings',
         url: '/settings'
+        controller: 'SettingsController'
+    # ---------------------------------------------------------
+    # /settings/profile
+    # ---------------------------------------------------------
+    $stateProvider.state 'v.settings-profile',
+        url: '/settings/profile'
         resolve:
-            settings: ['$v', ($v) ->
-                $v.api.settings.getSettings().then (response) ->
+            profile: ['$v', ($v) ->
+                $v.api.settings.getProfile().then (response) ->
                     response.data
             ]
-        templateUrl: '/views/settings/settings.html'
-        controller: 'SettingsController'
+        templateUrl: '/views/settings/profile.html'
+        controller: 'SettingsProfileController'
 ]
 
 .run ['$injector', ($injector) ->

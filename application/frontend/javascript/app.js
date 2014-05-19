@@ -22,12 +22,18 @@
 
 (function() {
   angular.module('v.controllers.settings', []).controller('SettingsController', [
-    '$scope', '$injector', 'settings', function($scope, $injector, settings) {
+    '$scope', '$injector', function($scope, $injector) {
+      var $state;
+      $state = $injector.get('$state');
+      return $state.go('v.settings-profile');
+    }
+  ]).controller('SettingsProfileController', [
+    '$scope', '$injector', 'profile', function($scope, $injector, profile) {
       var $v, $validator;
       $v = $injector.get('$v');
       $validator = $injector.get('$validator');
       return $scope.profile = {
-        model: settings.user,
+        model: profile,
         submit: function($event) {
           $event.preventDefault();
           return $validator.validate($scope, 'profile.model').success(function() {
@@ -51,6 +57,15 @@
       templateUrl: '/views/shared/navigation.html',
       replace: true,
       controller: 'NavigationController'
+    };
+  }).directive('vSettingsMenu', function() {
+    return {
+      restrict: 'A',
+      templateUrl: '/views/settings/menu.html',
+      replace: true,
+      link: function(scope, element, attrs) {
+        return scope.options = scope.$eval(attrs.vSettingsMenu);
+      }
     };
   }).directive('vFocus', function() {
     return {
@@ -143,11 +158,11 @@
     })(this);
     this.api = {
       settings: {
-        getSettings: (function(_this) {
+        getProfile: (function(_this) {
           return function() {
             return _this.http({
               method: 'get',
-              url: '/settings'
+              url: '/settings/profile'
             });
           };
         })(this),
@@ -206,19 +221,23 @@
         templateUrl: '/views/applications/applications.html',
         controller: 'ApplicationsController'
       });
-      return $stateProvider.state('v.settings', {
+      $stateProvider.state('v.settings', {
         url: '/settings',
+        controller: 'SettingsController'
+      });
+      return $stateProvider.state('v.settings-profile', {
+        url: '/settings/profile',
         resolve: {
-          settings: [
+          profile: [
             '$v', function($v) {
-              return $v.api.settings.getSettings().then(function(response) {
+              return $v.api.settings.getProfile().then(function(response) {
                 return response.data;
               });
             }
           ]
         },
-        templateUrl: '/views/settings/settings.html',
-        controller: 'SettingsController'
+        templateUrl: '/views/settings/profile.html',
+        controller: 'SettingsProfileController'
       });
     }
   ]).run([

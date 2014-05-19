@@ -7,11 +7,8 @@ from application.forms.profile_form import ProfileForm
 
 
 @authorization(UserPermission.root, UserPermission.normal)
-def get_settings(request):
-    result = {
-        'user': request.user.dict()
-    }
-    return JsonResponse(result)
+def get_profile(request):
+    return JsonResponse(request.user.dict())
 
 @authorization(UserPermission.root, UserPermission.normal)
 def update_profile(request):

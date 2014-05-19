@@ -10,6 +10,16 @@ angular.module 'v.directive', []
     controller: 'NavigationController'
 
 # ---------------------------------------------------------
+# v-settings-menu
+# ---------------------------------------------------------
+.directive 'vSettingsMenu', ->
+    restrict: 'A'
+    templateUrl: '/views/settings/menu.html'
+    replace: yes
+    link: (scope, element, attrs) ->
+        scope.options = scope.$eval attrs.vSettingsMenu
+
+# ---------------------------------------------------------
 # v-focus
 # ---------------------------------------------------------
 .directive 'vFocus', ->
