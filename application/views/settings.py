@@ -21,3 +21,7 @@ def update_profile(request):
     user.save()
     user.get(user.key())
     return JsonResponse(user)
+
+@authorization(UserPermission.root, UserPermission.normal)
+def get_applications(request):
+    return JsonResponse([])

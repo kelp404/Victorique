@@ -54,6 +54,18 @@ angular.module 'v.router', [
             ]
         templateUrl: '/views/settings/profile.html'
         controller: 'SettingsProfileController'
+    # ---------------------------------------------------------
+    # /settings/application
+    # ---------------------------------------------------------
+    $stateProvider.state 'v.settings-applications',
+        url: '/settings/applications'
+        resolve:
+            applications: ['$v', ($v) ->
+                $v.api.settings.getApplications().then (response) ->
+                    response.data
+            ]
+        templateUrl: '/views/settings/applications.html'
+        controller: 'SettingsApplicationsController'
 ]
 
 .run ['$injector', ($injector) ->

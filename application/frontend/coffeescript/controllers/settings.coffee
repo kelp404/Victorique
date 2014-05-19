@@ -18,3 +18,10 @@ angular.module 'v.controllers.settings', []
                     name: $scope.profile.model.name
                 .success -> $v.alert.saved()
 ]
+
+.controller 'SettingsApplicationsController', ['$scope', '$injector', 'applications', ($scope, $injector, applications) ->
+    $v = $injector.get '$v'
+    $validator = $injector.get '$validator'
+
+    $scope.applications = applications
+]

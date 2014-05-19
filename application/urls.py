@@ -30,4 +30,8 @@ urlpatterns = patterns('',
         GET=get_profile,
         PUT=update_profile,
     )),
+    # /settings/applications
+    url(r'^settings/applications$', api_dispatch(
+        GET=get_applications,
+    )),
 )

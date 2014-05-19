@@ -46,6 +46,13 @@
         }
       };
     }
+  ]).controller('SettingsApplicationsController', [
+    '$scope', '$injector', 'applications', function($scope, $injector, applications) {
+      var $v, $validator;
+      $v = $injector.get('$v');
+      $validator = $injector.get('$validator');
+      return $scope.applications = applications;
+    }
   ]);
 
 }).call(this);
@@ -179,6 +186,14 @@
               data: profile
             });
           };
+        })(this),
+        getApplications: (function(_this) {
+          return function() {
+            return _this.http({
+              method: 'get',
+              url: '/settings/applications'
+            });
+          };
         })(this)
       }
     };
@@ -225,7 +240,7 @@
         url: '/settings',
         controller: 'SettingsController'
       });
-      return $stateProvider.state('v.settings-profile', {
+      $stateProvider.state('v.settings-profile', {
         url: '/settings/profile',
         resolve: {
           profile: [
@@ -238,6 +253,20 @@
         },
         templateUrl: '/views/settings/profile.html',
         controller: 'SettingsProfileController'
+      });
+      return $stateProvider.state('v.settings-applications', {
+        url: '/settings/applications',
+        resolve: {
+          applications: [
+            '$v', function($v) {
+              return $v.api.settings.getApplications().then(function(response) {
+                return response.data;
+              });
+            }
+          ]
+        },
+        templateUrl: '/views/settings/applications.html',
+        controller: 'SettingsApplicationsController'
       });
     }
   ]).run([
