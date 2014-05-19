@@ -4,7 +4,18 @@
 }).call(this);
 
 (function() {
-  angular.module('v.controllers', ['v.controllers.navigation', 'v.controllers.settings', 'v.controllers.applications']);
+  angular.module('v.controllers', ['v.controllers.navigation', 'v.controllers.login', 'v.controllers.settings', 'v.controllers.applications']);
+
+}).call(this);
+
+(function() {
+  angular.module('v.controllers.login', []).controller('LoginController', [
+    '$scope', '$injector', function($scope, $injector) {
+      var $v;
+      $v = $injector.get('$v');
+      return $scope.url = $v.url;
+    }
+  ]);
 
 }).call(this);
 
@@ -226,6 +237,11 @@
       $stateProvider.state('v.index', {
         url: '/'
       });
+      $stateProvider.state('v.login', {
+        url: '/login',
+        templateUrl: '/views/login.html',
+        controller: 'LoginController'
+      });
       $stateProvider.state('v.applications', {
         url: '/applications',
         resolve: [
@@ -271,10 +287,11 @@
     }
   ]).run([
     '$injector', function($injector) {
-      var $rootScope, $state, $stateParams;
+      var $rootScope, $state, $stateParams, $v;
       $rootScope = $injector.get('$rootScope');
       $stateParams = $injector.get('$stateParams');
       $state = $injector.get('$state');
+      $v = $injector.get('$v');
       $rootScope.$stateParams = $stateParams;
       $rootScope.$state = $state;
       NProgress.configure({
@@ -283,11 +300,17 @@
       $rootScope.$on('$stateChangeStart', function() {
         return NProgress.start();
       });
-      $rootScope.$on('$stateChangeSuccess', function() {
-        return NProgress.done();
+      $rootScope.$on('$stateChangeSuccess', function(event, toState) {
+        NProgress.done();
+        if (!$v.user.is_login && toState.name !== 'v.login') {
+          return $state.go('v.login');
+        }
       });
-      return $rootScope.$on('$stateChangeError', function() {
-        return NProgress.done();
+      return $rootScope.$on('$stateChangeError', function(event, toState) {
+        NProgress.done();
+        if (!$v.user.is_login && toState.name !== 'v.login') {
+          return $state.go('v.login');
+        }
       });
     }
   ]);

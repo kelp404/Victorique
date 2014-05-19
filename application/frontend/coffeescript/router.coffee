@@ -26,6 +26,14 @@ angular.module 'v.router', [
         url: '/'
 
     # ---------------------------------------------------------
+    # /login
+    # ---------------------------------------------------------
+    $stateProvider.state 'v.login',
+        url: '/login'
+        templateUrl: '/views/login.html'
+        controller: 'LoginController'
+
+    # ---------------------------------------------------------
     # /applications
     # ---------------------------------------------------------
     $stateProvider.state 'v.applications',
@@ -72,6 +80,7 @@ angular.module 'v.router', [
     $rootScope = $injector.get '$rootScope'
     $stateParams = $injector.get '$stateParams'
     $state = $injector.get '$state'
+    $v = $injector.get '$v'
 
     $rootScope.$stateParams = $stateParams
     $rootScope.$state = $state
@@ -83,8 +92,12 @@ angular.module 'v.router', [
     # ui.router state change event
     $rootScope.$on '$stateChangeStart', ->
         NProgress.start()
-    $rootScope.$on '$stateChangeSuccess', ->
+    $rootScope.$on '$stateChangeSuccess', (event, toState) ->
         NProgress.done()
-    $rootScope.$on '$stateChangeError', ->
+        if not $v.user.is_login and toState.name isnt 'v.login'
+            $state.go 'v.login'
+    $rootScope.$on '$stateChangeError', (event, toState) ->
         NProgress.done()
+        if not $v.user.is_login and toState.name isnt 'v.login'
+            $state.go 'v.login'
 ]

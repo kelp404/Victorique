@@ -15,6 +15,7 @@ handler500 = server_error
 # routers
 urlpatterns = patterns('',
     url(r'^$', dispatch(GET=base_view)),
+    url(r'^login$', dispatch(GET=base_view)),
 
     # /applications
     url(r'^applications$', api_dispatch(
