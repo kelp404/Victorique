@@ -80,6 +80,31 @@
       $validator = $injector.get('$validator');
       return $scope.applications = applications;
     }
+  ]).controller('SettingsNewApplicationController', [
+    '$scope', '$injector', function($scope, $injector) {
+      var $state, $v, $validator;
+      $v = $injector.get('$v');
+      $validator = $injector.get('$validator');
+      $state = $injector.get('$state');
+      $scope.model = {
+        title: '',
+        description: ''
+      };
+      $scope.modal = {
+        autoShow: true,
+        hide: function() {},
+        hiddenCallback: function() {
+          return $state.go('v.settings-applications', null, {
+            reload: true
+          });
+        }
+      };
+      return $scope.submit = function() {
+        return $validator.validate($scope, 'model').success(function() {
+          return $scope.modal.hide();
+        });
+      };
+    }
   ]);
 
 }).call(this);
@@ -106,6 +131,39 @@
       restrict: 'A',
       link: function(scope, element) {
         return $(element).select();
+      }
+    };
+  }).directive('vModal', function() {
+    return {
+      restrict: 'A',
+      scope: {
+        modal: '=vModal'
+      },
+      link: function(scope, element) {
+        scope.modal.hide = function() {
+          return $(element).modal('hide');
+        };
+        if (scope.modal.hiddenCallback) {
+          $(element).on('hidden.bs.modal', function(e) {
+            return scope.$apply(function() {
+              return scope.$eval(scope.modal.hiddenCallback, {
+                $event: e
+              });
+            });
+          });
+        }
+        $(element).on('shown.bs.modal', function() {
+          var $firstController;
+          $firstController = $(element).find('form .form-control:first');
+          if ($firstController.length) {
+            return $firstController.select();
+          } else {
+            return $(element).find('form [type=submit]').focus();
+          }
+        });
+        if (scope.modal.autoShow) {
+          return $(element).modal('show');
+        }
       }
     };
   }).directive('vScrollTo', function() {
@@ -287,7 +345,7 @@
         templateUrl: '/views/settings/profile.html',
         controller: 'SettingsProfileController'
       });
-      return $stateProvider.state('v.settings-applications', {
+      $stateProvider.state('v.settings-applications', {
         url: '/settings/applications',
         resolve: {
           applications: [
@@ -300,6 +358,11 @@
         },
         templateUrl: '/views/settings/applications.html',
         controller: 'SettingsApplicationsController'
+      });
+      return $stateProvider.state('v.settings-applications.new', {
+        url: '/new',
+        templateUrl: '/views/modal/application.html',
+        controller: 'SettingsNewApplicationController'
       });
     }
   ]).run([

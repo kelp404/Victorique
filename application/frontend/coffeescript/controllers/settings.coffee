@@ -25,3 +25,20 @@ angular.module 'v.controllers.settings', []
 
     $scope.applications = applications
 ]
+.controller 'SettingsNewApplicationController', ['$scope', '$injector', ($scope, $injector) ->
+    $v = $injector.get '$v'
+    $validator = $injector.get '$validator'
+    $state = $injector.get '$state'
+
+    $scope.model =
+        title: ''
+        description: ''
+    $scope.modal =
+        autoShow: yes
+        hide: ->
+        hiddenCallback: ->
+            $state.go 'v.settings-applications', null, reload: yes
+    $scope.submit = ->
+        $validator.validate($scope, 'model').success ->
+            $scope.modal.hide()
+]

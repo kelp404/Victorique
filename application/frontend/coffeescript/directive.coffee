@@ -28,6 +28,34 @@ angular.module 'v.directive', []
         $(element).select()
 
 # ---------------------------------------------------------
+# v-modal
+# ---------------------------------------------------------
+.directive 'vModal', ->
+    restrict: 'A'
+    scope:
+        modal: '=vModal'
+    link: (scope, element) ->
+        # setup hide function for scope.modal
+        scope.modal.hide = ->
+            $(element).modal 'hide'
+        if scope.modal.hiddenCallback
+            # listen hidden event for scope.modal.hiddenCallback
+            $(element).on 'hidden.bs.modal', (e) ->
+                scope.$apply ->
+                    scope.$eval scope.modal.hiddenCallback,
+                        $event: e
+        $(element).on 'shown.bs.modal', ->
+            # focus the firest element
+            $firstController = $(element).find('form .form-control:first')
+            if $firstController.length
+                $firstController.select()
+            else
+                $(element).find('form [type=submit]').focus()
+        if scope.modal.autoShow
+            # pop the modal
+            $(element).modal 'show'
+
+# ---------------------------------------------------------
 # v-scroll-to
 # ---------------------------------------------------------
 .directive 'vScrollTo', ->

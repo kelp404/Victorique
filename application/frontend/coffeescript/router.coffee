@@ -75,6 +75,13 @@ angular.module 'v.router', [
             ]
         templateUrl: '/views/settings/applications.html'
         controller: 'SettingsApplicationsController'
+    # ---------------------------------------------------------
+    # /settings/application/new
+    # ---------------------------------------------------------
+    $stateProvider.state 'v.settings-applications.new',
+        url: '/new'
+        templateUrl: '/views/modal/application.html'
+        controller: 'SettingsNewApplicationController'
 ]
 
 .run ['$injector', ($injector) ->
