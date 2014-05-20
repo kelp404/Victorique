@@ -4,7 +4,23 @@
 }).call(this);
 
 (function() {
-  angular.module('v.controllers', ['v.controllers.navigation', 'v.controllers.login', 'v.controllers.settings', 'v.controllers.applications']);
+  angular.module('v.controllers', ['v.controllers.navigation', 'v.controllers.index', 'v.controllers.login', 'v.controllers.settings', 'v.controllers.applications']);
+
+}).call(this);
+
+(function() {
+  angular.module('v.controllers.index', []).controller('IndexController', [
+    '$scope', '$injector', function($scope, $injector) {
+      var $state, $v;
+      $v = $injector.get('$v');
+      $state = $injector.get('$state');
+      if ($v.user.is_login) {
+        return $state.go('v.applications');
+      } else {
+        return $stae.go('v.login');
+      }
+    }
+  ]);
 
 }).call(this);
 
@@ -235,7 +251,8 @@
         templateUrl: '/views/shared/layout.html'
       });
       $stateProvider.state('v.index', {
-        url: '/'
+        url: '/',
+        controller: 'IndexController'
       });
       $stateProvider.state('v.login', {
         url: '/login',

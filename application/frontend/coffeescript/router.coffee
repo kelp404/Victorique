@@ -24,6 +24,7 @@ angular.module 'v.router', [
     # ---------------------------------------------------------
     $stateProvider.state 'v.index',
         url: '/'
+        controller: 'IndexController'
 
     # ---------------------------------------------------------
     # /login
