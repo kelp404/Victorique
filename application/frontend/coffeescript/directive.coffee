@@ -31,6 +31,13 @@ angular.module 'v.directive', []
 # v-modal
 # ---------------------------------------------------------
 .directive 'vModal', ->
+    ###
+    v-modal="scope.modal"
+    scope.modal:
+        autoShow: {bool} If this modal should pop as automatic, it should be yes.
+        hide: -> {function} After link, it is a function for hidden the modal.
+        hiddenCallback: ($event) -> {function} After the modal hidden, it will be eval.
+    ###
     restrict: 'A'
     scope:
         modal: '=vModal'

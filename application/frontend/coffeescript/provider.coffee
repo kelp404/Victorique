@@ -50,6 +50,16 @@ angular.module 'v.provider', []
                 @http
                     method: 'get'
                     url: '/settings/applications'
+            addApplication: (application) =>
+                ###
+                @param application:
+                    title: {string}
+                    description: {string}
+                ###
+                @http
+                    method: 'post'
+                    url: '/settings/applications'
+                    data: application
 
     # -----------------------------------------------------
     # $get

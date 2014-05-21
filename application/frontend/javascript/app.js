@@ -101,7 +101,9 @@
       };
       return $scope.submit = function() {
         return $validator.validate($scope, 'model').success(function() {
-          return $scope.modal.hide();
+          return $v.api.settings.addApplication($scope.model).success(function() {
+            return $scope.modal.hide();
+          });
         });
       };
     }
@@ -135,6 +137,14 @@
     };
   }).directive('vModal', function() {
     return {
+
+      /*
+      v-modal="scope.modal"
+      scope.modal:
+          autoShow: {bool} If this modal should pop as automatic, it should be yes.
+          hide: -> {function} After link, it is a function for hidden the modal.
+          hiddenCallback: ($event) -> {function} After the modal hidden, it will be eval.
+       */
       restrict: 'A',
       scope: {
         modal: '=vModal'
@@ -277,6 +287,21 @@
             return _this.http({
               method: 'get',
               url: '/settings/applications'
+            });
+          };
+        })(this),
+        addApplication: (function(_this) {
+          return function(application) {
+
+            /*
+            @param application:
+                title: {string}
+                description: {string}
+             */
+            return _this.http({
+              method: 'post',
+              url: '/settings/applications',
+              data: application
             });
           };
         })(this)

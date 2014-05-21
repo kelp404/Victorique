@@ -40,5 +40,6 @@ angular.module 'v.controllers.settings', []
             $state.go 'v.settings-applications', null, reload: yes
     $scope.submit = ->
         $validator.validate($scope, 'model').success ->
-            $scope.modal.hide()
+            $v.api.settings.addApplication($scope.model).success ->
+                $scope.modal.hide()
 ]

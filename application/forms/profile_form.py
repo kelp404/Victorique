@@ -1,11 +1,11 @@
-from wtforms import Form, TextField, validators
+from wtforms import Form, StringField, validators
 
 
 class ProfileForm(Form):
     """
-    The form for update profile.
+    The form for update the profile.
     """
-    name = TextField(
+    name = StringField(
         validators=[validators.required()],
-        filters=[lambda x: x.strip() if isinstance(x, basestring) else None]
+        filters=[lambda x: x.strip() if isinstance(x, basestring) else None],
     )

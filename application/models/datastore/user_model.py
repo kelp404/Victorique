@@ -70,5 +70,11 @@ class UserModel(db.Model):
         user.name = google_user.nickname()
         user.permission = permission
         user.put()
-        user.get(user.key())
         return user
+
+    def put(self, **kwargs):
+        """
+        Put the model as sync.
+        """
+        super(UserModel, self).put(**kwargs)
+        self.get(self.key())

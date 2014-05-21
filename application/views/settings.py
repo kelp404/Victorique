@@ -18,8 +18,7 @@ def update_profile(request):
 
     user = UserModel.get_by_id(request.user.key().id())
     user.name = form.name.data
-    user.save()
-    user.get(user.key())
+    user.put()
     return JsonResponse(user)
 
 @authorization(UserPermission.root, UserPermission.normal)

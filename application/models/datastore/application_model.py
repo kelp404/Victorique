@@ -20,3 +20,10 @@ class ApplicationModel(db.Model):
             'members': self.members,
             'create_time': utils.get_iso_format(self.create_time),
         }
+
+    def put(self, **kwargs):
+        """
+        Put the model as sync.
+        """
+        super(ApplicationModel, self).put(**kwargs)
+        self.get(self.key())

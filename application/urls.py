@@ -34,6 +34,7 @@ urlpatterns = patterns('',
     # /settings/applications
     url(r'^settings/applications$', api_dispatch(
         GET=get_applications,
+        POST=add_application,
     )),
     # /settings/applications/new
     url(r'^settings/applications/new$', dispatch(
