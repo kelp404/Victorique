@@ -46,6 +46,7 @@ angular.module 'v.provider', []
                     method: 'put'
                     url: '/settings/profile'
                     data: profile
+        application:
             getApplications: =>
                 @http
                     method: 'get'

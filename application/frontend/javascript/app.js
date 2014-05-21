@@ -101,7 +101,7 @@
       };
       return $scope.submit = function() {
         return $validator.validate($scope, 'model').success(function() {
-          return $v.api.settings.addApplication($scope.model).success(function() {
+          return $v.api.application.addApplication($scope.model).success(function() {
             return $scope.modal.hide();
           });
         });
@@ -281,7 +281,9 @@
               data: profile
             });
           };
-        })(this),
+        })(this)
+      },
+      application: {
         getApplications: (function(_this) {
           return function() {
             return _this.http({
@@ -375,7 +377,7 @@
         resolve: {
           applications: [
             '$v', function($v) {
-              return $v.api.settings.getApplications().then(function(response) {
+              return $v.api.application.getApplications().then(function(response) {
                 return response.data;
               });
             }

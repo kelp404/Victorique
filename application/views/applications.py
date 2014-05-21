@@ -1,15 +1,23 @@
 import json
+from application import utils
 from application.exceptions import Http400
 from application.responses import JsonResponse
 from application.decorators import authorization
+from application.forms.search_form import SearchForm
 from application.forms.application_form import ApplicationForm
+from application.models.dto.page_list import PageList
 from application.models.datastore.user_model import UserPermission
 from application.models.datastore.application_model import ApplicationModel
 
 
 @authorization(UserPermission.root, UserPermission.normal)
 def get_applications(request):
-    return JsonResponse({'success': True})
+    form = SearchForm(**request.GET.dict())
+    total = ApplicationModel.all().count()
+    applications = ApplicationModel.all().order('title')\
+        .fetch(utils.default_page_size, form.index.data * utils.default_page_size)
+    result = PageList(form.index.data, utils.default_page_size, total, applications)
+    return JsonResponse(result)
 
 @authorization(UserPermission.root, UserPermission.normal)
 def add_application(request):

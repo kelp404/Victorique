@@ -3,7 +3,7 @@ from application import utils
 
 
 class ApplicationModel(db.Model):
-    title = db.StringProperty(indexed=False)
+    title = db.StringProperty()
     description = db.TextProperty()
     app_key = db.StringProperty()
     roots = db.ListProperty(long, default=[])

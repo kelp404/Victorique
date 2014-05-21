@@ -18,3 +18,17 @@ class TestUtilsModels(unittest.TestCase):
         result = utils.get_iso_format(dt)
         dt.strftime.assert_called_with('%Y-%m-%dT%H:%M:%S.%fZ')
         self.assertEqual(result, 'strftime')
+
+    def test_utils_float_filter(self):
+        self.assertEqual(1.2, utils.float_filter(1.2))
+        self.assertEqual(0.0, utils.float_filter(None))
+        self.assertTrue(isinstance(utils.float_filter(None), float))
+        self.assertEqual(0.0, utils.float_filter(''))
+        self.assertTrue(isinstance(utils.float_filter(''), float))
+
+    def test_utils_int_filter(self):
+        self.assertEqual(1, utils.int_filter(1))
+        self.assertEqual(0, utils.int_filter(None))
+        self.assertTrue(isinstance(utils.int_filter(None), int))
+        self.assertEqual(0, utils.int_filter(None))
+        self.assertTrue(isinstance(utils.int_filter(''), int))

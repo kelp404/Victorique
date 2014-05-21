@@ -6,14 +6,29 @@
                 <span>Applications</span>
                 <a href="/settings/applications/new" class="pull-right btn btn-success btn-xs"><i class="fa fa-plus fa-fw"></i> New application</a>
             </div>
-            <form class="panel-body form-horizontal">
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button ng-click="profile.submit($event)"
-                                type="submit" class="btn btn-default"><i class="fa fa-check fa-fw"></i> Save</button>
-                    </div>
-                </div>
-            </form>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th width="160px">Create time</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="applications.items.length == 0">
+                            <td colspan="4" class="text-center">empty</td>
+                        </tr>
+                        <tr ng-repeat="application in applications.items">
+                            <td>{{ application.title }}</td>
+                            <td>{{ application.description }}</td>
+                            <td>{{ application.create_time|date:'yyyy-MM-dd HH:mm' }}</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

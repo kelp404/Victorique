@@ -20,7 +20,3 @@ def update_profile(request):
     user.name = form.name.data
     user.put()
     return JsonResponse(user)
-
-@authorization(UserPermission.root, UserPermission.normal)
-def get_applications(request):
-    return JsonResponse([])
