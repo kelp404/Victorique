@@ -61,6 +61,15 @@ angular.module 'v.provider', []
                     method: 'post'
                     url: '/settings/applications'
                     data: application
+            getApplication: (applicationId) =>
+                @http
+                    method: 'get'
+                    url: "/settings/applications/#{applicationId}"
+            updateApplication: (application) =>
+                @http
+                    method: 'put'
+                    url: "/settings/applications/#{application.id}"
+                    data: application
 
     # -----------------------------------------------------
     # $get

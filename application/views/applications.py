@@ -1,6 +1,6 @@
 import json
 from application import utils
-from application.exceptions import Http400
+from application.exceptions import Http400, Http404
 from application.responses import JsonResponse
 from application.decorators import authorization
 from application.forms.search_form import SearchForm
@@ -20,12 +20,33 @@ def get_applications(request):
     return JsonResponse(result)
 
 @authorization(UserPermission.root, UserPermission.normal)
+def get_application(request, application_id):
+    application = ApplicationModel.get_by_id(long(application_id))
+    if application is None:
+        raise Http404
+    return JsonResponse(application)
+
+@authorization(UserPermission.root, UserPermission.normal)
 def add_application(request):
     form = ApplicationForm(**json.loads(request.body))
     if not form.validate():
         raise Http400
 
     application = ApplicationModel()
+    application.title = form.title.data
+    application.description = form.description.data
+    application.put()
+    return JsonResponse(application)
+
+@authorization(UserPermission.root, UserPermission.normal)
+def update_application(request, application_id):
+    form = ApplicationForm(**json.loads(request.body))
+    if not form.validate():
+        raise Http400
+
+    application = ApplicationModel.get_by_id(long(application_id))
+    if application is None:
+        raise Http404
     application.title = form.title.data
     application.description = form.description.data
     application.put()

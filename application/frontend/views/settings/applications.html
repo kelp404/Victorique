@@ -13,7 +13,7 @@
                             <th>Title</th>
                             <th>Description</th>
                             <th width="160px">Create time</th>
-                            <th></th>
+                            <th width="80px"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -24,7 +24,10 @@
                             <td>{{ application.title }}</td>
                             <td>{{ application.description }}</td>
                             <td>{{ application.create_time|date:'yyyy-MM-dd HH:mm' }}</td>
-                            <td></td>
+                            <td>
+                                <a href="/settings/applications/{{ application.id }}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                                <a href="/settings/applications/{{ application.id }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

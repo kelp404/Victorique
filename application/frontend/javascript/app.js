@@ -107,6 +107,30 @@
         });
       };
     }
+  ]).controller('SettingsNewApplicationController', [
+    '$scope', '$injector', 'application', function($scope, $injector, application) {
+      var $state, $v, $validator;
+      $v = $injector.get('$v');
+      $validator = $injector.get('$validator');
+      $state = $injector.get('$state');
+      $scope.model = application;
+      $scope.modal = {
+        autoShow: true,
+        hide: function() {},
+        hiddenCallback: function() {
+          return $state.go('v.settings-applications', null, {
+            reload: true
+          });
+        }
+      };
+      return $scope.submit = function() {
+        return $validator.validate($scope, 'model').success(function() {
+          return $v.api.application.updateApplication($scope.model).success(function() {
+            return $scope.modal.hide();
+          });
+        });
+      };
+    }
   ]);
 
 }).call(this);
@@ -306,6 +330,23 @@
               data: application
             });
           };
+        })(this),
+        getApplication: (function(_this) {
+          return function(applicationId) {
+            return _this.http({
+              method: 'get',
+              url: "/settings/applications/" + applicationId
+            });
+          };
+        })(this),
+        updateApplication: (function(_this) {
+          return function(application) {
+            return _this.http({
+              method: 'put',
+              url: "/settings/applications/" + application.id,
+              data: application
+            });
+          };
         })(this)
       }
     };
@@ -386,8 +427,22 @@
         templateUrl: '/views/settings/applications.html',
         controller: 'SettingsApplicationsController'
       });
-      return $stateProvider.state('v.settings-applications.new', {
+      $stateProvider.state('v.settings-applications.new', {
         url: '/new',
+        templateUrl: '/views/modal/application.html',
+        controller: 'SettingsNewApplicationController'
+      });
+      return $stateProvider.state('v.settings-applications.detail', {
+        url: '/:applicationId',
+        resolve: {
+          application: [
+            '$v', '$stateParams', function($v, $stateParams) {
+              return $v.api.application.getApplication($stateParams.applicationId).then(function(response) {
+                return response.data;
+              });
+            }
+          ]
+        },
         templateUrl: '/views/modal/application.html',
         controller: 'SettingsNewApplicationController'
       });
