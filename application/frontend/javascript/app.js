@@ -83,6 +83,7 @@
       $scope.applications = applications;
       return $scope.removeApplication = function(applicationId, $event) {
         $event.preventDefault();
+        NProgress.start();
         return $v.api.application.removeApplication(applicationId).success(function() {
           return $state.go($state.current, $stateParams, {
             reload: true
@@ -289,7 +290,15 @@
     };
     this.http = (function(_this) {
       return function(args) {
-        return $http(args);
+        return $http(args).error(function() {
+          $.av.pop({
+            title: 'Server Error',
+            message: 'Please try again or refresh this page.',
+            template: 'error',
+            expire: 3000
+          });
+          return NProgress.done();
+        });
       };
     })(this);
     this.api = {
@@ -360,7 +369,6 @@
         })(this),
         removeApplication: (function(_this) {
           return function(applicationId) {
-            NProgress.start();
             return _this.http({
               method: 'delete',
               url: "/settings/applications/" + applicationId

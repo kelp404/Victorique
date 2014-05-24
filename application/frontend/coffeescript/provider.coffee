@@ -30,6 +30,13 @@ angular.module 'v.provider', []
 
     @http = (args) =>
         $http args
+        .error ->
+            $.av.pop
+                title: 'Server Error'
+                message: 'Please try again or refresh this page.'
+                template: 'error'
+                expire: 3000
+            NProgress.done()
 
     @api =
         settings:
@@ -71,7 +78,6 @@ angular.module 'v.provider', []
                     url: "/settings/applications/#{application.id}"
                     data: application
             removeApplication: (applicationId) =>
-                NProgress.start()
                 @http
                     method: 'delete'
                     url: "/settings/applications/#{applicationId}"

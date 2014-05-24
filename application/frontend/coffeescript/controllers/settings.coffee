@@ -28,6 +28,7 @@ angular.module 'v.controllers.settings', []
     $scope.applications = applications
     $scope.removeApplication = (applicationId, $event) ->
         $event.preventDefault()
+        NProgress.start()
         $v.api.application.removeApplication(applicationId).success ->
             $state.go $state.current, $stateParams, reload: yes
 ]
