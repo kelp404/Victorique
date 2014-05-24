@@ -211,6 +211,40 @@
         }
       }
     };
+  }).directive('vPager', function() {
+    return {
+      restrict: 'A',
+      scope: {
+        pageList: '=vPager',
+        urlTemplate: '@pagerUrlTemplate'
+      },
+      replace: true,
+      template: "<ul ng-if=\"pageList.total > 0\" class=\"pagination\">\n    <li ng-class=\"{disabled: !links.previous.enable}\">\n        <a ng-href=\"{{ links.previous.url }}\">&laquo;</a>\n    </li>\n    <li ng-repeat='item in links.numbers'\n        ng-if='item.show'\n        ng-class='{active: item.isCurrent}'>\n        <a ng-href=\"{{ item.url }}\">{{ item.pageNumber }}</a>\n    </li>\n    <li ng-class=\"{disabled: !links.next.enable}\">\n        <a ng-href=\"{{ links.next.url }}\">&raquo;</a>\n    </li>\n</ul>",
+      link: function(scope) {
+        var index, _i, _ref, _ref1, _results;
+        scope.links = {
+          previous: {
+            enable: scope.pageList.has_previous_page,
+            url: scope.urlTemplate.replace('#{index}', scope.pageList.index - 1)
+          },
+          numbers: [],
+          next: {
+            enable: scope.pageList.has_next_page,
+            url: scope.urlTemplate.replace('#{index}', scope.pageList.index + 1)
+          }
+        };
+        _results = [];
+        for (index = _i = _ref = scope.pageList.index - 3, _ref1 = scope.pageList.index + 3; _i <= _ref1; index = _i += 1) {
+          _results.push(scope.links.numbers.push({
+            show: index >= 0 && index <= scope.pageList.max_index,
+            isCurrent: index === scope.pageList.index,
+            pageNumber: index + 1,
+            url: scope.urlTemplate.replace('#{index}', index)
+          }));
+        }
+        return _results;
+      }
+    };
   }).directive('vScrollTo', function() {
     return {
       restrict: 'A',
@@ -328,10 +362,16 @@
       },
       application: {
         getApplications: (function(_this) {
-          return function() {
+          return function(index) {
+            if (index == null) {
+              index = 0;
+            }
             return _this.http({
               method: 'get',
-              url: '/settings/applications'
+              url: '/settings/applications',
+              params: {
+                index: index
+              }
             });
           };
         })(this),
@@ -441,11 +481,11 @@
         controller: 'SettingsProfileController'
       });
       $stateProvider.state('v.settings-applications', {
-        url: '/settings/applications',
+        url: '/settings/applications?index',
         resolve: {
           applications: [
-            '$v', function($v) {
-              return $v.api.application.getApplications().then(function(response) {
+            '$v', '$stateParams', function($v, $stateParams) {
+              return $v.api.application.getApplications($stateParams.index).then(function(response) {
                 return response.data;
               });
             }

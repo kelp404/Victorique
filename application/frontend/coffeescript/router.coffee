@@ -67,10 +67,10 @@ angular.module 'v.router', [
     # /settings/application
     # ---------------------------------------------------------
     $stateProvider.state 'v.settings-applications',
-        url: '/settings/applications'
+        url: '/settings/applications?index'
         resolve:
-            applications: ['$v', ($v) ->
-                $v.api.application.getApplications().then (response) ->
+            applications: ['$v', '$stateParams', ($v, $stateParams) ->
+                $v.api.application.getApplications($stateParams.index).then (response) ->
                     response.data
             ]
         templateUrl: '/views/settings/applications.html'
