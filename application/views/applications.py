@@ -1,7 +1,7 @@
 import json
 from django.http.response import HttpResponse
 from application import utils
-from application.exceptions import Http400, Http404
+from application.exceptions import Http400, Http403, Http404
 from application.responses import JsonResponse
 from application.decorators import authorization
 from application.forms.search_form import SearchForm
@@ -57,5 +57,10 @@ def update_application(request, application_id):
 @authorization(UserPermission.root, UserPermission.normal)
 def delete_application(request, application_id):
     application = ApplicationModel.get_by_id(long(application_id))
+    if application is None:
+        raise Http404
+    if request.user.permission != UserPermission.root or\
+                    request.user.key().id() not in application.roots:
+        raise Http403
     application.delete()
     return HttpResponse()
