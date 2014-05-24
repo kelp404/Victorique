@@ -107,7 +107,7 @@
         });
       };
     }
-  ]).controller('SettingsNewApplicationController', [
+  ]).controller('SettingsApplicationController', [
     '$scope', '$injector', 'application', function($scope, $injector, application) {
       var $state, $v, $validator;
       $v = $injector.get('$v');
@@ -444,7 +444,7 @@
           ]
         },
         templateUrl: '/views/modal/application.html',
-        controller: 'SettingsNewApplicationController'
+        controller: 'SettingsApplicationController'
       });
     }
   ]).run([

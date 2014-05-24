@@ -93,7 +93,7 @@ angular.module 'v.router', [
                     response.data
             ]
         templateUrl: '/views/modal/application.html'
-        controller: 'SettingsNewApplicationController'
+        controller: 'SettingsApplicationController'
 ]
 
 .run ['$injector', ($injector) ->

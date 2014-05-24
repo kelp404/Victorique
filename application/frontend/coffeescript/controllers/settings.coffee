@@ -43,7 +43,7 @@ angular.module 'v.controllers.settings', []
             $v.api.application.addApplication($scope.model).success ->
                 $scope.modal.hide()
 ]
-.controller 'SettingsNewApplicationController', ['$scope', '$injector', 'application', ($scope, $injector, application) ->
+.controller 'SettingsApplicationController', ['$scope', '$injector', 'application', ($scope, $injector, application) ->
     $v = $injector.get '$v'
     $validator = $injector.get '$validator'
     $state = $injector.get '$state'
