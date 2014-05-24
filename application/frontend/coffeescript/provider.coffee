@@ -70,6 +70,11 @@ angular.module 'v.provider', []
                     method: 'put'
                     url: "/settings/applications/#{application.id}"
                     data: application
+            removeApplication: (applicationId) =>
+                NProgress.start()
+                @http
+                    method: 'delete'
+                    url: "/settings/applications/#{applicationId}"
 
     # -----------------------------------------------------
     # $get

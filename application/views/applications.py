@@ -1,4 +1,5 @@
 import json
+from django.http.response import HttpResponse
 from application import utils
 from application.exceptions import Http400, Http404
 from application.responses import JsonResponse
@@ -35,6 +36,7 @@ def add_application(request):
     application = ApplicationModel()
     application.title = form.title.data
     application.description = form.description.data
+    application.roots = [request.user.key().id()]
     application.put()
     return JsonResponse(application)
 
@@ -51,3 +53,9 @@ def update_application(request, application_id):
     application.description = form.description.data
     application.put()
     return JsonResponse(application)
+
+@authorization(UserPermission.root, UserPermission.normal)
+def delete_application(request, application_id):
+    application = ApplicationModel.get_by_id(long(application_id))
+    application.delete()
+    return HttpResponse()

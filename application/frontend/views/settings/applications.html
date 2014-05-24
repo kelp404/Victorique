@@ -26,7 +26,8 @@
                             <td>{{ application.create_time|date:'yyyy-MM-dd HH:mm' }}</td>
                             <td>
                                 <a href="/settings/applications/{{ application.id }}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-                                <a href="/settings/applications/{{ application.id }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
+                                <a ng-click="removeApplication(application.id, $event)"
+                                        href="/settings/applications/{{ application.id }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
                             </td>
                         </tr>
                     </tbody>

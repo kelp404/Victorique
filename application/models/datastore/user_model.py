@@ -1,6 +1,7 @@
 from google.appengine.ext import db
 from google.appengine.api import users
 from application import utils
+from application.models.datastore.base_model import BaseModel
 
 
 class UserPermission(object):
@@ -8,7 +9,7 @@ class UserPermission(object):
     root = 1
     normal = 2
 
-class UserModel(db.Model):
+class UserModel(BaseModel):
     email = db.EmailProperty()
     name = db.StringProperty(indexed=False)
     permission = db.IntegerProperty(default=UserPermission.anonymous)
@@ -71,10 +72,3 @@ class UserModel(db.Model):
         user.permission = permission
         user.put()
         return user
-
-    def put(self, **kwargs):
-        """
-        Put the model as sync.
-        """
-        super(UserModel, self).put(**kwargs)
-        self.get(self.key())

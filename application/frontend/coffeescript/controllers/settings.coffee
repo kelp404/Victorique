@@ -21,9 +21,15 @@ angular.module 'v.controllers.settings', []
 
 .controller 'SettingsApplicationsController', ['$scope', '$injector', 'applications', ($scope, $injector, applications) ->
     $v = $injector.get '$v'
+    $state = $injector.get '$state'
+    $stateParams = $injector.get '$stateParams'
     $validator = $injector.get '$validator'
 
     $scope.applications = applications
+    $scope.removeApplication = (applicationId, $event) ->
+        $event.preventDefault()
+        $v.api.application.removeApplication(applicationId).success ->
+            $state.go $state.current, $stateParams, reload: yes
 ]
 .controller 'SettingsNewApplicationController', ['$scope', '$injector', ($scope, $injector) ->
     $v = $injector.get '$v'

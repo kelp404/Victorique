@@ -75,10 +75,20 @@
     }
   ]).controller('SettingsApplicationsController', [
     '$scope', '$injector', 'applications', function($scope, $injector, applications) {
-      var $v, $validator;
+      var $state, $stateParams, $v, $validator;
       $v = $injector.get('$v');
+      $state = $injector.get('$state');
+      $stateParams = $injector.get('$stateParams');
       $validator = $injector.get('$validator');
-      return $scope.applications = applications;
+      $scope.applications = applications;
+      return $scope.removeApplication = function(applicationId, $event) {
+        $event.preventDefault();
+        return $v.api.application.removeApplication(applicationId).success(function() {
+          return $state.go($state.current, $stateParams, {
+            reload: true
+          });
+        });
+      };
     }
   ]).controller('SettingsNewApplicationController', [
     '$scope', '$injector', function($scope, $injector) {
@@ -345,6 +355,15 @@
               method: 'put',
               url: "/settings/applications/" + application.id,
               data: application
+            });
+          };
+        })(this),
+        removeApplication: (function(_this) {
+          return function(applicationId) {
+            NProgress.start();
+            return _this.http({
+              method: 'delete',
+              url: "/settings/applications/" + applicationId
             });
           };
         })(this)

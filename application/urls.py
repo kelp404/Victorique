@@ -44,5 +44,6 @@ urlpatterns = patterns('',
     url(r'^settings/applications/(?P<application_id>[0-9]{8,32})$', api_dispatch(
         GET=get_application,
         PUT=update_application,
+        DELETE=delete_application,
     )),
 )
