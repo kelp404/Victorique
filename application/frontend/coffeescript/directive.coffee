@@ -63,6 +63,38 @@ angular.module 'v.directive', []
             $(element).modal 'show'
 
 # ---------------------------------------------------------
+# v-confirm
+# ---------------------------------------------------------
+.directive 'vConfirm', ['$injector', ($injector) ->
+    ###
+    v-confirm="$rootScope.$confirmModal"
+    ###
+    $timeout = $injector.get '$timeout'
+
+    restrict: 'A'
+    scope:
+        modal: '=vConfirm'
+    replace: yes
+    templateUrl: '/views/modal/confirm.html'
+    link: (scope, element) ->
+        confirmed = no
+        scope.$watch 'modal.isShow', (newValue, oldValue) ->
+            return if newValue is oldValue
+            if newValue
+                $(element).modal 'show'
+                confirmed = no
+        scope.confirmed = ->
+            confirmed = yes
+            $timeout -> $(element).modal 'hide'
+        $(element).on 'shown.bs.modal', ->
+            $(element).find('[type=submit]').focus()
+        $(element).on 'hidden.bs.modal', ->
+            scope.$apply ->
+                scope.modal.isShow = no
+                scope.modal.callback(confirmed)
+]
+
+# ---------------------------------------------------------
 # v-pager
 # ---------------------------------------------------------
 .directive 'vPager', ->

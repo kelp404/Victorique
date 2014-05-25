@@ -3,6 +3,7 @@ angular.module 'v.provider', []
 .provider '$v', ->
     $injector = null
     $http = null
+    $rootScope = null
 
     # -----------------------------------------------------
     # private methods
@@ -10,6 +11,8 @@ angular.module 'v.provider', []
     @setupProviders = (injector) ->
         $injector = injector
         $http = $injector.get '$http'
+        $rootScope = $injector.get '$rootScope'
+        $rootScope.$confirmModal = {}
 
 
     # -----------------------------------------------------
@@ -27,6 +30,10 @@ angular.module 'v.provider', []
                 title: 'Success'
                 message: message
                 expire: 3000
+        confirm: (message, callback) ->
+            $rootScope.$confirmModal.message = message
+            $rootScope.$confirmModal.callback = callback
+            $rootScope.$confirmModal.isShow = yes
 
     @http = (args) =>
         $http args

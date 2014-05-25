@@ -81,12 +81,17 @@
       $stateParams = $injector.get('$stateParams');
       $validator = $injector.get('$validator');
       $scope.applications = applications;
-      return $scope.removeApplication = function(applicationId, $event) {
+      return $scope.removeApplication = function(application, $event) {
         $event.preventDefault();
-        NProgress.start();
-        return $v.api.application.removeApplication(applicationId).success(function() {
-          return $state.go($state.current, $stateParams, {
-            reload: true
+        return $v.alert.confirm("Do you want to delete the application " + application.title + "?", function(result) {
+          if (!result) {
+            return;
+          }
+          NProgress.start();
+          return $v.api.application.removeApplication(application.id).success(function() {
+            return $state.go($state.current, $stateParams, {
+              reload: true
+            });
           });
         });
       };
@@ -211,7 +216,52 @@
         }
       }
     };
-  }).directive('vPager', function() {
+  }).directive('vConfirm', [
+    '$injector', function($injector) {
+
+      /*
+      v-confirm="$rootScope.$confirmModal"
+       */
+      var $timeout;
+      $timeout = $injector.get('$timeout');
+      return {
+        restrict: 'A',
+        scope: {
+          modal: '=vConfirm'
+        },
+        replace: true,
+        templateUrl: '/views/modal/confirm.html',
+        link: function(scope, element) {
+          var confirmed;
+          confirmed = false;
+          scope.$watch('modal.isShow', function(newValue, oldValue) {
+            if (newValue === oldValue) {
+              return;
+            }
+            if (newValue) {
+              $(element).modal('show');
+              return confirmed = false;
+            }
+          });
+          scope.confirmed = function() {
+            confirmed = true;
+            return $timeout(function() {
+              return $(element).modal('hide');
+            });
+          };
+          $(element).on('shown.bs.modal', function() {
+            return $(element).find('[type=submit]').focus();
+          });
+          return $(element).on('hidden.bs.modal', function() {
+            return scope.$apply(function() {
+              scope.modal.isShow = false;
+              return scope.modal.callback(confirmed);
+            });
+          });
+        }
+      };
+    }
+  ]).directive('vPager', function() {
     return {
       restrict: 'A',
       scope: {
@@ -297,12 +347,15 @@
 
 (function() {
   angular.module('v.provider', []).provider('$v', function() {
-    var $http, $injector;
+    var $http, $injector, $rootScope;
     $injector = null;
     $http = null;
+    $rootScope = null;
     this.setupProviders = function(injector) {
       $injector = injector;
-      return $http = $injector.get('$http');
+      $http = $injector.get('$http');
+      $rootScope = $injector.get('$rootScope');
+      return $rootScope.$confirmModal = {};
     };
     this.user = window.user;
     this.url = window.url;
@@ -320,6 +373,11 @@
           message: message,
           expire: 3000
         });
+      },
+      confirm: function(message, callback) {
+        $rootScope.$confirmModal.message = message;
+        $rootScope.$confirmModal.callback = callback;
+        return $rootScope.$confirmModal.isShow = true;
       }
     };
     this.http = (function(_this) {

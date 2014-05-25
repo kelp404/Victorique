@@ -26,11 +26,13 @@ angular.module 'v.controllers.settings', []
     $validator = $injector.get '$validator'
 
     $scope.applications = applications
-    $scope.removeApplication = (applicationId, $event) ->
+    $scope.removeApplication = (application, $event) ->
         $event.preventDefault()
-        NProgress.start()
-        $v.api.application.removeApplication(applicationId).success ->
-            $state.go $state.current, $stateParams, reload: yes
+        $v.alert.confirm "Do you want to delete the application #{application.title}?", (result) ->
+            return if not result
+            NProgress.start()
+            $v.api.application.removeApplication(application.id).success ->
+                $state.go $state.current, $stateParams, reload: yes
 ]
 .controller 'SettingsNewApplicationController', ['$scope', '$injector', ($scope, $injector) ->
     $v = $injector.get '$v'

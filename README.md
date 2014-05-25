@@ -20,6 +20,11 @@ $rootScope =
         # the $state of ui-router
     $stateParams:
         # the $stateParams of ui-router
+    $confirmModal:
+        # the confirm modal
+        message: {string}
+        callback: (result) ->
+        isShow: {bool}
 ```
 
 
