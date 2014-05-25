@@ -7,8 +7,8 @@ class ApplicationModel(BaseModel):
     title = db.StringProperty()
     description = db.TextProperty()
     app_key = db.StringProperty()
-    roots = db.ListProperty(long, default=[])
-    members = db.ListProperty(long, default=[])
+    root_ids = db.ListProperty(long, default=[])
+    member_ids = db.ListProperty(long, default=[])
     create_time = db.DateTimeProperty(auto_now_add=True)
 
     def dict(self):
@@ -17,7 +17,7 @@ class ApplicationModel(BaseModel):
             'title': self.title,
             'description': self.description,
             'app_key': self.app_key,
-            'roots': self.roots,
-            'members': self.members,
+            'root_ids': self.root_ids,
+            'member_ids': self.member_ids,
             'create_time': utils.get_iso_format(self.create_time),
         }

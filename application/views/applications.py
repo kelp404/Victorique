@@ -36,7 +36,7 @@ def add_application(request):
     application = ApplicationModel()
     application.title = form.title.data
     application.description = form.description.data
-    application.roots = [request.user.key().id()]
+    application.root_ids = [request.user.key().id()]
     application.put()
     return JsonResponse(application)
 
@@ -60,7 +60,7 @@ def delete_application(request, application_id):
     if application is None:
         raise Http404
     if request.user.permission != UserPermission.root or\
-                    request.user.key().id() not in application.roots:
+                    request.user.key().id() not in application.root_ids:
         raise Http403
     application.delete()
     return HttpResponse()
