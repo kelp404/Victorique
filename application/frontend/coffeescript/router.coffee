@@ -37,7 +37,7 @@ angular.module 'v.router', [
     # ---------------------------------------------------------
     # /applications
     # ---------------------------------------------------------
-    $stateProvider.state 'v.applications',
+    $stateProvider.state 'v.logs',
         url: '/applications'
         resolve:
             applications: ['$v', ($v) ->
@@ -48,8 +48,8 @@ angular.module 'v.router', [
                 $v.api.log.getLogs().then (response) ->
                     response.data
             ]
-        templateUrl: '/views/applications/applications.html'
-        controller: 'ApplicationsController'
+        templateUrl: '/views/logs/logs.html'
+        controller: 'LogsController'
 
     # ---------------------------------------------------------
     # /settings

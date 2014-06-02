@@ -1,16 +1,5 @@
 (function() {
-  angular.module('v.controllers.applications', []).controller('ApplicationsController', [
-    '$scope', 'applications', 'logs', function($scope, applications, logs) {
-      $scope.applications = applications;
-      $scope.logs = logs;
-      return $scope.currentApplication = logs.application;
-    }
-  ]);
-
-}).call(this);
-
-(function() {
-  angular.module('v.controllers', ['v.controllers.navigation', 'v.controllers.index', 'v.controllers.login', 'v.controllers.settings', 'v.controllers.applications']);
+  angular.module('v.controllers', ['v.controllers.navigation', 'v.controllers.index', 'v.controllers.login', 'v.controllers.settings', 'v.controllers.logs']);
 
 }).call(this);
 
@@ -21,7 +10,7 @@
       $v = $injector.get('$v');
       $state = $injector.get('$state');
       if ($v.user.is_login) {
-        return $state.go('v.applications');
+        return $state.go('v.logs');
       } else {
         return $stae.go('v.login');
       }
@@ -36,6 +25,17 @@
       var $v;
       $v = $injector.get('$v');
       return $scope.url = $v.url;
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('v.controllers.logs', []).controller('LogsController', [
+    '$scope', 'applications', 'logs', function($scope, applications, logs) {
+      $scope.applications = applications;
+      $scope.logs = logs;
+      return $scope.currentApplication = logs.application;
     }
   ]);
 
@@ -539,7 +539,7 @@
         templateUrl: '/views/login.html',
         controller: 'LoginController'
       });
-      $stateProvider.state('v.applications', {
+      $stateProvider.state('v.logs', {
         url: '/applications',
         resolve: {
           applications: [
@@ -557,8 +557,8 @@
             }
           ]
         },
-        templateUrl: '/views/applications/applications.html',
-        controller: 'ApplicationsController'
+        templateUrl: '/views/logs/logs.html',
+        controller: 'LogsController'
       });
       $stateProvider.state('v.settings', {
         url: '/settings',
