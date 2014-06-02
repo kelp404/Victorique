@@ -14,9 +14,15 @@ from application.models.datastore.application_model import ApplicationModel
 @authorization(UserPermission.root, UserPermission.normal)
 def get_applications(request):
     form = SearchForm(**request.GET.dict())
-    total = ApplicationModel.all().count()
-    applications = ApplicationModel.all().order('title')\
-        .fetch(utils.default_page_size, form.index.data * utils.default_page_size)
+    if request.user.permission == UserPermission.root:
+        # fetch all applications for root
+        total = ApplicationModel.all().count()
+        applications = ApplicationModel.all().order('title')\
+            .fetch(utils.default_page_size, form.index.data * utils.default_page_size)
+    else:
+        query = ApplicationModel.gql('where member_ids in :1', [request.user.key().id()])
+        total = query.count()
+        applications = query.fetch(utils.default_page_size, form.index.data * utils.default_page_size)
     result = PageList(form.index.data, utils.default_page_size, total, applications)
     return JsonResponse(result)
 
@@ -37,6 +43,7 @@ def add_application(request):
     application.title = form.title.data
     application.description = form.description.data
     application.root_ids = [request.user.key().id()]
+    application.member_ids = [request.user.key().id()]
     application.put()
     return JsonResponse(application)
 
@@ -49,6 +56,8 @@ def update_application(request, application_id):
     application = ApplicationModel.get_by_id(long(application_id))
     if application is None:
         raise Http404
+    if request.user.key().id() not in application.root_ids:
+        raise Http403
     application.title = form.title.data
     application.description = form.description.data
     application.put()
@@ -59,8 +68,7 @@ def delete_application(request, application_id):
     application = ApplicationModel.get_by_id(long(application_id))
     if application is None:
         raise Http404
-    if request.user.permission != UserPermission.root or\
-                    request.user.key().id() not in application.root_ids:
+    if request.user.key().id() not in application.root_ids:
         raise Http403
     application.delete()
     return HttpResponse()
