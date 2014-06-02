@@ -4,6 +4,7 @@ from application.dispatches import api_dispatch, dispatch
 from application.views.base import base_view
 from application.views.settings import *
 from application.views.applications import *
+from application.views.logs import *
 
 
 # error handlers
@@ -20,6 +21,10 @@ urlpatterns = patterns('',
     # /applications
     url(r'^applications$', api_dispatch(
         GET=get_applications
+    )),
+    # /applications/<application_id>/logs
+    url(r'^applications/(?P<application_id>[0-9]{1,32})/logs$', api_dispatch(
+        GET=get_logs
     )),
 
     # /settings

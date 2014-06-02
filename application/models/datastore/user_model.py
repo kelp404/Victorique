@@ -66,9 +66,10 @@ class UserModel(BaseModel):
         :param permission: The user's permission.
         :return: The datastore.user_model.UserModel object.
         """
-        user = UserModel()
-        user.email = google_user.email().lower()
-        user.name = google_user.nickname()
-        user.permission = permission
+        user = UserModel(
+            email=google_user.email().lower(),
+            name=google_user.nickname(),
+            permission=permission,
+        )
         user.put()
         return user

@@ -20,17 +20,13 @@ def get_applications(request):
     else:
         index = form.index.data
         size = utils.default_page_size
+
+    query = ApplicationModel.all().order('title')
     if request.user.permission != UserPermission.root:
-        # fetch all applications for root
-        total = ApplicationModel.all().count()
-        applications = ApplicationModel.all().order('title')\
-            .fetch(size, index * size)
-    else:
-        query = ApplicationModel.gql('where member_ids in :1 order by title', [request.user.key().id()])
-        total = query.count()
-        applications = query.fetch(size, index * size)
-    result = PageList(index, size, total, applications)
-    return JsonResponse(result)
+        query = query.filter('member_ids in', [request.user.key().id()])
+    total = query.count()
+    applications = query.fetch(size, index * size)
+    return JsonResponse(PageList(index, size, total, applications))
 
 @authorization(UserPermission.root, UserPermission.normal)
 def get_application(request, application_id):
@@ -45,11 +41,12 @@ def add_application(request):
     if not form.validate():
         raise Http400
 
-    application = ApplicationModel()
-    application.title = form.title.data
-    application.description = form.description.data
-    application.root_ids = [request.user.key().id()]
-    application.member_ids = [request.user.key().id()]
+    application = ApplicationModel(
+        title=form.title.data,
+        description=form.description.data,
+        root_ids=[request.user.key().id()],
+        member_ids=[request.user.key().id()]
+    )
     application.put()
     return JsonResponse(application)
 

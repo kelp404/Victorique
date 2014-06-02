@@ -44,6 +44,10 @@ angular.module 'v.router', [
                 $v.api.application.getApplications(0, yes).then (response) ->
                     response.data
             ]
+            logs: ['$v', ($v) ->
+                $v.api.log.getLogs().then (response) ->
+                    response.data
+            ]
         templateUrl: '/views/applications/applications.html'
         controller: 'ApplicationsController'
 

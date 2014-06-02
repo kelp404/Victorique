@@ -1,7 +1,8 @@
 (function() {
   angular.module('v.controllers.applications', []).controller('ApplicationsController', [
-    '$scope', 'applications', function($scope, applications) {
-      return $scope.applications = applications;
+    '$scope', 'applications', 'logs', function($scope, applications, logs) {
+      $scope.applications = applications;
+      return console.log(logs);
     }
   ]);
 
@@ -422,6 +423,25 @@
           };
         })(this)
       },
+      log: {
+        getLogs: (function(_this) {
+          return function(applicationId, index) {
+            if (applicationId == null) {
+              applicationId = 0;
+            }
+            if (index == null) {
+              index = 0;
+            }
+            return _this.http({
+              method: 'get',
+              url: "/applications/" + applicationId + "/logs",
+              params: {
+                index: index
+              }
+            });
+          };
+        })(this)
+      },
       application: {
         getApplications: (function(_this) {
           return function(index, all) {
@@ -524,6 +544,13 @@
           applications: [
             '$v', function($v) {
               return $v.api.application.getApplications(0, true).then(function(response) {
+                return response.data;
+              });
+            }
+          ],
+          logs: [
+            '$v', function($v) {
+              return $v.api.log.getLogs().then(function(response) {
                 return response.data;
               });
             }

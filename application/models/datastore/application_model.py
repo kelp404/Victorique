@@ -4,7 +4,7 @@ from application.models.datastore.base_model import BaseModel
 
 
 class ApplicationModel(BaseModel):
-    title = db.StringProperty()
+    title = db.StringProperty(required=True)
     description = db.TextProperty()
     app_key = db.StringProperty()
     root_ids = db.ListProperty(long, default=[])
