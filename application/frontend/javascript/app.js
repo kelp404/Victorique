@@ -2,7 +2,8 @@
   angular.module('v.controllers.applications', []).controller('ApplicationsController', [
     '$scope', 'applications', 'logs', function($scope, applications, logs) {
       $scope.applications = applications;
-      return console.log(logs);
+      $scope.logs = logs;
+      return $scope.currentApplication = logs.application;
     }
   ]);
 

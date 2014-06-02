@@ -9,7 +9,7 @@ class LogModel(BaseModel):
     application = db.ReferenceProperty(reference_class=ApplicationModel, required=True)
     title = db.StringProperty(required=True, indexed=False)
     users = db.StringListProperty(default=[], indexed=False)
-    count = db.IntegerProperty(default=0, indexed=False)
+    count = db.IntegerProperty(default=1, indexed=False)
     data_json = db.TextProperty()
     update_time = db.DateTimeProperty(auto_now_add=True)
     create_time = db.DateTimeProperty(auto_now_add=True)
@@ -31,5 +31,6 @@ class LogModel(BaseModel):
             'users': self.users,
             'count': self.count,
             'data': self.data,
+            'update_time': utils.get_iso_format(self.update_time),
             'create_time': utils.get_iso_format(self.create_time),
         }

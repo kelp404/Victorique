@@ -26,7 +26,7 @@ def get_logs(request, application_id):
     else:
         application = ApplicationModel.get_by_id(application_id)
 
-    query = LogModel.all().filter('application =', application.key())
+    query = LogModel.all().filter('application =', application.key()).order('-update_time')
     total = query.count()
     logs = query.fetch(utils.default_page_size, form.index.data * utils.default_page_size)
     result = PageList(form.index.data, utils.default_page_size, total, logs).dict()

@@ -14,3 +14,9 @@ indexes:
   properties:
   - name: member_ids
   - name: title
+
+- kind: LogModel
+  properties:
+  - name: application
+  - name: update_time
+    direction: desc
