@@ -51,4 +51,12 @@ urlpatterns = patterns('',
         PUT=update_application,
         DELETE=delete_application,
     )),
+
+
+    # api
+    # /api/logs
+    url(r'^api/logs$', dispatch(
+        GET=add_log_jsonp,
+        POST=add_log,
+    )),
 )

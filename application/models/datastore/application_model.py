@@ -6,7 +6,7 @@ from application.models.datastore.base_model import BaseModel
 class ApplicationModel(BaseModel):
     title = db.StringProperty(required=True)
     description = db.TextProperty()
-    app_key = db.StringProperty()
+    app_key = db.StringProperty(required=True)
     root_ids = db.ListProperty(long, default=[])
     member_ids = db.ListProperty(long, default=[])
     create_time = db.DateTimeProperty(auto_now_add=True)

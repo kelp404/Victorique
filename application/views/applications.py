@@ -1,4 +1,4 @@
-import json
+import json, uuid
 from django.http.response import HttpResponse
 from application import utils
 from application.exceptions import Http400, Http403, Http404
@@ -45,7 +45,8 @@ def add_application(request):
         title=form.title.data,
         description=form.description.data,
         root_ids=[request.user.key().id()],
-        member_ids=[request.user.key().id()]
+        member_ids=[request.user.key().id()],
+        app_key=str(uuid.uuid1()),
     )
     application.put()
     return JsonResponse(application)
