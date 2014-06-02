@@ -1,5 +1,9 @@
 (function() {
-  angular.module('v.controllers.applications', []).controller('ApplicationsController', ['$scope', function($scope) {}]);
+  angular.module('v.controllers.applications', []).controller('ApplicationsController', [
+    '$scope', 'applications', function($scope, applications) {
+      return $scope.applications = applications;
+    }
+  ]);
 
 }).call(this);
 
@@ -420,15 +424,19 @@
       },
       application: {
         getApplications: (function(_this) {
-          return function(index) {
+          return function(index, all) {
             if (index == null) {
               index = 0;
+            }
+            if (all == null) {
+              all = false;
             }
             return _this.http({
               method: 'get',
               url: '/settings/applications',
               params: {
-                index: index
+                index: index,
+                all: all
               }
             });
           };
@@ -512,11 +520,15 @@
       });
       $stateProvider.state('v.applications', {
         url: '/applications',
-        resolve: [
-          '$v', function($v) {
-            return null;
-          }
-        ],
+        resolve: {
+          applications: [
+            '$v', function($v) {
+              return $v.api.application.getApplications(0, true).then(function(response) {
+                return response.data;
+              });
+            }
+          ]
+        },
         templateUrl: '/views/applications/applications.html',
         controller: 'ApplicationsController'
       });

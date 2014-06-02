@@ -61,12 +61,13 @@ angular.module 'v.provider', []
                     url: '/settings/profile'
                     data: profile
         application:
-            getApplications: (index=0) =>
+            getApplications: (index=0, all=no) =>
                 @http
                     method: 'get'
                     url: '/settings/applications'
                     params:
                         index: index
+                        all: all
             addApplication: (application) =>
                 ###
                 @param application:

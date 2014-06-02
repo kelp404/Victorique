@@ -39,9 +39,11 @@ angular.module 'v.router', [
     # ---------------------------------------------------------
     $stateProvider.state 'v.applications',
         url: '/applications'
-        resolve: ['$v', ($v) ->
-            null
-        ]
+        resolve:
+            applications: ['$v', ($v) ->
+                $v.api.application.getApplications(0, yes).then (response) ->
+                    response.data
+            ]
         templateUrl: '/views/applications/applications.html'
         controller: 'ApplicationsController'
 

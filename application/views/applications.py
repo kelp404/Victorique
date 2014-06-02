@@ -14,16 +14,22 @@ from application.models.datastore.application_model import ApplicationModel
 @authorization(UserPermission.root, UserPermission.normal)
 def get_applications(request):
     form = SearchForm(**request.GET.dict())
-    if request.user.permission == UserPermission.root:
+    if form.all.data:
+        index = 0
+        size = 1000
+    else:
+        index = form.index.data
+        size = utils.default_page_size
+    if request.user.permission != UserPermission.root:
         # fetch all applications for root
         total = ApplicationModel.all().count()
         applications = ApplicationModel.all().order('title')\
-            .fetch(utils.default_page_size, form.index.data * utils.default_page_size)
+            .fetch(size, index * size)
     else:
-        query = ApplicationModel.gql('where member_ids in :1', [request.user.key().id()])
+        query = ApplicationModel.gql('where member_ids in :1 order by title', [request.user.key().id()])
         total = query.count()
-        applications = query.fetch(utils.default_page_size, form.index.data * utils.default_page_size)
-    result = PageList(form.index.data, utils.default_page_size, total, applications)
+        applications = query.fetch(size, index * size)
+    result = PageList(index, size, total, applications)
     return JsonResponse(result)
 
 @authorization(UserPermission.root, UserPermission.normal)
