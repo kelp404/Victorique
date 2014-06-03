@@ -11,7 +11,7 @@
                     <thead>
                         <tr>
                             <th>Title</th>
-                            <th>Description</th>
+                            <th>Key</th>
                             <th width="160px">Create time</th>
                             <th width="80px"></th>
                         </tr>
@@ -22,7 +22,7 @@
                         </tr>
                         <tr ng-repeat="application in applications.items">
                             <td>{{ application.title }}</td>
-                            <td>{{ application.description }}</td>
+                            <td>{{ application.app_key }}</td>
                             <td>{{ application.create_time|date:'yyyy-MM-dd HH:mm' }}</td>
                             <td>
                                 <a href="/settings/applications/{{ application.id }}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
