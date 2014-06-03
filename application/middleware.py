@@ -10,4 +10,5 @@ class AuthenticationMiddleware(object):
 
 class GlobalMiddleware(object):
     def process_request(self, request):
-        g.request = request
+        # g.request = request
+        pass
