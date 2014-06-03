@@ -1,4 +1,5 @@
 from wtforms import Form, StringField, validators
+from application.forms import DictField
 
 
 class LogForm(Form):
@@ -16,6 +17,4 @@ class LogForm(Form):
     user = StringField(
         filters=[lambda x: x.strip() if isinstance(x, basestring) else None],
     )
-    data = StringField(
-        filters=[lambda x: x.strip() if isinstance(x, basestring) else None],
-    )
+    document = DictField()

@@ -42,14 +42,22 @@ def get_logs(request, application_id):
 
 # GET /api/logs for jsonp
 def add_log_jsonp(request):
-    __add_log(request.GET.dict(), True)
+    __add_log(request.GET.dict())
     return HttpResponse()
 # POST /api/logs
 def add_log(request):
-    __add_log(request.POST.dict(), False)
+    is_json = False
+    for content_type in request.META['HTTP_CONTENT_TYPE'].split(','):
+        if 'application/json' in content_type:
+            is_json = True
+            break
+    if is_json:
+        __add_log(json.loads(request.body))
+    else:
+        __add_log(request.POST.dict())
     return HttpResponse()
 
-def __add_log(args, is_jsonp):
+def __add_log(args):
     """
     Add the log.
     :param args: {dict} The log.
@@ -71,6 +79,6 @@ def __add_log(args, is_jsonp):
     )
     if not form.user.data is None:
         log.users = [form.user.data]
-    if not form.data.data is None:
-        log.data = json.loads(form.data.data)
+    if not form.document.data is None:
+        log.document = form.document.data
     log.put()
