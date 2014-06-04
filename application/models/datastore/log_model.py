@@ -7,7 +7,7 @@ from application.models.datastore.application_model import ApplicationModel
 
 class LogModel(BaseModel):
     application = db.ReferenceProperty(reference_class=ApplicationModel, required=True)
-    title = db.StringProperty(required=True, indexed=False)
+    title = db.StringProperty(required=True)
     users = db.StringListProperty(default=[], indexed=False)
     count = db.IntegerProperty(default=1, indexed=False)
     document_json = db.TextProperty()

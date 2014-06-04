@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from django.http.response import HttpResponse
 from application import utils
 from application.exceptions import Http400, Http404
@@ -73,12 +74,26 @@ def __add_log(args):
         raise Http404
     application = applications[0]
 
-    log = LogModel(
-        application=application,
-        title=form.title.data,
-    )
-    if not form.user.data is None:
-        log.users = [form.user.data]
-    if not form.document.data is None:
-        log.document = form.document.data
+    # Is the log exist?
+    logs = LogModel.all().filter('title =', form.title.data)\
+        .filter('application =', application.key()).fetch(1)
+    if len(logs):
+        # update log
+        log = logs[0]
+        log.count += 1
+        log.update_time = datetime.utcnow()
+        if not form.user.data is None and form.user.data not in log.users:
+            log.users.append(form.user.data)
+        if not form.document.data is None:
+            log.document = form.document.data
+    else:
+        # add the new log
+        log = LogModel(
+            application=application,
+            title=form.title.data,
+        )
+        if not form.user.data is None:
+            log.users = [form.user.data]
+        if not form.document.data is None:
+            log.document = form.document.data
     log.put()
