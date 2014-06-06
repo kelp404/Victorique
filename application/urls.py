@@ -55,7 +55,7 @@ urlpatterns = patterns('',
 
     # api
     # /api/logs
-    url(r'^api/logs$', dispatch(
+    url(r'^api/applications/(?P<application_key>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/logs$', dispatch(
         GET=add_log_jsonp,
         POST=add_log,
     )),

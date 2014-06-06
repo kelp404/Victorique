@@ -42,30 +42,30 @@ def get_logs(request, application_id):
     return JsonResponse(result)
 
 # GET /api/logs for jsonp
-def add_log_jsonp(request):
-    __add_log(request.GET.dict())
+def add_log_jsonp(request, application_key):
+    __add_log(application_key, request.GET.dict())
     return HttpResponse()
 # POST /api/logs
-def add_log(request):
+def add_log(request, application_key):
     is_json = False
     for content_type in request.META['HTTP_CONTENT_TYPE'].split(','):
         if 'application/json' in content_type:
             is_json = True
             break
     if is_json:
-        __add_log(json.loads(request.body))
+        __add_log(application_key, json.loads(request.body))
     else:
-        __add_log(request.POST.dict())
+        __add_log(application_key, request.POST.dict())
     return HttpResponse()
 
-def __add_log(args):
+def __add_log(application_key, args):
     """
     Add the log.
     :param args: {dict} The log.
     :param is_jsonp: {bool}
     :return: The django response.
     """
-    form = LogForm(**args)
+    form = LogForm(key=application_key, **args)
     if not form.validate():
         raise Http400
 
