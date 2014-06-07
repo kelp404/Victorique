@@ -10,7 +10,7 @@
       $v = $injector.get('$v');
       $state = $injector.get('$state');
       if ($v.user.is_login) {
-        return $state.go('v.logs');
+        return $state.go('v.logs-default');
       } else {
         return $stae.go('v.login');
       }
@@ -539,7 +539,7 @@
         templateUrl: '/views/login.html',
         controller: 'LoginController'
       });
-      $stateProvider.state('v.logs', {
+      $stateProvider.state('v.logs-default', {
         url: '/applications',
         resolve: {
           applications: [
@@ -552,6 +552,27 @@
           logs: [
             '$v', function($v) {
               return $v.api.log.getLogs().then(function(response) {
+                return response.data;
+              });
+            }
+          ]
+        },
+        templateUrl: '/views/logs/logs.html',
+        controller: 'LogsController'
+      });
+      $stateProvider.state('v.logs', {
+        url: '/applications/:applicationId/logs?index',
+        resolve: {
+          applications: [
+            '$v', function($v) {
+              return $v.api.application.getApplications(0, true).then(function(response) {
+                return response.data;
+              });
+            }
+          ],
+          logs: [
+            '$v', '$stateParams', function($v, $stateParams) {
+              return $v.api.log.getLogs($stateParams.applicationId, $stateParams.index).then(function(response) {
                 return response.data;
               });
             }

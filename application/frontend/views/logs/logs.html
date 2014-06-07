@@ -41,5 +41,7 @@
                 </tr>
             </tbody>
         </table>
+        <ul v-pager="logs" pager-url-template="/applications/{{ currentApplication.id }}/logs?index=#{index}"
+            class="pull-right" style="margin-top: 0"></ul>
     </div>
 </div>
