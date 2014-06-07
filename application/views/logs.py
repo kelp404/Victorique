@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from django.http.response import HttpResponse
 from application import utils
-from application.exceptions import Http400, Http404
+from application.exceptions import Http400, Http404, Http403
 from application.responses import JsonResponse
 from application.decorators import authorization
 from application.forms.log_form import LogForm
@@ -24,12 +24,16 @@ def get_logs(request, application_id):
             applications = ApplicationModel.all().order('title').fetch(1)
         else:
             applications = ApplicationModel.gql('where member_ids in :1 order by title', [request.user.key().id()]).fetch(1)
-        if not len(applications):
-            return JsonResponse(PageList(0, 20, 0, []))
-        else:
+        if len(applications):
             application = applications[0]
+        else:
+            # no applications
+            return JsonResponse(PageList(0, 20, 0, []))
     else:
         application = ApplicationModel.get_by_id(application_id)
+        if request.user.permission != UserPermission.root or request.user.key().id() not in application.member_ids:
+            # no permission for this application
+            raise Http403
 
     query = LogModel.all().filter('application =', application.key()).order('-update_time')
     total = query.count()
