@@ -10,7 +10,7 @@
       $v = $injector.get('$v');
       $state = $injector.get('$state');
       if ($v.user.is_login) {
-        return $state.go('v.logs-default');
+        return $state.go('v.log-default');
       } else {
         return $stae.go('v.login');
       }
@@ -32,10 +32,24 @@
 
 (function() {
   angular.module('v.controllers.logs', []).controller('LogsController', [
-    '$scope', 'applications', 'logs', function($scope, applications, logs) {
+    '$scope', '$injector', 'applications', 'logs', function($scope, $injector, applications, logs) {
+      var $state;
+      $state = $injector.get('$state');
       $scope.applications = applications;
       $scope.logs = logs;
-      return $scope.currentApplication = logs.application;
+      $scope.currentApplication = logs.application;
+      return $scope.showDetail = function(logId) {
+        return $state.go('v.log-detail', {
+          applicationId: $scope.currentApplication.id,
+          logId: logId
+        }, {
+          reload: true
+        });
+      };
+    }
+  ]).controller('LogController', [
+    '$scope', 'application', 'log', function($scope, application, log) {
+      return console.log(log);
     }
   ]);
 
@@ -441,6 +455,14 @@
               }
             });
           };
+        })(this),
+        getLog: (function(_this) {
+          return function(applicationId, logId) {
+            return _this.http({
+              method: 'get',
+              url: "/applications/" + applicationId + "/logs/" + logId
+            });
+          };
         })(this)
       },
       application: {
@@ -539,7 +561,7 @@
         templateUrl: '/views/login.html',
         controller: 'LoginController'
       });
-      $stateProvider.state('v.logs-default', {
+      $stateProvider.state('v.log-default', {
         url: '/applications',
         resolve: {
           applications: [
@@ -557,10 +579,10 @@
             }
           ]
         },
-        templateUrl: '/views/logs/logs.html',
+        templateUrl: '/views/log/list.html',
         controller: 'LogsController'
       });
-      $stateProvider.state('v.logs', {
+      $stateProvider.state('v.log-list', {
         url: '/applications/:applicationId/logs?index',
         resolve: {
           applications: [
@@ -578,8 +600,29 @@
             }
           ]
         },
-        templateUrl: '/views/logs/logs.html',
+        templateUrl: '/views/log/list.html',
         controller: 'LogsController'
+      });
+      $stateProvider.state('v.log-detail', {
+        url: '/applications/:applicationId/logs/:logId',
+        resolve: {
+          application: [
+            '$v', '$stateParams', function($v, $stateParams) {
+              return $v.api.application.getApplication($stateParams.applicationId).then(function(response) {
+                return response.data;
+              });
+            }
+          ],
+          log: [
+            '$v', '$stateParams', function($v, $stateParams) {
+              return $v.api.log.getLog($stateParams.applicationId, $stateParams.logId).then(function(response) {
+                return response.data;
+              });
+            }
+          ]
+        },
+        templateUrl: '/views/log/detail.html',
+        controller: 'LogController'
       });
       $stateProvider.state('v.settings', {
         url: '/settings',

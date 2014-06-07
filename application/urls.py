@@ -26,6 +26,10 @@ urlpatterns = patterns('',
     url(r'^applications/(?P<application_id>[0-9]{1,32})/logs$', api_dispatch(
         GET=get_logs
     )),
+    # /applications/<application_id>/logs/<log_id>
+    url(r'^applications/(?P<application_id>[0-9]{1,32})/logs/(?P<log_id>[0-9]{1,32})$', api_dispatch(
+        GET=get_log
+    )),
 
     # /settings
     url(r'^settings$', dispatch(
@@ -46,7 +50,7 @@ urlpatterns = patterns('',
         GET=base_view,
     )),
     # /settings/applications/<application_id>
-    url(r'^settings/applications/(?P<application_id>[0-9]{8,32})$', api_dispatch(
+    url(r'^settings/applications/(?P<application_id>[0-9]{1,32})$', api_dispatch(
         GET=get_application,
         PUT=update_application,
         DELETE=delete_application,

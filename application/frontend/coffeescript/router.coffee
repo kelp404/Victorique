@@ -37,7 +37,7 @@ angular.module 'v.router', [
     # ---------------------------------------------------------
     # /applications
     # ---------------------------------------------------------
-    $stateProvider.state 'v.logs-default',
+    $stateProvider.state 'v.log-default',
         url: '/applications'
         resolve:
             applications: ['$v', ($v) ->
@@ -48,12 +48,12 @@ angular.module 'v.router', [
                 $v.api.log.getLogs().then (response) ->
                     response.data
             ]
-        templateUrl: '/views/logs/logs.html'
+        templateUrl: '/views/log/list.html'
         controller: 'LogsController'
     # ---------------------------------------------------------
     # /applications/:applicationId/logs
     # ---------------------------------------------------------
-    $stateProvider.state 'v.logs',
+    $stateProvider.state 'v.log-list',
         url: '/applications/:applicationId/logs?index'
         resolve:
             applications: ['$v', ($v) ->
@@ -64,8 +64,24 @@ angular.module 'v.router', [
                 $v.api.log.getLogs($stateParams.applicationId, $stateParams.index).then (response) ->
                     response.data
             ]
-        templateUrl: '/views/logs/logs.html'
+        templateUrl: '/views/log/list.html'
         controller: 'LogsController'
+    # ---------------------------------------------------------
+    # /applications/:applicationId/logs/:logId
+    # ---------------------------------------------------------
+    $stateProvider.state 'v.log-detail',
+        url: '/applications/:applicationId/logs/:logId'
+        resolve:
+            application: ['$v', '$stateParams', ($v, $stateParams) ->
+                $v.api.application.getApplication($stateParams.applicationId).then (response) ->
+                    response.data
+            ]
+            log: ['$v', '$stateParams', ($v, $stateParams) ->
+                $v.api.log.getLog($stateParams.applicationId, $stateParams.logId).then (response) ->
+                    response.data
+            ]
+        templateUrl: '/views/log/detail.html'
+        controller: 'LogController'
 
     # ---------------------------------------------------------
     # /settings

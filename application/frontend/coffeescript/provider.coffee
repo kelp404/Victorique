@@ -67,6 +67,10 @@ angular.module 'v.provider', []
                     url: "/applications/#{applicationId}/logs"
                     params:
                         index: index
+            getLog: (applicationId, logId) =>
+                @http
+                    method: 'get'
+                    url: "/applications/#{applicationId}/logs/#{logId}"
         application:
             getApplications: (index=0, all=no) =>
                 @http

@@ -34,7 +34,7 @@
                 <tr ng-if="!logs.items.length">
                     <td colspan="3" class="text-center text-muted">empty</td>
                 </tr>
-                <tr ng-repeat="log in logs.items">
+                <tr ng-click="showDetail(log.id)" ng-repeat="log in logs.items" style="cursor: pointer;">
                     <td>{{ log.title }}</td>
                     <td>{{ log.count }}</td>
                     <td>{{ log.update_time|date:'yyyy-MM-dd HH:mm' }}</td>

@@ -31,7 +31,8 @@ def get_logs(request, application_id):
             return JsonResponse(PageList(0, 20, 0, []))
     else:
         application = ApplicationModel.get_by_id(application_id)
-        if request.user.permission != UserPermission.root or request.user.key().id() not in application.member_ids:
+        if request.user.permission != UserPermission.root and\
+                        request.user.key().id() not in application.member_ids:
             # no permission for this application
             raise Http403
 
@@ -44,6 +45,18 @@ def get_logs(request, application_id):
         'title': application.title,
     }
     return JsonResponse(result)
+
+@authorization(UserPermission.root, UserPermission.normal)
+def get_log(request, application_id, log_id):
+    log_id = long(log_id)
+    log = LogModel.get_by_id(log_id)
+    if log is None:
+        raise Http404
+    if request.user.permission != UserPermission.root and\
+                    request.user.key().id() not in log.application.member_ids:
+        # no permission for this application
+        raise Http403
+    return JsonResponse(log)
 
 # GET /api/logs for jsonp
 def add_log_jsonp(request, application_key):
