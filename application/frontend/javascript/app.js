@@ -558,12 +558,20 @@
       });
       $stateProvider.state('v.login', {
         url: '/login',
+        resolve: {
+          title: function() {
+            return 'Login - ';
+          }
+        },
         templateUrl: '/views/login.html',
         controller: 'LoginController'
       });
       $stateProvider.state('v.log-default', {
         url: '/applications',
         resolve: {
+          title: function() {
+            return 'Logs - ';
+          },
           applications: [
             '$v', function($v) {
               return $v.api.application.getApplications(0, true).then(function(response) {
@@ -585,6 +593,9 @@
       $stateProvider.state('v.log-list', {
         url: '/applications/:applicationId/logs?index',
         resolve: {
+          title: function() {
+            return 'Logs - ';
+          },
           applications: [
             '$v', function($v) {
               return $v.api.application.getApplications(0, true).then(function(response) {
@@ -606,6 +617,9 @@
       $stateProvider.state('v.log-detail', {
         url: '/applications/:applicationId/logs/:logId',
         resolve: {
+          title: function() {
+            return 'Log - ';
+          },
           application: [
             '$v', '$stateParams', function($v, $stateParams) {
               return $v.api.application.getApplication($stateParams.applicationId).then(function(response) {
@@ -626,11 +640,19 @@
       });
       $stateProvider.state('v.settings', {
         url: '/settings',
+        resolve: {
+          title: function() {
+            return 'Settings - ';
+          }
+        },
         controller: 'SettingsController'
       });
       $stateProvider.state('v.settings-profile', {
         url: '/settings/profile',
         resolve: {
+          title: function() {
+            return 'Profile - Settings - ';
+          },
           profile: [
             '$v', function($v) {
               return $v.api.settings.getProfile().then(function(response) {
@@ -645,6 +667,9 @@
       $stateProvider.state('v.settings-applications', {
         url: '/settings/applications?index',
         resolve: {
+          title: function() {
+            return 'Applications - Settings - ';
+          },
           applications: [
             '$v', '$stateParams', function($v, $stateParams) {
               return $v.api.application.getApplications($stateParams.index).then(function(response) {
@@ -658,12 +683,20 @@
       });
       $stateProvider.state('v.settings-applications.new', {
         url: '/new',
+        resolve: {
+          title: function() {
+            return 'Applications - Settings - ';
+          }
+        },
         templateUrl: '/views/modal/application.html',
         controller: 'SettingsNewApplicationController'
       });
       return $stateProvider.state('v.settings-applications.detail', {
         url: '/:applicationId',
         resolve: {
+          title: function() {
+            return 'Application - Settings - ';
+          },
           application: [
             '$v', '$stateParams', function($v, $stateParams) {
               return $v.api.application.getApplication($stateParams.applicationId).then(function(response) {
