@@ -49,7 +49,8 @@
     }
   ]).controller('LogController', [
     '$scope', 'application', 'log', function($scope, application, log) {
-      return console.log(log);
+      $scope.application = application;
+      return $scope.log = log;
     }
   ]);
 

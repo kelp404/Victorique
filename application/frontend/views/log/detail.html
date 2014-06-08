@@ -1,1 +1,45 @@
-<h2>log</h2>
+<div class="row">
+    <div class="col-sm-12">
+        <ol class="breadcrumb">
+            <li><a href="/applications">Logs</a></li>
+            <li><a href="/applications/{{ application.id }}/logs">{{ application.title }}</a></li>
+            <li class="active">{{ log.title }}</li>
+        </ol>
+
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th width="200px">Title</th>
+                    <th>{{ log.title }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Count</td>
+                    <td>{{ log.count }}</td>
+                </tr>
+                <tr>
+                    <td>Last Occurred</td>
+                    <td>{{ log.update_time|date:'yyyy-MM-dd HH:mm' }}</td>
+                </tr>
+                <tr>
+                    <td ng-switch="log.users.length">
+                        <span ng-switch-when="1">User</span>
+                        <span ng-switch-default>Users</span>
+                    </td>
+                    <td>
+                        <div style="max-height: 200px; overflow: scroll;">
+                            <p ng-repeat="user in log.users">{{ user }}</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-repeat="(key, value) in log.document">
+                    <td>{{ key }}</td>
+                    <td>
+                        <pre>{{ value }}</pre>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

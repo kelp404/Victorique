@@ -14,5 +14,6 @@ angular.module 'v.controllers.logs', []
 ]
 
 .controller 'LogController', ['$scope', 'application', 'log', ($scope, application, log) ->
-    console.log log
+    $scope.application = application
+    $scope.log = log
 ]
