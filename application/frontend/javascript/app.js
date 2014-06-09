@@ -85,9 +85,11 @@
         submit: function($event) {
           $event.preventDefault();
           return $validator.validate($scope, 'profile.model').success(function() {
+            NProgress.start();
             return $v.api.settings.updateProfile({
               name: $scope.profile.model.name
             }).success(function() {
+              NProgress.done();
               return $v.alert.saved();
             });
           });
@@ -138,6 +140,7 @@
       };
       return $scope.submit = function() {
         return $validator.validate($scope, 'model').success(function() {
+          NProgress.start();
           return $v.api.application.addApplication($scope.model).success(function() {
             return $scope.modal.hide();
           });
@@ -162,6 +165,7 @@
       };
       return $scope.submit = function() {
         return $validator.validate($scope, 'model').success(function() {
+          NProgress.start();
           return $v.api.application.updateApplication($scope.model).success(function() {
             return $scope.modal.hide();
           });

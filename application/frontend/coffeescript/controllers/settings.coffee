@@ -14,9 +14,12 @@ angular.module 'v.controllers.settings', []
         submit: ($event) ->
             $event.preventDefault()
             $validator.validate($scope, 'profile.model').success ->
+                NProgress.start()
                 $v.api.settings.updateProfile
                     name: $scope.profile.model.name
-                .success -> $v.alert.saved()
+                .success ->
+                    NProgress.done()
+                    $v.alert.saved()
 ]
 
 .controller 'SettingsApplicationsController', ['$scope', '$injector', 'applications', ($scope, $injector, applications) ->
@@ -49,6 +52,7 @@ angular.module 'v.controllers.settings', []
             $state.go 'v.settings-applications', null, reload: yes
     $scope.submit = ->
         $validator.validate($scope, 'model').success ->
+            NProgress.start()
             $v.api.application.addApplication($scope.model).success ->
                 $scope.modal.hide()
 ]
@@ -65,6 +69,7 @@ angular.module 'v.controllers.settings', []
             $state.go 'v.settings-applications', null, reload: yes
     $scope.submit = ->
         $validator.validate($scope, 'model').success ->
+            NProgress.start()
             $v.api.application.updateApplication($scope.model).success ->
                 $scope.modal.hide()
 ]
