@@ -20,7 +20,7 @@ angular.module 'v.directive', []
     replace: yes
     link: (scope, element, attrs) ->
         scope.options = scope.$eval attrs.vSettingsMenu
-        scope.isRoot = $v.user.permission == 1
+        scope.isRoot = $v.user.permission is 1
 ]
 
 # ---------------------------------------------------------

@@ -192,7 +192,23 @@
       $state = $injector.get('$state');
       $stateParams = $injector.get('$stateParams');
       $validator = $injector.get('$validator');
-      return $scope.users = users;
+      $scope.users = users;
+      $scope.currentUser = $v.user;
+      $scope.isRoot = $v.user.permission === 1;
+      return $scope.removeUser = function(user, $event) {
+        $event.preventDefault();
+        return $v.alert.confirm("Do you want to delete the user " + user.name + "<" + user.email + ">?", function(result) {
+          if (!result) {
+            return;
+          }
+          NProgress.start();
+          return $v.api.user.removeUser(user.id).success(function() {
+            return $state.go($state.current, $stateParams, {
+              reload: true
+            });
+          });
+        });
+      };
     }
   ]).controller('SettingsNewUserController', [
     '$scope', '$injector', function($scope, $injector) {
@@ -561,6 +577,14 @@
               data: {
                 email: email
               }
+            });
+          };
+        })(this),
+        removeUser: (function(_this) {
+          return function(userId) {
+            return _this.http({
+              method: 'delete',
+              url: "/settings/users/" + userId
             });
           };
         })(this)

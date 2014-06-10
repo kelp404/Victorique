@@ -83,6 +83,15 @@ angular.module 'v.controllers.settings', []
     $validator = $injector.get '$validator'
 
     $scope.users = users
+    $scope.currentUser = $v.user
+    $scope.isRoot = $v.user.permission is 1
+    $scope.removeUser = (user, $event) ->
+        $event.preventDefault()
+        $v.alert.confirm "Do you want to delete the user #{user.name}<#{user.email}>?", (result) ->
+            return if not result
+            NProgress.start()
+            $v.api.user.removeUser(user.id).success ->
+                $state.go $state.current, $stateParams, reload: yes
 ]
 .controller 'SettingsNewUserController', ['$scope', '$injector', ($scope, $injector) ->
     $v = $injector.get '$v'

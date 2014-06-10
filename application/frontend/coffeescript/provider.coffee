@@ -89,6 +89,10 @@ angular.module 'v.provider', []
                     url: '/settings/users'
                     data:
                         email: email
+            removeUser: (userId) =>
+                @http
+                    method: 'delete'
+                    url: "/settings/users/#{userId}"
         application:
             getApplications: (index=0, all=no) =>
                 @http

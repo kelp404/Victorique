@@ -65,6 +65,12 @@ urlpatterns = patterns('',
     url(r'^settings/users/new$', dispatch(
         GET=base_view,
     )),
+    # /settings/users/<user_id>
+    url(r'^settings/users/(?P<user_id>[0-9]{1,32})$', api_dispatch(
+        # GET=get_application,
+        # PUT=update_application,
+        DELETE=delete_user,
+    )),
 
 
     # api
