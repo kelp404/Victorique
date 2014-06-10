@@ -57,7 +57,7 @@ angular.module 'v.router', [
     # /applications/:applicationId/logs
     # ---------------------------------------------------------
     $stateProvider.state 'v.log-list',
-        url: '/applications/:applicationId/logs?index'
+        url: '/applications/:applicationId/logs?index?keyword'
         resolve:
             title: -> 'Logs - '
             applications: ['$v', ($v) ->
@@ -65,7 +65,7 @@ angular.module 'v.router', [
                     response.data
             ]
             logs: ['$v', '$stateParams', ($v, $stateParams) ->
-                $v.api.log.getLogs($stateParams.applicationId, $stateParams.index).then (response) ->
+                $v.api.log.getLogs($stateParams.applicationId, $stateParams.index, $stateParams.keyword).then (response) ->
                     response.data
             ]
         templateUrl: '/views/log/list.html'

@@ -33,11 +33,22 @@
 (function() {
   angular.module('v.controllers.logs', []).controller('LogsController', [
     '$scope', '$injector', 'applications', 'logs', function($scope, $injector, applications, logs) {
-      var $state;
+      var $state, $stateParams;
       $state = $injector.get('$state');
+      $stateParams = $injector.get('$stateParams');
       $scope.applications = applications;
       $scope.logs = logs;
       $scope.currentApplication = logs.application;
+      $scope.keyword = $stateParams.keyword;
+      $scope.search = function($event, keyword) {
+        $event.preventDefault();
+        return $state.go('v.log-list', {
+          applicationId: $scope.currentApplication.id,
+          keyword: keyword
+        }, {
+          reload: true
+        });
+      };
       return $scope.showDetail = function(logId) {
         return $state.go('v.log-detail', {
           applicationId: $scope.currentApplication.id,
@@ -445,7 +456,7 @@
       },
       log: {
         getLogs: (function(_this) {
-          return function(applicationId, index) {
+          return function(applicationId, index, keyword) {
             if (applicationId == null) {
               applicationId = 0;
             }
@@ -456,7 +467,8 @@
               method: 'get',
               url: "/applications/" + applicationId + "/logs",
               params: {
-                index: index
+                index: index,
+                keyword: keyword
               }
             });
           };
@@ -596,7 +608,7 @@
         controller: 'LogsController'
       });
       $stateProvider.state('v.log-list', {
-        url: '/applications/:applicationId/logs?index',
+        url: '/applications/:applicationId/logs?index?keyword',
         resolve: {
           title: function() {
             return 'Logs - ';
@@ -610,7 +622,7 @@
           ],
           logs: [
             '$v', '$stateParams', function($v, $stateParams) {
-              return $v.api.log.getLogs($stateParams.applicationId, $stateParams.index).then(function(response) {
+              return $v.api.log.getLogs($stateParams.applicationId, $stateParams.index, $stateParams.keyword).then(function(response) {
                 return response.data;
               });
             }

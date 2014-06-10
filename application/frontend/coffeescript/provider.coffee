@@ -61,12 +61,13 @@ angular.module 'v.provider', []
                     url: '/settings/profile'
                     data: profile
         log:
-            getLogs: (applicationId=0, index=0) =>
+            getLogs: (applicationId=0, index=0, keyword) =>
                 @http
                     method: 'get'
                     url: "/applications/#{applicationId}/logs"
                     params:
                         index: index
+                        keyword: keyword
             getLog: (applicationId, logId) =>
                 @http
                     method: 'get'

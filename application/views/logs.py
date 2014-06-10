@@ -1,4 +1,5 @@
 import json
+from google.appengine.api import search
 from datetime import datetime
 from django.http.response import HttpResponse
 from application import utils
@@ -31,14 +32,41 @@ def get_logs(request, application_id):
             return JsonResponse(PageList(0, 20, 0, []))
     else:
         application = ApplicationModel.get_by_id(application_id)
+        if application is None:
+            raise Http404
         if request.user.permission != UserPermission.root and\
                         request.user.key().id() not in application.member_ids:
             # no permission for this application
             raise Http403
 
-    query = LogModel.all().filter('application =', application.key()).order('-update_time')
-    total = query.count()
-    logs = query.fetch(utils.default_page_size, form.index.data * utils.default_page_size)
+    if form.keyword.data:
+        source = [item for item in form.keyword.data.split(' ') if len(item) > 0]
+        plus = [item for item in source if item.find('-') != 0]
+        minus = [item[1:] for item in source if item.find('-') == 0 and len(item) > 1]
+
+        if len(plus) > 0:
+            keyword = ' '.join(plus)
+            query_string = '(users:{1}) OR (title:{1}) OR (document:{1})'.replace('{1}', keyword)
+        if len(minus) > 0:
+            keyword = ' '.join(minus)
+            query_string = 'NOT ((users:{1}) OR (title:{1}) OR (document:{1}))'.replace('{1}', keyword)
+        update_time_desc = search.SortExpression(
+            expression='update_time',
+            direction=search.SortExpression.DESCENDING,
+            default_value=0)
+        options = search.QueryOptions(
+            offset=utils.default_page_size * form.index.data,
+            limit=utils.default_page_size,
+            sort_options=search.SortOptions(expressions=[update_time_desc], limit=1000),
+            returned_fields=['doc_id'])
+        query = search.Query(query_string=query_string, options=options)
+        search_result = search.Index(namespace='Logs', name=str(application.key().id())).search(query)
+        total = search_result.number_found
+        logs = LogModel.get_by_id([long(x.doc_id) for x in search_result])
+    else:
+        query = LogModel.all().filter('application =', application.key()).order('-update_time')
+        total = query.count()
+        logs = query.fetch(utils.default_page_size, form.index.data * utils.default_page_size)
     result = PageList(form.index.data, utils.default_page_size, total, logs).dict()
     result['application'] = {
         'id': application.key().id(),
@@ -114,3 +142,12 @@ def __add_log(application_key, args):
         if not form.document.data is None:
             log.document = form.document.data
     log.put()
+
+    index = search.Index(namespace='Logs', name=str(application.key().id()))
+    search_document = search.Document(doc_id=str(log.key().id()),
+                                      fields=[
+                                          search.TextField(name='users', value=str(log.users)),
+                                          search.TextField(name='title', value=log.title),
+                                          search.TextField(name='document', value=log.document_json),
+                                          search.DateField(name='create_time', value=log.update_time)])
+    index.put(search_document)
