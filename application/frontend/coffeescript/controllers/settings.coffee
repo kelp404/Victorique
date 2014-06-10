@@ -113,5 +113,20 @@ angular.module 'v.controllers.settings', []
                 $scope.modal.hide()
 ]
 .controller 'SettingsUserController', ['$scope', '$injector', 'user', ($scope, $injector, user) ->
+    $v = $injector.get '$v'
+    $validator = $injector.get '$validator'
+    $state = $injector.get '$state'
+
     $scope.mode = 'edit'
+    $scope.user = user
+    $scope.modal =
+        autoShow: yes
+        hide: ->
+        hiddenCallback: ->
+            $state.go 'v.settings-users', null, reload: yes
+    $scope.submit = ->
+        $validator.validate($scope, 'user').success ->
+            NProgress.start()
+            $v.api.user.updateUser($scope.user).success ->
+                $scope.modal.hide()
 ]

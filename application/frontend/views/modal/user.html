@@ -7,11 +7,33 @@
                 <h4 ng-if="mode=='edit'" class="modal-title">Update the user</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" for="input-name">Email</label>
+                <div ng-if="mode=='new'" class="form-group">
+                    <label class="col-sm-2 control-label" for="input-email">Email</label>
                     <div class="col-sm-10">
                         <input ng-model="user.email" validator="[required, email]"
+                               class="form-control" id="input-email" type="text"/>
+                    </div>
+                </div>
+                <div ng-if="mode=='edit'" class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name">Name</label>
+                    <div class="col-sm-10">
+                        <input ng-model="user.name" validator="[required]"
                                class="form-control" id="input-name" type="text"/>
+                    </div>
+                </div>
+                <div ng-if="mode=='edit'" class="form-group">
+                    <label class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{ user.email }}</p>
+                    </div>
+                </div>
+                <div ng-if="mode=='edit'" class="form-group">
+                    <label class="col-sm-2 control-label" for="input-permission">Permission</label>
+                    <div class="col-sm-6">
+                        <select ng-model="user.permission" id="input-permission" class="form-control">
+                            <option value="1">root</option>
+                            <option value="2">normal</option>
+                        </select>
                     </div>
                 </div>
             </div>

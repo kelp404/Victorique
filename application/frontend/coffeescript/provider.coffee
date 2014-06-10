@@ -93,6 +93,11 @@ angular.module 'v.provider', []
                 @http
                     method: 'delete'
                     url: "/settings/users/#{userId}"
+            updateUser: (user) =>
+                @http
+                    method: 'put'
+                    url: "/settings/users/#{user.id}"
+                    data: user
         application:
             getApplications: (index=0, all=no) =>
                 @http

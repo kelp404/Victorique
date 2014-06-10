@@ -34,6 +34,7 @@ def invite_user(request):
         user = UserModel(
             name=form.email.data,
             email=form.email.data,
+            permission=UserPermission.normal,
         )
         user.save()
         gae_account = getattr(settings, 'GAE_ACCOUNT')
@@ -46,10 +47,33 @@ def invite_user(request):
 
 @authorization(UserPermission.root)
 def delete_user(request, user_id):
+    user_id = long(user_id)
     if request.user.key().id() == user_id:
         raise Http403
-    user = UserModel.get_by_id(long(user_id))
+    user = UserModel.get_by_id(user_id)
     if user is None:
         raise Http404
     user.delete()
     return HttpResponse()
+
+@authorization(UserPermission.root)
+def get_user(request, user_id):
+    user_id = long(user_id)
+    user = UserModel.get_by_id(user_id)
+    if user is None:
+        raise Http404
+    return JsonResponse(user)
+
+@authorization(UserPermission.root)
+def update_user(request, user_id):
+    user_id = long(user_id)
+    form = UserForm(**json.loads(request.body))
+    if not form.validate():
+        raise Http400
+    user = UserModel.get_by_id(user_id)
+    if user is None:
+        raise Http404
+    user.name = form.name.data
+    user.permission = form.permission.data
+    user.put()
+    return JsonResponse(user)

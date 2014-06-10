@@ -240,7 +240,29 @@
     }
   ]).controller('SettingsUserController', [
     '$scope', '$injector', 'user', function($scope, $injector, user) {
-      return $scope.mode = 'edit';
+      var $state, $v, $validator;
+      $v = $injector.get('$v');
+      $validator = $injector.get('$validator');
+      $state = $injector.get('$state');
+      $scope.mode = 'edit';
+      $scope.user = user;
+      $scope.modal = {
+        autoShow: true,
+        hide: function() {},
+        hiddenCallback: function() {
+          return $state.go('v.settings-users', null, {
+            reload: true
+          });
+        }
+      };
+      return $scope.submit = function() {
+        return $validator.validate($scope, 'user').success(function() {
+          NProgress.start();
+          return $v.api.user.updateUser($scope.user).success(function() {
+            return $scope.modal.hide();
+          });
+        });
+      };
     }
   ]);
 
@@ -585,6 +607,15 @@
             return _this.http({
               method: 'delete',
               url: "/settings/users/" + userId
+            });
+          };
+        })(this),
+        updateUser: (function(_this) {
+          return function(user) {
+            return _this.http({
+              method: 'put',
+              url: "/settings/users/" + user.id,
+              data: user
             });
           };
         })(this)
