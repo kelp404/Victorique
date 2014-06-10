@@ -1,4 +1,4 @@
-import json
+import json, os
 from google.appengine.api import search
 from datetime import datetime
 from django.http.response import HttpResponse
@@ -46,10 +46,10 @@ def get_logs(request, application_id):
 
         if len(plus) > 0:
             keyword = ' '.join(plus)
-            query_string = '(users:{1}) OR (title:{1}) OR (document:{1})'.replace('{1}', keyword)
+            query_string = '(users:{1}) OR (title:{1}) OR (document:{1}) OR (user_agent:{1}) OR (ip:{1})'.replace('{1}', keyword)
         if len(minus) > 0:
             keyword = ' '.join(minus)
-            query_string = 'NOT ((users:{1}) OR (title:{1}) OR (document:{1}))'.replace('{1}', keyword)
+            query_string = 'NOT ((users:{1}) OR (title:{1}) OR (document:{1}) OR (user_agent:{1}) OR (ip:{1}))'.replace('{1}', keyword)
         update_time_desc = search.SortExpression(
             expression='update_time',
             direction=search.SortExpression.DESCENDING,
@@ -88,7 +88,7 @@ def get_log(request, application_id, log_id):
 
 # GET /api/logs for jsonp
 def add_log_jsonp(request, application_key):
-    __add_log(application_key, request.GET.dict())
+    __add_log(request, application_key, request.GET.dict())
     return HttpResponse()
 # POST /api/logs
 def add_log(request, application_key):
@@ -98,12 +98,12 @@ def add_log(request, application_key):
             is_json = True
             break
     if is_json:
-        __add_log(application_key, json.loads(request.body))
+        __add_log(request, application_key, json.loads(request.body))
     else:
-        __add_log(application_key, request.POST.dict())
+        __add_log(request, application_key, request.POST.dict())
     return HttpResponse()
 
-def __add_log(application_key, args):
+def __add_log(request, application_key, args):
     """
     Add the log.
     :param args: {dict} The log.
@@ -129,8 +129,6 @@ def __add_log(application_key, args):
         log.update_time = datetime.utcnow()
         if not form.user.data is None and form.user.data not in log.users:
             log.users.append(form.user.data)
-        if not form.document.data is None:
-            log.document = form.document.data
     else:
         # add the new log
         log = LogModel(
@@ -139,8 +137,10 @@ def __add_log(application_key, args):
         )
         if not form.user.data is None:
             log.users = [form.user.data]
-        if not form.document.data is None:
-            log.document = form.document.data
+    if not form.document.data is None:
+        log.document = form.document.data
+    log.user_agent = request.META.get('HTTP_USER_AGENT')
+    log.ip = os.environ.get('REMOTE_ADDR')
     log.put()
 
     index = search.Index(namespace='Logs', name=str(application.key().id()))
@@ -149,5 +149,7 @@ def __add_log(application_key, args):
                                           search.TextField(name='users', value=str(log.users)),
                                           search.TextField(name='title', value=log.title),
                                           search.TextField(name='document', value=log.document_json),
+                                          search.TextField(name='ip', value=log.ip),
+                                          search.TextField(name='user_agent', value=log.user_agent),
                                           search.DateField(name='create_time', value=log.update_time)])
     index.put(search_document)

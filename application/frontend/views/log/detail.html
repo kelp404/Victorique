@@ -33,6 +33,18 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td>IP Address</td>
+                    <td>{{ log.ip }}</td>
+                </tr>
+                <tr>
+                    <td>User Agent</td>
+                    <td>
+                        <div style="width: 940px;">
+                            <pre>{{ log.user_agent }}</pre>
+                        </div>
+                    </td>
+                </tr>
                 <tr ng-repeat="(key, value) in log.document">
                     <td>{{ key }}</td>
                     <td>

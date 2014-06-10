@@ -10,6 +10,8 @@ class LogModel(BaseModel):
     title = db.StringProperty(required=True)
     users = db.StringListProperty(default=[], indexed=False)
     count = db.IntegerProperty(default=1, indexed=False)
+    user_agent = db.StringProperty(indexed=False)
+    ip = db.StringProperty(indexed=False)
     document_json = db.TextProperty()
     update_time = db.DateTimeProperty(auto_now_add=True)
     create_time = db.DateTimeProperty(auto_now_add=True)
@@ -29,6 +31,8 @@ class LogModel(BaseModel):
             'id': self.key().id() if self.has_key() else None,
             'title': self.title,
             'users': self.users,
+            'user_agent': self.user_agent,
+            'ip': self.ip,
             'count': self.count,
             'document': self.document,
             'update_time': utils.get_iso_format(self.update_time),
