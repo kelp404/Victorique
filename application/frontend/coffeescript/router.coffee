@@ -124,7 +124,7 @@ angular.module 'v.router', [
         templateUrl: '/views/settings/applications.html'
         controller: 'SettingsApplicationsController'
     # ---------------------------------------------------------
-    # /settings/application/new
+    # /settings/applications/new
     # ---------------------------------------------------------
     $stateProvider.state 'v.settings-applications.new',
         url: '/new'
@@ -133,7 +133,7 @@ angular.module 'v.router', [
         templateUrl: '/views/modal/application.html'
         controller: 'SettingsNewApplicationController'
     # ---------------------------------------------------------
-    # /settings/application/{applicationId}
+    # /settings/applications/{applicationId}
     # ---------------------------------------------------------
     $stateProvider.state 'v.settings-applications.detail',
         url: '/:applicationId'
@@ -159,6 +159,28 @@ angular.module 'v.router', [
             ]
         templateUrl: '/views/settings/users.html'
         controller: 'SettingsUsersController'
+    # ---------------------------------------------------------
+    # /settings/users/new
+    # ---------------------------------------------------------
+    $stateProvider.state 'v.settings-users.new',
+        url: '/new'
+        resolve:
+            title: -> 'Users - Settings - '
+        templateUrl: '/views/modal/user.html'
+        controller: 'SettingsNewUserController'
+    # ---------------------------------------------------------
+    # /settings/users/{userId}
+    # ---------------------------------------------------------
+    $stateProvider.state 'v.settings-users.detail',
+        url: '/:userId'
+        resolve:
+            title: -> 'Users - Settings - '
+            user: ['$v', '$stateParams', ($v, $stateParams) ->
+                $v.api.user.getUser($stateParams.userId).then (response) ->
+                    response.data
+            ]
+        templateUrl: '/views/modal/user.html'
+        controller: 'SettingsUserController'
 ]
 
 .run ['$injector', ($injector) ->

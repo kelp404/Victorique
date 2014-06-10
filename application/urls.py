@@ -59,6 +59,11 @@ urlpatterns = patterns('',
     # /settings/users
     url(r'^settings/users$', api_dispatch(
         GET=get_users,
+        POST=invite_user,
+    )),
+    # /settings/users/new
+    url(r'^settings/users/new$', dispatch(
+        GET=base_view,
     )),
 
 

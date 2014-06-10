@@ -13,6 +13,9 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
+GAE_ACCOUNT = 'kelp.phate@gmail.com'
+HOST = 'victorique-demo.appspot.com'
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
@@ -24,7 +27,8 @@ SECRET_KEY = 'f!!w414jfulmcc862^f4#@9*4cwo#9pg$kelp)wqo2*!0()3b-'
 DEBUG = 'SERVER_SOFTWARE' in os.environ and os.environ['SERVER_SOFTWARE'].startswith('Dev')
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['localhost', 'victorique-demo.appspot.com']
+ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS.append(HOST)
 
 
 # Application definition

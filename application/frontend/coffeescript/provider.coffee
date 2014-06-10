@@ -79,6 +79,16 @@ angular.module 'v.provider', []
                     url: '/settings/users'
                     params:
                         index: index
+            getUser: (userId) =>
+                @http
+                    method: 'get'
+                    url: "/settings/users/#{userId}"
+            inviteUser: (email) =>
+                @http
+                    method: 'post'
+                    url: '/settings/users'
+                    data:
+                        email: email
         application:
             getApplications: (index=0, all=no) =>
                 @http

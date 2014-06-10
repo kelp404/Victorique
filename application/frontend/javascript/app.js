@@ -194,6 +194,38 @@
       $validator = $injector.get('$validator');
       return $scope.users = users;
     }
+  ]).controller('SettingsNewUserController', [
+    '$scope', '$injector', function($scope, $injector) {
+      var $state, $v, $validator;
+      $v = $injector.get('$v');
+      $validator = $injector.get('$validator');
+      $state = $injector.get('$state');
+      $scope.mode = 'new';
+      $scope.user = {
+        email: ''
+      };
+      $scope.modal = {
+        autoShow: true,
+        hide: function() {},
+        hiddenCallback: function() {
+          return $state.go('v.settings-users', null, {
+            reload: true
+          });
+        }
+      };
+      return $scope.submit = function() {
+        return $validator.validate($scope, 'user').success(function() {
+          NProgress.start();
+          return $v.api.user.inviteUser($scope.user.email).success(function() {
+            return $scope.modal.hide();
+          });
+        });
+      };
+    }
+  ]).controller('SettingsUserController', [
+    '$scope', '$injector', 'user', function($scope, $injector, user) {
+      return $scope.mode = 'edit';
+    }
   ]);
 
 }).call(this);
@@ -512,6 +544,25 @@
               }
             });
           };
+        })(this),
+        getUser: (function(_this) {
+          return function(userId) {
+            return _this.http({
+              method: 'get',
+              url: "/settings/users/" + userId
+            });
+          };
+        })(this),
+        inviteUser: (function(_this) {
+          return function(email) {
+            return _this.http({
+              method: 'post',
+              url: '/settings/users',
+              data: {
+                email: email
+              }
+            });
+          };
         })(this)
       },
       application: {
@@ -757,7 +808,7 @@
         templateUrl: '/views/modal/application.html',
         controller: 'SettingsApplicationController'
       });
-      return $stateProvider.state('v.settings-users', {
+      $stateProvider.state('v.settings-users', {
         url: '/settings/users?index',
         resolve: {
           title: function() {
@@ -773,6 +824,33 @@
         },
         templateUrl: '/views/settings/users.html',
         controller: 'SettingsUsersController'
+      });
+      $stateProvider.state('v.settings-users.new', {
+        url: '/new',
+        resolve: {
+          title: function() {
+            return 'Users - Settings - ';
+          }
+        },
+        templateUrl: '/views/modal/user.html',
+        controller: 'SettingsNewUserController'
+      });
+      return $stateProvider.state('v.settings-users.detail', {
+        url: '/:userId',
+        resolve: {
+          title: function() {
+            return 'Users - Settings - ';
+          },
+          user: [
+            '$v', '$stateParams', function($v, $stateParams) {
+              return $v.api.user.getUser($stateParams.userId).then(function(response) {
+                return response.data;
+              });
+            }
+          ]
+        },
+        templateUrl: '/views/modal/user.html',
+        controller: 'SettingsUserController'
       });
     }
   ]).run([
@@ -810,9 +888,13 @@
 (function() {
   angular.module('v.validations', ['validator']).config([
     '$validatorProvider', function($validatorProvider) {
-      return $validatorProvider.register('required', {
+      $validatorProvider.register('required', {
         validator: /.+/,
         error: 'This field is required.'
+      });
+      return $validatorProvider.register('email', {
+        validator: /(^$)|(^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$)/,
+        error: 'This field should be the email.'
       });
     }
   ]);

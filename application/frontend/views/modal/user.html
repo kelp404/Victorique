@@ -1,0 +1,24 @@
+<div class="modal fade" v-modal="modal">
+    <div class="modal-dialog">
+        <form class="modal-content form-horizontal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 ng-if="mode=='new'" class="modal-title">Invite the user</h4>
+                <h4 ng-if="mode=='edit'" class="modal-title">Update the user</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name">Email</label>
+                    <div class="col-sm-10">
+                        <input ng-model="user.email" validator="[required, email]"
+                               class="form-control" id="input-name" type="text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button ng-click="submit()"
+                        type="submit" class="btn btn-default"><i class="fa fa-check fa-fw"></i> Save</button>
+            </div>
+        </form>
+    </div>
+</div>

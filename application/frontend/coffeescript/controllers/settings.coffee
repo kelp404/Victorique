@@ -84,3 +84,25 @@ angular.module 'v.controllers.settings', []
 
     $scope.users = users
 ]
+.controller 'SettingsNewUserController', ['$scope', '$injector', ($scope, $injector) ->
+    $v = $injector.get '$v'
+    $validator = $injector.get '$validator'
+    $state = $injector.get '$state'
+
+    $scope.mode = 'new'
+    $scope.user =
+        email: ''
+    $scope.modal =
+        autoShow: yes
+        hide: ->
+        hiddenCallback: ->
+            $state.go 'v.settings-users', null, reload: yes
+    $scope.submit = ->
+        $validator.validate($scope, 'user').success ->
+            NProgress.start()
+            $v.api.user.inviteUser($scope.user.email).success ->
+                $scope.modal.hide()
+]
+.controller 'SettingsUserController', ['$scope', '$injector', 'user', ($scope, $injector, user) ->
+    $scope.mode = 'edit'
+]
