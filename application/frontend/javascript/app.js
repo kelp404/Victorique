@@ -136,7 +136,8 @@
       $v = $injector.get('$v');
       $validator = $injector.get('$validator');
       $state = $injector.get('$state');
-      $scope.model = {
+      $scope.mode = 'new';
+      $scope.application = {
         title: '',
         description: ''
       };
@@ -150,9 +151,9 @@
         }
       };
       return $scope.submit = function() {
-        return $validator.validate($scope, 'model').success(function() {
+        return $validator.validate($scope, 'application').success(function() {
           NProgress.start();
-          return $v.api.application.addApplication($scope.model).success(function() {
+          return $v.api.application.addApplication($scope.application).success(function() {
             return $scope.modal.hide();
           });
         });
@@ -164,7 +165,8 @@
       $v = $injector.get('$v');
       $validator = $injector.get('$validator');
       $state = $injector.get('$state');
-      $scope.model = application;
+      $scope.mode = 'edit';
+      $scope.application = application;
       $scope.modal = {
         autoShow: true,
         hide: function() {},
@@ -175,9 +177,9 @@
         }
       };
       return $scope.submit = function() {
-        return $validator.validate($scope, 'model').success(function() {
+        return $validator.validate($scope, 'application').success(function() {
           NProgress.start();
-          return $v.api.application.updateApplication($scope.model).success(function() {
+          return $v.api.application.updateApplication($scope.application).success(function() {
             return $scope.modal.hide();
           });
         });

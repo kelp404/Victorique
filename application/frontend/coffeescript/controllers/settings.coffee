@@ -42,7 +42,8 @@ angular.module 'v.controllers.settings', []
     $validator = $injector.get '$validator'
     $state = $injector.get '$state'
 
-    $scope.model =
+    $scope.mode = 'new'
+    $scope.application =
         title: ''
         description: ''
     $scope.modal =
@@ -51,9 +52,9 @@ angular.module 'v.controllers.settings', []
         hiddenCallback: ->
             $state.go 'v.settings-applications', null, reload: yes
     $scope.submit = ->
-        $validator.validate($scope, 'model').success ->
+        $validator.validate($scope, 'application').success ->
             NProgress.start()
-            $v.api.application.addApplication($scope.model).success ->
+            $v.api.application.addApplication($scope.application).success ->
                 $scope.modal.hide()
 ]
 .controller 'SettingsApplicationController', ['$scope', '$injector', 'application', ($scope, $injector, application) ->
@@ -61,16 +62,17 @@ angular.module 'v.controllers.settings', []
     $validator = $injector.get '$validator'
     $state = $injector.get '$state'
 
-    $scope.model = application
+    $scope.mode = 'edit'
+    $scope.application = application
     $scope.modal =
         autoShow: yes
         hide: ->
         hiddenCallback: ->
             $state.go 'v.settings-applications', null, reload: yes
     $scope.submit = ->
-        $validator.validate($scope, 'model').success ->
+        $validator.validate($scope, 'application').success ->
             NProgress.start()
-            $v.api.application.updateApplication($scope.model).success ->
+            $v.api.application.updateApplication($scope.application).success ->
                 $scope.modal.hide()
 ]
 
