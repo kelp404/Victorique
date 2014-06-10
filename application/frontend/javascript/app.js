@@ -183,6 +183,15 @@
         });
       };
     }
+  ]).controller('SettingsUsersController', [
+    '$scope', '$injector', 'users', function($scope, $injector, users) {
+      var $state, $stateParams, $v, $validator;
+      $v = $injector.get('$v');
+      $state = $injector.get('$state');
+      $stateParams = $injector.get('$stateParams');
+      $validator = $injector.get('$validator');
+      return $scope.users = users;
+    }
   ]);
 
 }).call(this);
@@ -195,16 +204,21 @@
       replace: true,
       controller: 'NavigationController'
     };
-  }).directive('vSettingsMenu', function() {
-    return {
-      restrict: 'A',
-      templateUrl: '/views/settings/menu.html',
-      replace: true,
-      link: function(scope, element, attrs) {
-        return scope.options = scope.$eval(attrs.vSettingsMenu);
-      }
-    };
-  }).directive('vFocus', function() {
+  }).directive('vSettingsMenu', [
+    '$injector', function($injector) {
+      var $v;
+      $v = $injector.get('$v');
+      return {
+        restrict: 'A',
+        templateUrl: '/views/settings/menu.html',
+        replace: true,
+        link: function(scope, element, attrs) {
+          scope.options = scope.$eval(attrs.vSettingsMenu);
+          return scope.isRoot = $v.user.permission === 1;
+        }
+      };
+    }
+  ]).directive('vFocus', function() {
     return {
       restrict: 'A',
       link: function(scope, element) {
@@ -482,6 +496,22 @@
           };
         })(this)
       },
+      user: {
+        getUsers: (function(_this) {
+          return function(index) {
+            if (index == null) {
+              index = 0;
+            }
+            return _this.http({
+              method: 'get',
+              url: '/settings/users',
+              params: {
+                index: index
+              }
+            });
+          };
+        })(this)
+      },
       application: {
         getApplications: (function(_this) {
           return function(index, all) {
@@ -708,7 +738,7 @@
         templateUrl: '/views/modal/application.html',
         controller: 'SettingsNewApplicationController'
       });
-      return $stateProvider.state('v.settings-applications.detail', {
+      $stateProvider.state('v.settings-applications.detail', {
         url: '/:applicationId',
         resolve: {
           title: function() {
@@ -724,6 +754,23 @@
         },
         templateUrl: '/views/modal/application.html',
         controller: 'SettingsApplicationController'
+      });
+      return $stateProvider.state('v.settings-users', {
+        url: '/settings/users?index',
+        resolve: {
+          title: function() {
+            return 'Users - Settings - ';
+          },
+          users: [
+            '$v', '$stateParams', function($v, $stateParams) {
+              return $v.api.user.getUsers($stateParams.index).then(function(response) {
+                return response.data;
+              });
+            }
+          ]
+        },
+        templateUrl: '/views/settings/users.html',
+        controller: 'SettingsUsersController'
       });
     }
   ]).run([

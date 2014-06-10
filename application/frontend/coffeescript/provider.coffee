@@ -72,6 +72,13 @@ angular.module 'v.provider', []
                 @http
                     method: 'get'
                     url: "/applications/#{applicationId}/logs/#{logId}"
+        user:
+            getUsers: (index=0) =>
+                @http
+                    method: 'get'
+                    url: '/settings/users'
+                    params:
+                        index: index
         application:
             getApplications: (index=0, all=no) =>
                 @http

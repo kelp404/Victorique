@@ -1,0 +1,41 @@
+<div v-settings-menu="{current: 'users'}"></div>
+<div class="row">
+    <div class="col-sm-offset-2 col-sm-10">
+        <div class="panel panel-default" id="profile">
+            <div class="panel-heading">
+                <span>Users</span>
+                <a href="/settings/users/new" class="pull-right btn btn-success btn-xs"><i class="fa fa-plus fa-fw"></i> New user</a>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th width="160px">Create time</th>
+                            <th width="80px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="users.items.length == 0">
+                            <td colspan="4" class="text-center">empty</td>
+                        </tr>
+                        <tr ng-repeat="user in users.items">
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.create_time|date:'yyyy-MM-dd HH:mm' }}</td>
+                            <td>
+                                <a href="/settings/users/{{ user.id }}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                                <a ng-click="removeUser(application, $event)"
+                                        href="/settings/users/{{ user.id }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ul v-pager="users" pager-url-template="/settings/users?index=#{index}"
+                        class="pull-right" style="margin-top: 0"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div ui-view autoscroll="false"></div>

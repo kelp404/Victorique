@@ -109,6 +109,7 @@ angular.module 'v.router', [
             ]
         templateUrl: '/views/settings/profile.html'
         controller: 'SettingsProfileController'
+
     # ---------------------------------------------------------
     # /settings/applications
     # ---------------------------------------------------------
@@ -144,6 +145,20 @@ angular.module 'v.router', [
             ]
         templateUrl: '/views/modal/application.html'
         controller: 'SettingsApplicationController'
+
+    # ---------------------------------------------------------
+    # /settings/users
+    # ---------------------------------------------------------
+    $stateProvider.state 'v.settings-users',
+        url: '/settings/users?index'
+        resolve:
+            title: -> 'Users - Settings - '
+            users: ['$v', '$stateParams', ($v, $stateParams) ->
+                $v.api.user.getUsers($stateParams.index).then (response) ->
+                    response.data
+            ]
+        templateUrl: '/views/settings/users.html'
+        controller: 'SettingsUsersController'
 ]
 
 .run ['$injector', ($injector) ->

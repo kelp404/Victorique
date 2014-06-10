@@ -12,12 +12,16 @@ angular.module 'v.directive', []
 # ---------------------------------------------------------
 # v-settings-menu
 # ---------------------------------------------------------
-.directive 'vSettingsMenu', ->
+.directive 'vSettingsMenu', ['$injector', ($injector) ->
+    $v = $injector.get '$v'
+
     restrict: 'A'
     templateUrl: '/views/settings/menu.html'
     replace: yes
     link: (scope, element, attrs) ->
         scope.options = scope.$eval attrs.vSettingsMenu
+        scope.isRoot = $v.user.permission == 1
+]
 
 # ---------------------------------------------------------
 # v-focus

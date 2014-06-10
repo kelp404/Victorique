@@ -73,3 +73,12 @@ angular.module 'v.controllers.settings', []
             $v.api.application.updateApplication($scope.model).success ->
                 $scope.modal.hide()
 ]
+
+.controller 'SettingsUsersController', ['$scope', '$injector', 'users', ($scope, $injector, users) ->
+    $v = $injector.get '$v'
+    $state = $injector.get '$state'
+    $stateParams = $injector.get '$stateParams'
+    $validator = $injector.get '$validator'
+
+    $scope.users = users
+]

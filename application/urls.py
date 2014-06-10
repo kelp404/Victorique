@@ -4,6 +4,7 @@ from application.dispatches import api_dispatch, dispatch
 from application.views.base import base_view
 from application.views.settings import *
 from application.views.applications import *
+from application.views.users import *
 from application.views.logs import *
 
 
@@ -54,6 +55,10 @@ urlpatterns = patterns('',
         GET=get_application,
         PUT=update_application,
         DELETE=delete_application,
+    )),
+    # /settings/users
+    url(r'^settings/users$', api_dispatch(
+        GET=get_users,
     )),
 
 
