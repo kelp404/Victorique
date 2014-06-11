@@ -10,6 +10,7 @@ module.exports = (config) ->
         files: [
             # jquery
             'bower_components/jquery/dist/jquery.js'
+            'bower_components/bootstrap/dist/js/bootstrap.js'
             'bower_components/AlertView/dist/alert_view.js'
             'bower_components/nprogress/nprogress.js'
             # angular

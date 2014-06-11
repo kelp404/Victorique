@@ -22,6 +22,7 @@ module.exports = (grunt) ->
                 tasks: [
                     'compass'
                     'coffee'
+                    'copy:fonts'
                 ]
                 options:
                     logConcurrentOutput: yes
@@ -33,13 +34,25 @@ module.exports = (grunt) ->
                 options:
                     logConcurrentOutput: yes
 
+        copy:
+            fonts:
+                files: [
+                    expand: yes
+                    cwd: 'bower_components/font-awesome/fonts'
+                    src: ['*']
+                    dest: 'application/frontend/fonts/'
+                    filter: 'isFile'
+                ]
+
         cssmin:
             build:
                 options:
                     keepSpecialComments: 0
                 files:
                     'application/frontend/css/site.min.css': [
-                        'bower_components/bootstrap/dist/css/bootstrap-theme.css'
+                        'bower_components/bootstrap/dist/css/bootstrap.css'
+                        'bower_components/font-awesome/css/font-awesome.css'
+                        'bower_components/AlertView/dist/alert_view.css'
                         'application/frontend/css/nprogress.css'
                         'application/frontend/css/site.css'
                     ]
@@ -50,6 +63,7 @@ module.exports = (grunt) ->
                     'application/frontend/javascript/site.min.js': [
                         # jquery
                         'bower_components/jquery/dist/jquery.js'
+                        'bower_components/bootstrap/dist/js/bootstrap.js'
                         'bower_components/AlertView/dist/alert_view.js'
                         'bower_components/nprogress/nprogress.js'
                         # angular
@@ -100,3 +114,4 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-cssmin'
     grunt.loadNpmTasks 'grunt-concurrent'
     grunt.loadNpmTasks 'grunt-karma'
+    grunt.loadNpmTasks 'grunt-contrib-copy'

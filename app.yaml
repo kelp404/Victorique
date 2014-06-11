@@ -18,6 +18,8 @@ skip_files:
 - ^\.gitmodules
 - ^\.git/.*
 - ^bower\.json
+- ^bower_components/.*
+- ^application/frontend/bower_components/.*
 - ^package\.json
 - ^pip_requirements\.txt
 - ^\node_modules/.*
