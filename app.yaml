@@ -54,5 +54,15 @@ handlers:
 - url: /views/
   static_dir: application/frontend/views
 
+# cron jobs
+- url: /cron_jobs/.*
+  script: application.cron_jobs.app
+  login: admin
+
 - url: .*
   script: application.app
+
+
+libraries:
+- name: webapp2
+  version: "2.5.1"

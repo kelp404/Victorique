@@ -151,5 +151,5 @@ def __add_log(request, application_key, args):
                                           search.TextField(name='document', value=log.document_json),
                                           search.TextField(name='ip', value=log.ip),
                                           search.TextField(name='user_agent', value=log.user_agent),
-                                          search.DateField(name='create_time', value=log.update_time)])
+                                          search.DateField(name='update_time', value=log.update_time)])
     index.put(search_document)
