@@ -1,5 +1,6 @@
 from google.appengine.ext import db
 from google.appengine.api import users
+from django.conf import settings
 from application import utils
 from application.models.datastore.base_model import BaseModel
 
@@ -50,12 +51,10 @@ class UserModel(BaseModel):
             members = UserModel.gql('where email = :1', google_user.email().lower()).fetch(1)
             if len(members) > 0:
                 # got the user
-                user = members[0]
-            else:
+                return members[0]
+            elif getattr(settings, 'ALLOW_REGISTER', False):
                 # register a new user
-                user = cls.__register_user(google_user, UserPermission.normal)
-            return user
-
+                return cls.__register_user(google_user, UserPermission.normal)
         return UserModel()
 
     @classmethod
