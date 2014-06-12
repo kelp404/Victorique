@@ -910,7 +910,7 @@
     }
   ]).run([
     '$injector', function($injector) {
-      var $rootScope, $state, $stateParams, $v;
+      var $rootScope, $state, $stateParams, $v, changeStartEvent, fromStateName, toStateName;
       $rootScope = $injector.get('$rootScope');
       $stateParams = $injector.get('$stateParams');
       $state = $injector.get('$state');
@@ -920,7 +920,13 @@
       NProgress.configure({
         showSpinner: false
       });
-      $rootScope.$on('$stateChangeStart', function() {
+      changeStartEvent = null;
+      fromStateName = null;
+      toStateName = null;
+      $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState) {
+        changeStartEvent = window.event;
+        fromStateName = fromState.name;
+        toStateName = toState.name;
         return NProgress.start();
       });
       $rootScope.$on('$stateChangeSuccess', function(event, toState) {
@@ -929,11 +935,25 @@
           return $state.go('v.login');
         }
       });
-      return $rootScope.$on('$stateChangeError', function(event, toState) {
+      $rootScope.$on('$stateChangeError', function(event, toState) {
         NProgress.done();
         if (!$v.user.is_login && toState.name !== 'v.login') {
           return $state.go('v.login');
         }
+      });
+      return $rootScope.$on('$viewContentLoaded', function() {
+        if ((changeStartEvent != null ? changeStartEvent.type : void 0) === 'popstate') {
+          return;
+        }
+        if ((fromStateName != null) && (toStateName != null)) {
+          if (fromStateName.replace(toStateName, '').indexOf('.') === 0) {
+            return;
+          }
+          if (toStateName.replace(fromStateName, '').indexOf('.') === 0) {
+            return;
+          }
+        }
+        return window.scrollTo(0, 0);
       });
     }
   ]);

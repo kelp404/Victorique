@@ -197,7 +197,13 @@ angular.module 'v.router', [
         showSpinner: no
 
     # ui.router state change event
-    $rootScope.$on '$stateChangeStart', ->
+    changeStartEvent = null
+    fromStateName = null
+    toStateName = null
+    $rootScope.$on '$stateChangeStart', (event, toState, toParams, fromState) ->
+        changeStartEvent = window.event
+        fromStateName = fromState.name
+        toStateName = toState.name
         NProgress.start()
     $rootScope.$on '$stateChangeSuccess', (event, toState) ->
         NProgress.done()
@@ -207,4 +213,10 @@ angular.module 'v.router', [
         NProgress.done()
         if not $v.user.is_login and toState.name isnt 'v.login'
             $state.go 'v.login'
+    $rootScope.$on '$viewContentLoaded', ->
+        return if changeStartEvent?.type is 'popstate'
+        if fromStateName? and toStateName?
+            return if fromStateName.replace(toStateName, '').indexOf('.') is 0
+            return if toStateName.replace(fromStateName, '').indexOf('.') is 0
+        window.scrollTo 0, 0
 ]
