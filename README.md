@@ -15,7 +15,8 @@ Victorique is memento for ヴィクトリカ of [GOSICK](http://www.gosick.tv/).
 
 
 
-##demo with curl
+##Example API Calls
+**curl**
 >```bash
 $ curl -XPOST https://victorique-demo.appspot.com/api/applications/2b0a8cc0-f156-11e3-ae66-bf0516da091e/logs --header "Content-Type:application/json" -d '
 {
@@ -28,6 +29,25 @@ $ curl -XPOST https://victorique-demo.appspot.com/api/applications/2b0a8cc0-f156
     "...": "..."
   }
 }'
+```
+
+**AngularJS & jQuery**
+>```coffee
+$http(args).error (data, status, headers, config) ->
+    document =
+        'Request Headers': config.headers
+        'Request Params': config.params
+        'Request Data': config.data
+        'Response Content': data
+        'Response Status': status
+    $.ajax
+        method: 'get'
+        dataType: 'jsonp'
+        url: 'https://victorique-demo.appspot.com/api/applications/#{yourAppKey}/logs'
+        data:
+            title: "#{config.method} #{location.origin}#{config.url} failed"
+            user: "#{@user.name} <#{@user.email}>"
+            document: JSON.stringify(document)
 ```
 
 
