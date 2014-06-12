@@ -22,18 +22,31 @@ body {
   padding-top: 60px;
 }
 
-/* line 21, ../sass/site/site.sass */
+/* line 20, ../sass/site/site.sass */
+.footer {
+  padding-top: 30px;
+}
+
+/* line 24, ../sass/site/site.sass */
 ul.nav-pills > li.active > a {
   background-color: #eeeeee;
   color: #2a6496;
 }
-/* line 24, ../sass/site/site.sass */
+/* line 27, ../sass/site/site.sass */
 ul.nav-pills > li.active > a:hover {
   background-color: #eeeeee;
   color: #2a6496;
 }
 
-/* line 28, ../sass/site/site.sass */
-.footer {
-  padding-top: 30px;
+/* line 31, ../sass/site/site.sass */
+pre {
+  overflow: auto;
+  word-wrap: normal;
+  white-space: pre;
+}
+
+/* line 35, ../sass/site/site.sass */
+table {
+  table-layout: fixed;
+  word-wrap: break-word;
 }
