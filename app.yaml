@@ -14,9 +14,10 @@ skip_files:
 - ^(.*/)?tests/.*
 - ^(.*/)?test\.py
 - ^README\.md
+- ^\.git/.*
 - ^\.gitignore
 - ^\.gitmodules
-- ^\.git/.*
+- ^submodules/.*
 - ^bower\.json
 - ^bower_components/.*
 - ^application/frontend/bower_components/.*
