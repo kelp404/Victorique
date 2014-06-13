@@ -1,5 +1,4 @@
 import json
-from google.appengine.api import mail
 from django.conf import settings
 from django.http.response import HttpResponse
 from application import utils
@@ -26,23 +25,7 @@ def invite_user(request):
     if not form.validate():
         raise Http400
 
-    users = UserModel.all().filter('email =', form.email.data).fetch(1)
-    if len(users):
-        # the user is exist
-        user = users[0]
-    else:
-        user = UserModel(
-            name=form.email.data,
-            email=form.email.data,
-            permission=UserPermission.normal,
-        )
-        user.save()
-        gae_account = getattr(settings, 'GAE_ACCOUNT')
-        domain = getattr(settings, 'HOST')
-        message = mail.EmailMessage(sender=gae_account, subject="%s has invited you to join Victorique." % request.user.name)
-        message.to = user.email
-        message.body = 'Victorique https://%s\n\nAccount: %s' % (domain, user.email)
-        message.send()
+    user = UserModel.invite_user(request, form.email.data)
     return JsonResponse(user)
 
 @authorization(UserPermission.root)

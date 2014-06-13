@@ -1,5 +1,5 @@
 from google.appengine.ext import db
-from google.appengine.api import users
+from google.appengine.api import users, mail
 from django.conf import settings
 from application import utils
 from application.models.datastore.base_model import BaseModel
@@ -56,6 +56,27 @@ class UserModel(BaseModel):
                 # register a new user
                 return cls.__register_user(google_user, UserPermission.normal)
         return UserModel()
+
+    @classmethod
+    def invite_user(cls, request, email):
+        users = UserModel.all().filter('email =', email).fetch(1)
+        if len(users):
+            # the user is exist
+            return users[0]
+        else:
+            user = UserModel(
+                name=email,
+                email=email,
+                permission=UserPermission.normal,
+            )
+            user.save()
+            gae_account = getattr(settings, 'GAE_ACCOUNT')
+            domain = getattr(settings, 'HOST')
+            message = mail.EmailMessage(sender=gae_account, subject="%s has invited you to join Victorique." % request.user.name)
+            message.to = user.email
+            message.body = 'Victorique https://%s\n\nAccount: %s' % (domain, user.email)
+            message.send()
+            return user
 
     @classmethod
     def __register_user(cls, google_user, permission=UserPermission.normal):
