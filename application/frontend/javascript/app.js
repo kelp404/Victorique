@@ -269,14 +269,7 @@
 }).call(this);
 
 (function() {
-  angular.module('v.directive', []).directive('vNavigation', function() {
-    return {
-      restrict: 'A',
-      templateUrl: '/views/shared/navigation.html',
-      replace: true,
-      controller: 'NavigationController'
-    };
-  }).directive('vSettingsMenu', [
+  angular.module('v.directive', []).directive('vSettingsMenu', [
     '$injector', function($injector) {
       var $v;
       $v = $injector.get('$v');
@@ -415,32 +408,6 @@
           }));
         }
         return _results;
-      }
-    };
-  }).directive('vScrollTo', function() {
-    return {
-      restrict: 'A',
-      link: function(scope, element) {
-        var link, _i, _len, _ref;
-        _ref = $(element).find('a');
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          link = _ref[_i];
-          $(link).click(function(event) {
-            var $target;
-            event.preventDefault();
-            $target = $($(this).attr('href'));
-            if (!$target.length) {
-              return;
-            }
-            $(element).find('li.active').removeClass('active');
-            $(this).parent('li').addClass('active');
-            return $('html,body').animate({
-              scrollTop: $target.offset().top - 60
-            }, 500, 'easeOutExpo', function() {
-              return $target.find('input:not([type=hidden]):first').select();
-            });
-          });
-        }
       }
     };
   });
