@@ -22,6 +22,22 @@ angular.module 'v.directive', []
     link: (scope, element) ->
         $(element).select()
 
+# ----------------------------------------
+# v-enter
+# ----------------------------------------
+.directive 'vEnter', ->
+    ###
+    Run the AngularJS expression when pressed `Enter`.
+    ###
+    restrict: 'A'
+    link: (scope, element, attrs) ->
+        element.bind 'keydown keypress', (e) ->
+            return if e.which isnt 13
+            e.preventDefault()
+            scope.$apply ->
+                scope.$eval attrs.vEnter,
+                    $event: e
+
 # ---------------------------------------------------------
 # v-modal
 # ---------------------------------------------------------
