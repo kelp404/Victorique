@@ -24,6 +24,7 @@
                 <div ng-if="application.app_key" class="form-group">
                     <label class="col-sm-2 control-label">App key</label>
                     <div class="col-sm-10">
+                        <button ng-click="updateAppKey()" class="btn btn-default btn-sm pull-right" type="button">Update app key</button>
                         <p class="form-control-static">{{ application.app_key }}</p>
                     </div>
                 </div>

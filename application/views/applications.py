@@ -54,7 +54,8 @@ def add_application(request):
 @authorization(UserPermission.root, UserPermission.normal)
 def update_application(request, application_id):
     form = ApplicationForm(**json.loads(request.body))
-    if not form.validate():
+    # if form.app_key.data is True -> update app key.
+    if not form.app_key.data and not form.validate():
         raise Http400
 
     application = ApplicationModel.get_by_id(long(application_id))
@@ -62,8 +63,11 @@ def update_application(request, application_id):
         raise Http404
     if request.user.key().id() not in application.root_ids:
         raise Http403
-    application.title = form.title.data
-    application.description = form.description.data
+    if form.app_key.data:
+        application.app_key = str(uuid.uuid1())
+    else:
+        application.title = form.title.data
+        application.description = form.description.data
     application.put()
     return JsonResponse(application)
 

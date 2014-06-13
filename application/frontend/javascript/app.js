@@ -176,12 +176,30 @@
           });
         }
       };
-      return $scope.submit = function() {
+      $scope.submit = function() {
         return $validator.validate($scope, 'application').success(function() {
+          var data;
           NProgress.start();
-          return $v.api.application.updateApplication($scope.application).success(function() {
+          data = {
+            id: $scope.application.id,
+            title: $scope.application.title,
+            description: $scope.application.description
+          };
+          return $v.api.application.updateApplication(data).success(function() {
             return $scope.modal.hide();
           });
+        });
+      };
+      return $scope.updateAppKey = function() {
+        var data;
+        NProgress.start();
+        data = {
+          id: $scope.application.id,
+          app_key: true
+        };
+        return $v.api.application.updateApplication(data).success(function(application) {
+          $scope.application.app_key = application.app_key;
+          return NProgress.done();
         });
       };
     }

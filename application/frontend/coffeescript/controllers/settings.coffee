@@ -72,8 +72,20 @@ angular.module 'v.controllers.settings', []
     $scope.submit = ->
         $validator.validate($scope, 'application').success ->
             NProgress.start()
-            $v.api.application.updateApplication($scope.application).success ->
+            data =
+                id: $scope.application.id
+                title: $scope.application.title
+                description: $scope.application.description
+            $v.api.application.updateApplication(data).success ->
                 $scope.modal.hide()
+    $scope.updateAppKey = ->
+        NProgress.start()
+        data =
+            id: $scope.application.id
+            app_key: yes
+        $v.api.application.updateApplication(data).success (application) ->
+            $scope.application.app_key = application.app_key
+            NProgress.done()
 ]
 
 .controller 'SettingsUsersController', ['$scope', '$injector', 'users', ($scope, $injector, users) ->
