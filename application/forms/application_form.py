@@ -1,4 +1,5 @@
 from wtforms import Form, StringField, BooleanField, validators
+from application.forms import ArrayField
 
 
 class ApplicationForm(Form):
@@ -15,3 +16,5 @@ class ApplicationForm(Form):
     app_key = BooleanField(
         default=False
     )
+    member_ids = ArrayField()
+    root_ids = ArrayField()

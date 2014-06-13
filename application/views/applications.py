@@ -6,8 +6,9 @@ from application.responses import JsonResponse
 from application.decorators import authorization
 from application.forms.search_form import SearchForm
 from application.forms.application_form import ApplicationForm
+from application.forms.user_form import UserForm
 from application.models.dto.page_list import PageList
-from application.models.datastore.user_model import UserPermission
+from application.models.datastore.user_model import UserModel, UserPermission
 from application.models.datastore.application_model import ApplicationModel
 
 
@@ -33,7 +34,28 @@ def get_application(request, application_id):
     application = ApplicationModel.get_by_id(long(application_id))
     if application is None:
         raise Http404
-    return JsonResponse(application)
+    if request.user.permission != UserPermission.root and\
+                    request.user.key().id() not in application.member_ids:
+        raise Http403
+    result = application.dict()
+    result['members'] = [x.dict() for x in UserModel.get_by_id(application.member_ids)]
+    return JsonResponse(result)
+
+@authorization(UserPermission.root, UserPermission.normal)
+def add_application_member(request, application_id):
+    form = UserForm(name='invite', **json.loads(request.body))
+    if not form.validate():
+        raise Http400
+    application = ApplicationModel.get_by_id(long(application_id))
+    if application is None:
+        raise Http404
+    if request.user.permission != UserPermission.root and\
+                    request.user.key().id() not in application.root_ids:
+        raise Http403
+    user = UserModel.invite_user(request, form.email.data)
+    application.member_ids.append(user.key().id())
+    application.save()
+    return JsonResponse(user)
 
 @authorization(UserPermission.root, UserPermission.normal)
 def add_application(request):
@@ -61,13 +83,16 @@ def update_application(request, application_id):
     application = ApplicationModel.get_by_id(long(application_id))
     if application is None:
         raise Http404
-    if request.user.key().id() not in application.root_ids:
+    if request.user.permission != UserPermission.root and\
+                    request.user.key().id() not in application.root_ids:
         raise Http403
     if form.app_key.data:
         application.app_key = str(uuid.uuid1())
     else:
         application.title = form.title.data
         application.description = form.description.data
+        application.member_ids = form.member_ids.data
+        application.root_ids = form.root_ids.data
     application.put()
     return JsonResponse(application)
 
@@ -76,7 +101,8 @@ def delete_application(request, application_id):
     application = ApplicationModel.get_by_id(long(application_id))
     if application is None:
         raise Http404
-    if request.user.key().id() not in application.root_ids:
+    if request.user.permission != UserPermission.root and\
+                    request.user.key().id() not in application.root_ids:
         raise Http403
     application.delete()
     return HttpResponse()

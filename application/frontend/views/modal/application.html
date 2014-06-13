@@ -28,6 +28,41 @@
                         <p class="form-control-static">{{ application.app_key }}</p>
                     </div>
                 </div>
+                <div ng-show="mode=='edit'" class="form-group">
+                    <label class="col-sm-2 control-label">Members</label>
+                    <div class="col-sm-10">
+                        <table class="table table-condensed table-hover">
+                            <tbody>
+                            <tr ng-repeat="member in application.members">
+                                <td>{{ member.name }} &lt;{{ member.email }}&gt;</td>
+                                <td width="60px;">
+                                    <label class="checkbox-inline" style="padding-top: 0;">
+                                        <input ng-model="member.isRoot"
+                                               ng-disabled="member.isRoot && application.root_ids.length==1"
+                                               type="checkbox"/>
+                                        root
+                                    </label>
+                                </td>
+                                <td width="36px;">
+                                    <a ng-click="memberService.removeMember($event, member.id)"
+                                       ng-hide="(member.isRoot && application.root_ids.length==1) || application.member_ids.length == 1"
+                                       href="/settings/applications/{{ application.id }}/members/{{ member.id }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="input-group col-sm-6 form-group" style="padding-left: 15px;">
+                            <input ng-model="memberService.email"
+                                   validator='/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
+                                   v-enter="memberService.invite($event)"
+                                   type="text" class="form-control input-sm" placeholder="email@gmail.com"/>
+                            <span class="input-group-btn">
+                                <button ng-click="memberService.invite($event)" class="btn btn-default btn-sm" type="button"><i class="fa fa-plus fa-fw"></i> Invite</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button ng-click="submit()"

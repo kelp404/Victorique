@@ -106,6 +106,12 @@ angular.module 'v.provider', []
                     params:
                         index: index
                         all: all
+            addApplicationMember: (applicationId, email) =>
+                @http
+                    method: 'post'
+                    url: "/settings/applications/#{applicationId}/members"
+                    data:
+                        email: email
             addApplication: (application) =>
                 ###
                 @param application:

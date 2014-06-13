@@ -61,9 +61,18 @@ angular.module 'v.controllers.settings', []
     $v = $injector.get '$v'
     $validator = $injector.get '$validator'
     $state = $injector.get '$state'
+    $timeout = $injector.get '$timeout'
 
     $scope.mode = 'edit'
     $scope.application = application
+    for member in application.members
+        member.isRoot = member.id in application.root_ids
+    $scope.$watch 'application.members', ->
+        root_ids = []
+        for member in $scope.application.members when member.isRoot
+            root_ids.push member.id
+        $scope.application.root_ids = root_ids
+    , yes
     $scope.modal =
         autoShow: yes
         hide: ->
@@ -76,8 +85,34 @@ angular.module 'v.controllers.settings', []
                 id: $scope.application.id
                 title: $scope.application.title
                 description: $scope.application.description
+                member_ids: $scope.application.member_ids
+                root_ids: $scope.application.root_ids
             $v.api.application.updateApplication(data).success ->
                 $scope.modal.hide()
+    $scope.memberService =
+        email: ''
+        invite: ($event) ->
+            $event.preventDefault()
+            $validator.validate($scope, 'memberService').success ->
+                NProgress.start()
+                $v.api.application.addApplicationMember($scope.application.id, $scope.memberService.email).success (member) ->
+                    NProgress.done()
+                    $scope.application.member_ids.push member.id
+                    $scope.application.members.push member
+                    $scope.memberService.email = ''
+                    $timeout -> $validator.reset $scope, 'memberService'
+        removeMember: ($event, memberId) ->
+            $event.preventDefault()
+            for index in [0...$scope.application.members.length] when $scope.application.members[index].id is memberId
+                $scope.application.members.splice index, 1
+                break
+            for index in [0...$scope.application.member_ids.length] when $scope.application.member_ids[index] is memberId
+                $scope.application.member_ids.splice index, 1
+                break
+            for index in [0...$scope.application.root_ids.length] when $scope.application.root_ids[index] is memberId
+                $scope.application.root_ids.splice index, 1
+                break
+            return
     $scope.updateAppKey = ->
         NProgress.start()
         data =

@@ -56,6 +56,10 @@ urlpatterns = patterns('',
         PUT=update_application,
         DELETE=delete_application,
     )),
+    # /settings/applications/<application_id>/members
+    url(r'^settings/applications/(?P<application_id>[0-9]{1,32})/members$', api_dispatch(
+        POST=add_application_member,
+    )),
     # /settings/users
     url(r'^settings/users$', api_dispatch(
         GET=get_users,

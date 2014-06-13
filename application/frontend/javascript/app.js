@@ -80,6 +80,8 @@
 }).call(this);
 
 (function() {
+  var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
   angular.module('v.controllers.settings', []).controller('SettingsController', [
     '$scope', '$injector', function($scope, $injector) {
       var $state;
@@ -161,12 +163,30 @@
     }
   ]).controller('SettingsApplicationController', [
     '$scope', '$injector', 'application', function($scope, $injector, application) {
-      var $state, $v, $validator;
+      var $state, $timeout, $v, $validator, member, _i, _len, _ref, _ref1;
       $v = $injector.get('$v');
       $validator = $injector.get('$validator');
       $state = $injector.get('$state');
+      $timeout = $injector.get('$timeout');
       $scope.mode = 'edit';
       $scope.application = application;
+      _ref = application.members;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        member = _ref[_i];
+        member.isRoot = (_ref1 = member.id, __indexOf.call(application.root_ids, _ref1) >= 0);
+      }
+      $scope.$watch('application.members', function() {
+        var root_ids, _j, _len1, _ref2;
+        root_ids = [];
+        _ref2 = $scope.application.members;
+        for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+          member = _ref2[_j];
+          if (member.isRoot) {
+            root_ids.push(member.id);
+          }
+        }
+        return $scope.application.root_ids = root_ids;
+      }, true);
       $scope.modal = {
         autoShow: true,
         hide: function() {},
@@ -183,12 +203,57 @@
           data = {
             id: $scope.application.id,
             title: $scope.application.title,
-            description: $scope.application.description
+            description: $scope.application.description,
+            member_ids: $scope.application.member_ids,
+            root_ids: $scope.application.root_ids
           };
           return $v.api.application.updateApplication(data).success(function() {
             return $scope.modal.hide();
           });
         });
+      };
+      $scope.memberService = {
+        email: '',
+        invite: function($event) {
+          $event.preventDefault();
+          return $validator.validate($scope, 'memberService').success(function() {
+            NProgress.start();
+            return $v.api.application.addApplicationMember($scope.application.id, $scope.memberService.email).success(function(member) {
+              NProgress.done();
+              $scope.application.member_ids.push(member.id);
+              $scope.application.members.push(member);
+              $scope.memberService.email = '';
+              return $timeout(function() {
+                return $validator.reset($scope, 'memberService');
+              });
+            });
+          });
+        },
+        removeMember: function($event, memberId) {
+          var index, _j, _k, _l, _ref2, _ref3, _ref4;
+          $event.preventDefault();
+          for (index = _j = 0, _ref2 = $scope.application.members.length; 0 <= _ref2 ? _j < _ref2 : _j > _ref2; index = 0 <= _ref2 ? ++_j : --_j) {
+            if (!($scope.application.members[index].id === memberId)) {
+              continue;
+            }
+            $scope.application.members.splice(index, 1);
+            break;
+          }
+          for (index = _k = 0, _ref3 = $scope.application.member_ids.length; 0 <= _ref3 ? _k < _ref3 : _k > _ref3; index = 0 <= _ref3 ? ++_k : --_k) {
+            if (!($scope.application.member_ids[index] === memberId)) {
+              continue;
+            }
+            $scope.application.member_ids.splice(index, 1);
+            break;
+          }
+          for (index = _l = 0, _ref4 = $scope.application.root_ids.length; 0 <= _ref4 ? _l < _ref4 : _l > _ref4; index = 0 <= _ref4 ? ++_l : --_l) {
+            if (!($scope.application.root_ids[index] === memberId)) {
+              continue;
+            }
+            $scope.application.root_ids.splice(index, 1);
+            break;
+          }
+        }
       };
       return $scope.updateAppKey = function() {
         var data;
@@ -306,6 +371,27 @@
       restrict: 'A',
       link: function(scope, element) {
         return $(element).select();
+      }
+    };
+  }).directive('vEnter', function() {
+    return {
+
+      /*
+      Run the AngularJS expression when pressed `Enter`.
+       */
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        return element.bind('keydown keypress', function(e) {
+          if (e.which !== 13) {
+            return;
+          }
+          e.preventDefault();
+          return scope.$apply(function() {
+            return scope.$eval(attrs.vEnter, {
+              $event: e
+            });
+          });
+        });
       }
     };
   }).directive('vModal', function() {
@@ -620,6 +706,17 @@
               params: {
                 index: index,
                 all: all
+              }
+            });
+          };
+        })(this),
+        addApplicationMember: (function(_this) {
+          return function(applicationId, email) {
+            return _this.http({
+              method: 'post',
+              url: "/settings/applications/" + applicationId + "/members",
+              data: {
+                email: email
               }
             });
           };
