@@ -8,29 +8,22 @@ threadsafe: yes
 skip_files:
 - ^(.*/)?#.*#
 - ^(.*/)?.*~
-- ^(.*/)?.*\.py[co]
 - ^(.*/)?\..*
-- ^(.*/)?\.DS_Store
-- ^(.*/)?tests/.*
-- ^(.*/)?test\.py
-- ^README\.md
-- ^\.git/.*
-- ^\.gitignore
-- ^\.gitmodules
-- ^submodules/.*
-- ^bower\.json
-- ^bower_components/.*
-- ^application/frontend/bower_components/.*
-- ^package\.json
-- ^pip_requirements\.txt
-- ^\node_modules/.*
-- ^\.idea/.*
-- ^_images/.*
+- ^(.*/)?.*\.py[co]
 - ^(.*/)?.*\.coffee
 - ^(.*/)?.*\.scss
 - ^(.*/)?.*\.sass
 - ^(.*/)?.*\.rb
-- ^\.sass-cache/.*
+- ^(.*/)?tests/.*
+- ^(.*/)?test\.py
+- ^application/frontend/bower_components/.*
+- ^bower_components/.*
+- ^node_modules/.*
+- ^submodules/.*
+- ^bower\.json
+- ^package\.json
+- ^pip_requirements\.txt
+- ^README\.md
 
 
 handlers:
