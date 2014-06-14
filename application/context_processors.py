@@ -1,6 +1,6 @@
 from application import utils
 
-def settings(context):
+def debug(request):
     return {
-        'DEBUG': utils.is_debug()
+        'debug': utils.is_debug()
     }
