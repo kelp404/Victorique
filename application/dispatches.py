@@ -1,4 +1,4 @@
-from application.exceptions import *
+from application.exceptions import ApplicationException, method_not_allowed
 from application.views.base import base_view
 
 
