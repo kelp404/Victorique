@@ -81,7 +81,7 @@ USE_TZ = True
 # STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = (
-    (BASE_DIR + '/application/templates/'),
+    (os.path.join(BASE_DIR, 'application', 'templates')),
 )
 
 TEMPLATE_LOADERS = (
