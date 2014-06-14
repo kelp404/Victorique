@@ -35,7 +35,7 @@
                             <tbody>
                             <tr ng-repeat="member in application.members">
                                 <td>{{ member.name }} &lt;{{ member.email }}&gt;</td>
-                                <td width="60px;">
+                                <td width="60px">
                                     <label class="checkbox-inline" style="padding-top: 0;">
                                         <input ng-model="member.isRoot"
                                                ng-disabled="member.isRoot && application.root_ids.length==1"
@@ -43,7 +43,7 @@
                                         root
                                     </label>
                                 </td>
-                                <td width="36px;">
+                                <td width="36px">
                                     <a ng-click="memberService.removeMember($event, member.id)"
                                        ng-hide="(member.isRoot && application.root_ids.length==1) || application.member_ids.length == 1"
                                        href="/settings/applications/{{ application.id }}/members/{{ member.id }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
