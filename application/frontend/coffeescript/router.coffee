@@ -33,8 +33,10 @@ angular.module 'v.router', [
         url: '/login'
         resolve:
             title: -> 'Login - '
-        templateUrl: '/views/login.html'
-        controller: 'LoginController'
+        views:
+            content:
+                templateUrl: '/views/login.html'
+                controller: 'LoginController'
 
     # ---------------------------------------------------------
     # /applications
@@ -51,8 +53,10 @@ angular.module 'v.router', [
                 $v.api.log.getLogs().then (response) ->
                     response.data
             ]
-        templateUrl: '/views/log/list.html'
-        controller: 'LogsController'
+        views:
+            content:
+                templateUrl: '/views/log/list.html'
+                controller: 'LogsController'
     # ---------------------------------------------------------
     # /applications/:applicationId/logs
     # ---------------------------------------------------------
@@ -68,8 +72,10 @@ angular.module 'v.router', [
                 $v.api.log.getLogs($stateParams.applicationId, $stateParams.index, $stateParams.keyword).then (response) ->
                     response.data
             ]
-        templateUrl: '/views/log/list.html'
-        controller: 'LogsController'
+        views:
+            content:
+                templateUrl: '/views/log/list.html'
+                controller: 'LogsController'
     # ---------------------------------------------------------
     # /applications/:applicationId/logs/:logId
     # ---------------------------------------------------------
@@ -85,8 +91,10 @@ angular.module 'v.router', [
                 $v.api.log.getLog($stateParams.applicationId, $stateParams.logId).then (response) ->
                     response.data
             ]
-        templateUrl: '/views/log/detail.html'
-        controller: 'LogController'
+        views:
+            content:
+                templateUrl: '/views/log/detail.html'
+                controller: 'LogController'
 
     # ---------------------------------------------------------
     # /settings
@@ -107,8 +115,13 @@ angular.module 'v.router', [
                 $v.api.settings.getProfile().then (response) ->
                     response.data
             ]
-        templateUrl: '/views/settings/profile.html'
-        controller: 'SettingsProfileController'
+        views:
+            menu:
+                templateUrl: '/views/settings/menu.html'
+                controller: 'SettingsMenuController'
+            content:
+                templateUrl: '/views/settings/profile.html'
+                controller: 'SettingsProfileController'
 
     # ---------------------------------------------------------
     # /settings/applications
@@ -121,8 +134,13 @@ angular.module 'v.router', [
                 $v.api.application.getApplications($stateParams.index).then (response) ->
                     response.data
             ]
-        templateUrl: '/views/settings/applications.html'
-        controller: 'SettingsApplicationsController'
+        views:
+            menu:
+                templateUrl: '/views/settings/menu.html'
+                controller: 'SettingsMenuController'
+            content:
+                templateUrl: '/views/settings/applications.html'
+                controller: 'SettingsApplicationsController'
     # ---------------------------------------------------------
     # /settings/applications/new
     # ---------------------------------------------------------
@@ -157,8 +175,13 @@ angular.module 'v.router', [
                 $v.api.user.getUsers($stateParams.index).then (response) ->
                     response.data
             ]
-        templateUrl: '/views/settings/users.html'
-        controller: 'SettingsUsersController'
+        views:
+            menu:
+                templateUrl: '/views/settings/menu.html'
+                controller: 'SettingsMenuController'
+            content:
+                templateUrl: '/views/settings/users.html'
+                controller: 'SettingsUsersController'
     # ---------------------------------------------------------
     # /settings/users/new
     # ---------------------------------------------------------

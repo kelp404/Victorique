@@ -88,6 +88,12 @@
       $state = $injector.get('$state');
       return $state.go('v.settings-profile');
     }
+  ]).controller('SettingsMenuController', [
+    '$scope', '$injector', function($scope, $injector) {
+      var $v;
+      $v = $injector.get('$v');
+      return $scope.isRoot = $v.user.permission === 1;
+    }
   ]).controller('SettingsProfileController', [
     '$scope', '$injector', 'profile', function($scope, $injector, profile) {
       var $v, $validator;
@@ -352,21 +358,7 @@
 }).call(this);
 
 (function() {
-  angular.module('v.directive', []).directive('vSettingsMenu', [
-    '$injector', function($injector) {
-      var $v;
-      $v = $injector.get('$v');
-      return {
-        restrict: 'A',
-        templateUrl: '/views/settings/menu.html',
-        replace: true,
-        link: function(scope, element, attrs) {
-          scope.options = scope.$eval(attrs.vSettingsMenu);
-          return scope.isRoot = $v.user.permission === 1;
-        }
-      };
-    }
-  ]).directive('vFocus', function() {
+  angular.module('v.directive', []).directive('vFocus', function() {
     return {
       restrict: 'A',
       link: function(scope, element) {
@@ -800,8 +792,12 @@
             return 'Login - ';
           }
         },
-        templateUrl: '/views/login.html',
-        controller: 'LoginController'
+        views: {
+          content: {
+            templateUrl: '/views/login.html',
+            controller: 'LoginController'
+          }
+        }
       });
       $stateProvider.state('v.log-default', {
         url: '/applications',
@@ -824,8 +820,12 @@
             }
           ]
         },
-        templateUrl: '/views/log/list.html',
-        controller: 'LogsController'
+        views: {
+          content: {
+            templateUrl: '/views/log/list.html',
+            controller: 'LogsController'
+          }
+        }
       });
       $stateProvider.state('v.log-list', {
         url: '/applications/:applicationId/logs?index?keyword',
@@ -848,8 +848,12 @@
             }
           ]
         },
-        templateUrl: '/views/log/list.html',
-        controller: 'LogsController'
+        views: {
+          content: {
+            templateUrl: '/views/log/list.html',
+            controller: 'LogsController'
+          }
+        }
       });
       $stateProvider.state('v.log-detail', {
         url: '/applications/:applicationId/logs/:logId',
@@ -872,8 +876,12 @@
             }
           ]
         },
-        templateUrl: '/views/log/detail.html',
-        controller: 'LogController'
+        views: {
+          content: {
+            templateUrl: '/views/log/detail.html',
+            controller: 'LogController'
+          }
+        }
       });
       $stateProvider.state('v.settings', {
         url: '/settings',
@@ -898,8 +906,16 @@
             }
           ]
         },
-        templateUrl: '/views/settings/profile.html',
-        controller: 'SettingsProfileController'
+        views: {
+          menu: {
+            templateUrl: '/views/settings/menu.html',
+            controller: 'SettingsMenuController'
+          },
+          content: {
+            templateUrl: '/views/settings/profile.html',
+            controller: 'SettingsProfileController'
+          }
+        }
       });
       $stateProvider.state('v.settings-applications', {
         url: '/settings/applications?index',
@@ -915,8 +931,16 @@
             }
           ]
         },
-        templateUrl: '/views/settings/applications.html',
-        controller: 'SettingsApplicationsController'
+        views: {
+          menu: {
+            templateUrl: '/views/settings/menu.html',
+            controller: 'SettingsMenuController'
+          },
+          content: {
+            templateUrl: '/views/settings/applications.html',
+            controller: 'SettingsApplicationsController'
+          }
+        }
       });
       $stateProvider.state('v.settings-applications.new', {
         url: '/new',
@@ -959,8 +983,16 @@
             }
           ]
         },
-        templateUrl: '/views/settings/users.html',
-        controller: 'SettingsUsersController'
+        views: {
+          menu: {
+            templateUrl: '/views/settings/menu.html',
+            controller: 'SettingsMenuController'
+          },
+          content: {
+            templateUrl: '/views/settings/users.html',
+            controller: 'SettingsUsersController'
+          }
+        }
       });
       $stateProvider.state('v.settings-users.new', {
         url: '/new',

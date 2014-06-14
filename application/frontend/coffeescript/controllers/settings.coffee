@@ -5,6 +5,12 @@ angular.module 'v.controllers.settings', []
     $state.go 'v.settings-profile'
 ]
 
+.controller 'SettingsMenuController', ['$scope', '$injector', ($scope, $injector) ->
+    $v = $injector.get '$v'
+
+    $scope.isRoot = $v.user.permission is 1
+]
+
 .controller 'SettingsProfileController', ['$scope', '$injector', 'profile', ($scope, $injector, profile) ->
     $v = $injector.get '$v'
     $validator = $injector.get '$validator'
