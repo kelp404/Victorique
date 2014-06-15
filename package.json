@@ -11,11 +11,11 @@
     "grunt-contrib-cssmin": "^0.10.0",
     "grunt-contrib-uglify": "^0.5.0",
     "grunt-contrib-watch": "~0.6.1",
-    "grunt-karma": "^0.8.2",
-    "karma": "^0.12.1",
+    "grunt-karma": "^0.8.3",
+    "karma": "^0.12.16",
     "karma-coffee-preprocessor": "^0.2.1",
-    "karma-jasmine": "^0.1.5",
-    "karma-phantomjs-launcher": "^0.1.2"
+    "karma-jasmine": "^0.2.2",
+    "karma-phantomjs-launcher": "^0.1.4"
   },
   "repository": {
     "type": "git",
