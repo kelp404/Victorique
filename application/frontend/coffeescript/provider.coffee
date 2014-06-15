@@ -18,7 +18,7 @@ angular.module 'v.provider', []
     # -----------------------------------------------------
     # public methods
     # -----------------------------------------------------
-    @user = window.user
+    @user = window.user ? {}
     @user.isLogin = @user.id?
     @url = window.url
 

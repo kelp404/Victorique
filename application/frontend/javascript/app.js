@@ -532,7 +532,7 @@
 
 (function() {
   angular.module('v.provider', []).provider('$v', function() {
-    var $http, $injector, $rootScope;
+    var $http, $injector, $rootScope, _ref;
     $injector = null;
     $http = null;
     $rootScope = null;
@@ -542,7 +542,7 @@
       $rootScope = $injector.get('$rootScope');
       return $rootScope.$confirmModal = {};
     };
-    this.user = window.user;
+    this.user = (_ref = window.user) != null ? _ref : {};
     this.user.isLogin = this.user.id != null;
     this.url = window.url;
     this.alert = {
