@@ -38,7 +38,7 @@ def get_application(request, application_id):
                     request.user.key().id() not in application.member_ids:
         raise Http403
     result = application.dict()
-    result['members'] = [x.dict() for x in UserModel.get_by_id(application.member_ids)]
+    result['members'] = [x.dict() for x in UserModel.get_by_id(application.member_ids) if not x is None]
     return JsonResponse(result)
 
 @authorization(UserPermission.root, UserPermission.normal)

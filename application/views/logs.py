@@ -149,7 +149,7 @@ def __add_log(request, application_key, args):
         domain = getattr(settings, 'HOST')
         users = UserModel.get_by_id(application.member_ids)
         message = mail.EmailMessage(sender=gae_account, subject="%s has a new log at Victorique." % application.title)
-        message.to = [x.email for x in users]
+        message.to = [x.email for x in users if not x is None]
         message.body = 'There is a new log at Victorique.\nhttps://%s/applications/%s/logs/%s' % (domain, application.key().id(), log.key().id())
         message.send()
 
