@@ -86,7 +86,7 @@
     '$scope', '$injector', function($scope, $injector) {
       var $state;
       $state = $injector.get('$state');
-      return $state.go('v.settings-profile');
+      return $state.go('v.settings-applications');
     }
   ]).controller('SettingsMenuController', [
     '$scope', '$injector', function($scope, $injector) {
@@ -787,7 +787,11 @@
       });
       $stateProvider.state('v.index', {
         url: '/',
-        controller: 'IndexController'
+        views: {
+          content: {
+            controller: 'IndexController'
+          }
+        }
       });
       $stateProvider.state('v.login', {
         url: '/login',

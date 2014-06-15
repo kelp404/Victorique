@@ -2,7 +2,7 @@ angular.module 'v.controllers.settings', []
 
 .controller 'SettingsController', ['$scope', '$injector', ($scope, $injector) ->
     $state = $injector.get '$state'
-    $state.go 'v.settings-profile'
+    $state.go 'v.settings-applications'
 ]
 
 .controller 'SettingsMenuController', ['$scope', '$injector', ($scope, $injector) ->
