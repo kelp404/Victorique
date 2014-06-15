@@ -16,7 +16,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 GAE_ACCOUNT = 'kelp.phate@gmail.com'
 HOST = 'victorique-demo.appspot.com'
 LOG_EXPIRATION = 30 # days
-ALLOW_REGISTER = False
+ALLOW_REGISTER = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
