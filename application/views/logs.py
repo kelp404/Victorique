@@ -1,7 +1,8 @@
 import json, os
-from google.appengine.api import search
 from datetime import datetime
+from google.appengine.api import search, mail
 from django.http.response import HttpResponse
+from django.conf import settings
 from application import utils
 from application.exceptions import Http400, Http404, Http403
 from application.responses import JsonResponse
@@ -9,7 +10,7 @@ from application.decorators import authorization
 from application.forms.log_form import LogForm
 from application.forms.search_form import SearchForm
 from application.models.dto.page_list import PageList
-from application.models.datastore.user_model import UserPermission
+from application.models.datastore.user_model import UserModel, UserPermission
 from application.models.datastore.application_model import ApplicationModel
 from application.models.datastore.log_model import LogModel
 
@@ -142,6 +143,15 @@ def __add_log(request, application_key, args):
     log.user_agent = request.META.get('HTTP_USER_AGENT')
     log.ip = os.environ.get('REMOTE_ADDR')
     log.put()
+    if log.count == 1 and application.email_notification:
+        # send email notification to members
+        gae_account = getattr(settings, 'GAE_ACCOUNT')
+        domain = getattr(settings, 'HOST')
+        users = UserModel.get_by_id(application.member_ids)
+        message = mail.EmailMessage(sender=gae_account, subject="%s has a new log at Victorique." % application.title)
+        message.to = [x.email for x in users]
+        message.body = 'There is a new log at Victorique.\nhttps://%s/applications/%s/logs/%s' % (domain, application.key().id(), log.key().id())
+        message.send()
 
     index = search.Index(namespace='Logs', name=str(application.key().id()))
     search_document = search.Document(doc_id=str(log.key().id()),

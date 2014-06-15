@@ -52,6 +52,7 @@ angular.module 'v.controllers.settings', []
     $scope.application =
         title: ''
         description: ''
+        email_notification: yes
     $scope.modal =
         autoShow: yes
         hide: ->
@@ -93,6 +94,7 @@ angular.module 'v.controllers.settings', []
                 description: $scope.application.description
                 member_ids: $scope.application.member_ids
                 root_ids: $scope.application.root_ids
+                email_notification: $scope.application.email_notification
             $v.api.application.updateApplication(data).success ->
                 $scope.modal.hide()
     $scope.memberService =

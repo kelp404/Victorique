@@ -147,7 +147,8 @@
       $scope.mode = 'new';
       $scope.application = {
         title: '',
-        description: ''
+        description: '',
+        email_notification: true
       };
       $scope.modal = {
         autoShow: true,
@@ -211,7 +212,8 @@
             title: $scope.application.title,
             description: $scope.application.description,
             member_ids: $scope.application.member_ids,
-            root_ids: $scope.application.root_ids
+            root_ids: $scope.application.root_ids,
+            email_notification: $scope.application.email_notification
           };
           return $v.api.application.updateApplication(data).success(function() {
             return $scope.modal.hide();

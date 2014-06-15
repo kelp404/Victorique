@@ -68,6 +68,7 @@ def add_application(request):
         description=form.description.data,
         root_ids=[request.user.key().id()],
         member_ids=[request.user.key().id()],
+        email_notification=form.email_notification.data,
         app_key=str(uuid.uuid1()),
     )
     application.put()
@@ -93,6 +94,7 @@ def update_application(request, application_id):
         application.description = form.description.data
         application.member_ids = form.member_ids.data
         application.root_ids = form.root_ids.data
+        application.email_notification = form.email_notification.data
     application.put()
     return JsonResponse(application)
 
