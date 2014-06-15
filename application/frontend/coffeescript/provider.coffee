@@ -148,5 +148,4 @@ angular.module 'v.provider', []
         alert: @alert
         api: @api
     ]
-
     return

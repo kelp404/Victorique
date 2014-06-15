@@ -215,10 +215,6 @@ angular.module 'v.router', [
     $rootScope.$stateParams = $stateParams
     $rootScope.$state = $state
 
-    # setup NProgress
-    NProgress.configure
-        showSpinner: no
-
     # ui.router state change event
     changeStartEvent = null
     fromStateName = null

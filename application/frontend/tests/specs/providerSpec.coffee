@@ -6,6 +6,8 @@ describe 'v.provider', ->
     beforeEach ->
         # mock NProgress
         window.NProgress =
+            start: ->
+            done: ->
             configure: ->
         fakeModule = angular.module 'fakeModule', ['v']
         fakeModule.config ($vProvider) ->
@@ -47,6 +49,21 @@ describe 'v.provider', ->
                 message: 'message'
                 expire: 3000
 
+    describe 'vProvider.http', ->
+        it 'vProvider.http is $http', inject ($httpBackend) ->
+            $httpBackend.whenGET('/views/shared/layout.html').respond '' # ui-router
+            $httpBackend.whenGET('/views/login.html').respond '' # ui-router
+            $httpBackend.whenGET('/').respond 'result'
+            successSpy = jasmine.createSpy 'success'
+            vProvider.http
+                method: 'get'
+                url: '/'
+            .success (result) ->
+                successSpy()
+                expect(result).toEqual 'result'
+            $httpBackend.flush()
+            expect(successSpy).toHaveBeenCalled()
+
     describe '$v.api.settings', ->
         it '$v.api.settings.getProfile() should call vProvider.http()', inject ($v) ->
             spyOn vProvider, 'http'
@@ -54,6 +71,15 @@ describe 'v.provider', ->
             expect(vProvider.http).toHaveBeenCalledWith
                 method: 'get'
                 url: '/settings/profile'
+        it '$v.api.settings.updateProfile() should call vProvider.http()', inject ($v) ->
+            spyOn vProvider, 'http'
+            profile =
+                name: 'Kelp'
+            $v.api.settings.updateProfile profile
+            expect(vProvider.http).toHaveBeenCalledWith
+                method: 'put'
+                url: '/settings/profile'
+                data: profile
 
 
     describe '$v', ->
