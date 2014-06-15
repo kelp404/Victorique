@@ -900,7 +900,9 @@
             return 'Settings - ';
           }
         },
-        controller: 'SettingsController'
+        views: content({
+          controller: 'SettingsController'
+        })
       });
       $stateProvider.state('v.settings-profile', {
         url: '/settings/profile',

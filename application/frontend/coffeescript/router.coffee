@@ -105,7 +105,9 @@ angular.module 'v.router', [
         url: '/settings'
         resolve:
             title: -> 'Settings - '
-        controller: 'SettingsController'
+        views:
+            content
+                controller: 'SettingsController'
     # ---------------------------------------------------------
     # /settings/profile
     # ---------------------------------------------------------
