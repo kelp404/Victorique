@@ -22,7 +22,6 @@ class UserModel(BaseModel):
 
     def dict(self):
         return {
-            'is_login': self.is_login,
             'id': self.key().id() if self.has_key() else None,
             'name': self.name,
             'email': self.email,

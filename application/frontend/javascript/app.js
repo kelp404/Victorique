@@ -9,7 +9,7 @@
       var $state, $v;
       $v = $injector.get('$v');
       $state = $injector.get('$state');
-      if ($v.user.is_login) {
+      if ($v.user.isLogin) {
         return $state.go('v.log-default');
       } else {
         return $stae.go('v.login');
@@ -543,6 +543,7 @@
       return $rootScope.$confirmModal = {};
     };
     this.user = window.user;
+    this.user.isLogin = this.user.id != null;
     this.url = window.url;
     this.alert = {
       saved: function(message) {
@@ -1045,13 +1046,13 @@
       });
       $rootScope.$on('$stateChangeSuccess', function(event, toState) {
         NProgress.done();
-        if (!$v.user.is_login && toState.name !== 'v.login') {
+        if (!$v.user.isLogin && toState.name !== 'v.login') {
           return $state.go('v.login');
         }
       });
       $rootScope.$on('$stateChangeError', function(event, toState) {
         NProgress.done();
-        if (!$v.user.is_login && toState.name !== 'v.login') {
+        if (!$v.user.isLogin && toState.name !== 'v.login') {
           return $state.go('v.login');
         }
       });

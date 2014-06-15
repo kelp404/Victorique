@@ -230,11 +230,11 @@ angular.module 'v.router', [
         NProgress.start()
     $rootScope.$on '$stateChangeSuccess', (event, toState) ->
         NProgress.done()
-        if not $v.user.is_login and toState.name isnt 'v.login'
+        if not $v.user.isLogin and toState.name isnt 'v.login'
             $state.go 'v.login'
     $rootScope.$on '$stateChangeError', (event, toState) ->
         NProgress.done()
-        if not $v.user.is_login and toState.name isnt 'v.login'
+        if not $v.user.isLogin and toState.name isnt 'v.login'
             $state.go 'v.login'
     $rootScope.$on '$viewContentLoaded', ->
         return if changeStartEvent?.type is 'popstate'
