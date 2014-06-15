@@ -12,6 +12,24 @@ describe 'v.provider', ->
             vProvider = $vProvider
     beforeEach module('fakeModule')
 
+    describe '$v.user login', ->
+        beforeEach ->
+            window.user =
+                id: 100
+        it '$v.user.isLogin will be yes when $v.user.id is not null', inject ($v) ->
+            expect($v.user.isLogin).toBeTruthy()
+    describe '$v.user not login', ->
+        beforeEach ->
+            window.user = {}
+        it '$v.user.isLogin will be no when $v.user.id is null', inject ($v) ->
+            expect($v.user.isLogin).toBeFalsy()
+
+    describe '$v.url', ->
+        beforeEach ->
+            window.url =
+                login: 'login url'
+        it '$v.url is window.url', inject ($v) ->
+            expect($v.url).toBe window.url
 
     describe '$v.alert', ->
         it '$v.alert.saved() should call $.av.pop()', inject ($v) ->

@@ -143,7 +143,6 @@ angular.module 'v.provider', []
     @$get = ['$injector', ($injector) =>
         @setupProviders $injector
 
-
         user: @user
         url: @url
         alert: @alert
