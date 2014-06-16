@@ -64,6 +64,7 @@ def get_logs(request, application_id):
         search_result = search.Index(namespace='Logs', name=str(application.key().id())).search(query)
         total = search_result.number_found
         logs = LogModel.get_by_id([long(x.doc_id) for x in search_result])
+        logs = [x for x in logs if not x is None]
     else:
         query = LogModel.all().filter('application =', application.key()).order('-update_time')
         total = query.count()

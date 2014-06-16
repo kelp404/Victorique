@@ -1,5 +1,5 @@
 import json
-from application.exceptions import Http400
+from application.exceptions import Http400, Http404
 from application.responses import JsonResponse
 from application.decorators import authorization
 from application.models.datastore.user_model import UserPermission, UserModel
@@ -17,6 +17,8 @@ def update_profile(request):
         raise Http400
 
     user = UserModel.get_by_id(request.user.key().id())
+    if user is None:
+        raise Http404
     user.name = form.name.data
     user.put()
     return JsonResponse(user)
