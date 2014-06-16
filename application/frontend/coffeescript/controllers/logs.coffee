@@ -21,7 +21,18 @@ angular.module 'v.controllers.logs', []
         , reload: yes
 ]
 
-.controller 'LogController', ['$scope', 'application', 'log', ($scope, application, log) ->
+.controller 'LogController', ['$scope', '$injector', 'application', 'log', ($scope, $injector, application, log) ->
+    $v = $injector.get '$v'
+
     $scope.application = application
     $scope.log = log
+    $scope.closeLog = ($event) ->
+        $event.preventDefault()
+        NProgress.start()
+        $v.api.log.updateLog application.id,
+            id: log.id
+            is_close: yes
+        .success (result) ->
+            NProgress.done()
+            $scope.log = result
 ]

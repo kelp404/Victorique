@@ -7,7 +7,7 @@ from application import utils
 from application.exceptions import Http400, Http404, Http403
 from application.responses import JsonResponse
 from application.decorators import authorization
-from application.forms.log_form import LogForm
+from application.forms.log_form import LogForm, APILogForm
 from application.forms.search_form import SearchForm
 from application.models.dto.page_list import PageList
 from application.models.datastore.user_model import UserModel, UserPermission
@@ -88,6 +88,23 @@ def get_log(request, application_id, log_id):
         raise Http403
     return JsonResponse(log)
 
+@authorization(UserPermission.root, UserPermission.normal)
+def update_log(request, application_id, log_id):
+    form = LogForm(**json.loads(request.body))
+    if not form.validate():
+        raise Http400
+    log_id = long(log_id)
+    log = LogModel.get_by_id(log_id)
+    if log is None:
+        raise Http404
+    if request.user.permission != UserPermission.root and\
+                    request.user.key().id() not in log.application.member_ids:
+        # no permission for this application
+        raise Http403
+    log.is_close = form.is_close.data
+    log.put()
+    return JsonResponse(log)
+
 # GET /api/logs for jsonp
 def add_log_jsonp(request, application_key):
     __add_log(request, application_key, request.GET.dict())
@@ -112,7 +129,7 @@ def __add_log(request, application_key, args):
     :param is_jsonp: {bool}
     :return: The django response.
     """
-    form = LogForm(key=application_key, **args)
+    form = APILogForm(key=application_key, **args)
     if not form.validate():
         raise Http400
 
@@ -123,6 +140,7 @@ def __add_log(request, application_key, args):
 
     # Is the log exist?
     logs = LogModel.all().filter('title =', form.title.data)\
+        .filter('is_close =', False)\
         .filter('application =', application.key()).fetch(1)
     if len(logs):
         # update log

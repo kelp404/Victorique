@@ -59,9 +59,22 @@
       };
     }
   ]).controller('LogController', [
-    '$scope', 'application', 'log', function($scope, application, log) {
+    '$scope', '$injector', 'application', 'log', function($scope, $injector, application, log) {
+      var $v;
+      $v = $injector.get('$v');
       $scope.application = application;
-      return $scope.log = log;
+      $scope.log = log;
+      return $scope.closeLog = function($event) {
+        $event.preventDefault();
+        NProgress.start();
+        return $v.api.log.updateLog(application.id, {
+          id: log.id,
+          is_close: true
+        }).success(function(result) {
+          NProgress.done();
+          return $scope.log = result;
+        });
+      };
     }
   ]);
 
@@ -633,6 +646,15 @@
             return _this.http({
               method: 'get',
               url: "/applications/" + applicationId + "/logs/" + logId
+            });
+          };
+        })(this),
+        updateLog: (function(_this) {
+          return function(applicationId, log) {
+            return _this.http({
+              method: 'put',
+              url: "/applications/" + applicationId + "/logs/" + log.id,
+              data: log
             });
           };
         })(this)

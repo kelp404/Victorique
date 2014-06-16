@@ -73,6 +73,11 @@ angular.module 'v.provider', []
                 @http
                     method: 'get'
                     url: "/applications/#{applicationId}/logs/#{logId}"
+            updateLog: (applicationId, log) =>
+                @http
+                    method: 'put'
+                    url: "/applications/#{applicationId}/logs/#{log.id}"
+                    data: log
         user:
             getUsers: (index=0) =>
                 @http

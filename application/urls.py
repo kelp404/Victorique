@@ -21,15 +21,16 @@ urlpatterns = patterns('',
 
     # /applications
     url(r'^applications$', api_dispatch(
-        GET=get_applications
+        GET=get_applications,
     )),
     # /applications/<application_id>/logs
     url(r'^applications/(?P<application_id>[0-9]{1,32})/logs$', api_dispatch(
-        GET=get_logs
+        GET=get_logs,
     )),
     # /applications/<application_id>/logs/<log_id>
     url(r'^applications/(?P<application_id>[0-9]{1,32})/logs/(?P<log_id>[0-9]{1,32})$', api_dispatch(
-        GET=get_log
+        GET=get_log,
+        PUT=update_log,
     )),
 
     # /settings

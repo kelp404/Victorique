@@ -6,6 +6,12 @@
             <li class="active">{{ log.title }}</li>
         </ol>
 
+        <div class="text-right">
+            <button ng-click="closeLog($event)" ng-disabled="log.is_close" class="btn btn-default" type="button">
+                <i class="fa fa-check fa-fw"></i> Close
+            </button>
+        </div>
+
         <table class="table table-hover table-striped">
             <thead>
                 <tr>

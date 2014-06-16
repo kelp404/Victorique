@@ -41,7 +41,11 @@
                     <td colspan="3" class="text-center text-muted">empty</td>
                 </tr>
                 <tr ng-click="showDetail(log.id)" ng-repeat="log in logs.items" style="cursor: pointer;">
-                    <td>{{ log.title }}</td>
+                    <td>
+                        <span ng-if="!log.is_close" class="text-danger"><i class="fa fa-exclamation-circle fa-fw"></i></span>
+                        <span ng-if="log.is_close" class="text-success"><i class="fa fa-check-circle fa-fw"></i></span>
+                        {{ log.title }}
+                    </td>
                     <td>{{ log.count }}</td>
                     <td>{{ log.update_time|date:'yyyy-MM-dd HH:mm' }}</td>
                 </tr>
