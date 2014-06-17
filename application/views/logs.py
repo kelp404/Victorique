@@ -41,25 +41,28 @@ def get_logs(request, application_id):
             raise Http403
 
     if form.keyword.data:
-        source = [item for item in form.keyword.data.split(' ') if len(item) > 0]
-        plus = [item for item in source if item.find('-') != 0]
-        minus = [item[1:] for item in source if item.find('-') == 0 and len(item) > 1]
+        source = [x for x in form.keyword.data.split()]
+        plus = [x for x in source if not x.startswith('-')]
+        minus = [x[1:] for x in source if x.startswith('-')]
 
+        query_string = ''
         if len(plus) > 0:
             keyword = ' '.join(plus)
-            query_string = '(users:{1}) OR (title:{1}) OR (document:{1}) OR (user_agent:{1}) OR (ip:{1})'.replace('{1}', keyword)
+            query_string += '(users:{1}) OR (title:{1}) OR (document:{1}) OR (user_agent:{1}) OR (ip:{1})'.replace('{1}', keyword)
         if len(minus) > 0:
             keyword = ' '.join(minus)
-            query_string = 'NOT ((users:{1}) OR (title:{1}) OR (document:{1}) OR (user_agent:{1}) OR (ip:{1}))'.replace('{1}', keyword)
+            query_string += 'NOT ((users:{1}) OR (title:{1}) OR (document:{1}) OR (user_agent:{1}) OR (ip:{1}))'.replace('{1}', keyword)
         update_time_desc = search.SortExpression(
             expression='update_time',
             direction=search.SortExpression.DESCENDING,
-            default_value=0)
+            default_value=0,
+        )
         options = search.QueryOptions(
             offset=utils.default_page_size * form.index.data,
             limit=utils.default_page_size,
             sort_options=search.SortOptions(expressions=[update_time_desc], limit=1000),
-            returned_fields=['doc_id'])
+            returned_fields=['doc_id'],
+        )
         query = search.Query(query_string=query_string, options=options)
         search_result = search.Index(namespace='Logs', name=str(application.key().id())).search(query)
         total = search_result.number_found
@@ -173,12 +176,15 @@ def __add_log(request, application_key, args):
         message.send()
 
     index = search.Index(namespace='Logs', name=str(application.key().id()))
-    search_document = search.Document(doc_id=str(log.key().id()),
-                                      fields=[
-                                          search.TextField(name='users', value=str(log.users)),
-                                          search.TextField(name='title', value=log.title),
-                                          search.TextField(name='document', value=log.document_json),
-                                          search.TextField(name='ip', value=log.ip),
-                                          search.TextField(name='user_agent', value=log.user_agent),
-                                          search.DateField(name='update_time', value=log.update_time)])
+    search_document = search.Document(
+        doc_id=str(log.key().id()),
+        fields=[
+            search.TextField(name='users', value=unicode(log.users)),
+            search.TextField(name='title', value=log.title),
+            search.TextField(name='document', value=log.document_json),
+            search.TextField(name='ip', value=log.ip),
+            search.TextField(name='user_agent', value=log.user_agent),
+            search.DateField(name='update_time', value=log.update_time),
+        ],
+    )
     index.put(search_document)

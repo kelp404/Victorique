@@ -1,5 +1,4 @@
 import json
-from django.conf import settings
 from django.http.response import HttpResponse
 from application import utils
 from application.exceptions import Http400, Http404, Http403
