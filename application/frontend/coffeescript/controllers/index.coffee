@@ -7,5 +7,5 @@ angular.module 'v.controllers.index', []
     if $v.user.isLogin
         $state.go 'v.log-default'
     else
-        $stae.go 'v.login'
+        $state.go 'v.login'
 ]

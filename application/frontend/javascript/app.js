@@ -12,7 +12,7 @@
       if ($v.user.isLogin) {
         return $state.go('v.log-default');
       } else {
-        return $stae.go('v.login');
+        return $state.go('v.login');
       }
     }
   ]);
