@@ -105,7 +105,7 @@
     '$scope', '$injector', function($scope, $injector) {
       var $v;
       $v = $injector.get('$v');
-      return $scope.isRoot = $v.user.permission === 1;
+      return $scope.user = $v.user;
     }
   ]).controller('SettingsProfileController', [
     '$scope', '$injector', 'profile', function($scope, $injector, profile) {
@@ -298,7 +298,6 @@
       $validator = $injector.get('$validator');
       $scope.users = users;
       $scope.currentUser = $v.user;
-      $scope.isRoot = $v.user.permission === 1;
       return $scope.removeUser = function(user, $event) {
         $event.preventDefault();
         return $v.alert.confirm("Do you want to delete the user " + user.name + "<" + user.email + ">?", function(result) {
@@ -562,6 +561,7 @@
     };
     this.user = (_ref = window.user) != null ? _ref : {};
     this.user.isLogin = this.user.id != null;
+    this.user.isRoot = this.user.permission === 1;
     this.url = window.url;
     this.alert = {
       saved: function(message) {

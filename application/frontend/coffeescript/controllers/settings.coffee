@@ -8,7 +8,7 @@ angular.module 'v.controllers.settings', []
 .controller 'SettingsMenuController', ['$scope', '$injector', ($scope, $injector) ->
     $v = $injector.get '$v'
 
-    $scope.isRoot = $v.user.permission is 1
+    $scope.user = $v.user
 ]
 
 .controller 'SettingsProfileController', ['$scope', '$injector', 'profile', ($scope, $injector, profile) ->
@@ -139,7 +139,6 @@ angular.module 'v.controllers.settings', []
 
     $scope.users = users
     $scope.currentUser = $v.user
-    $scope.isRoot = $v.user.permission is 1
     $scope.removeUser = (user, $event) ->
         $event.preventDefault()
         $v.alert.confirm "Do you want to delete the user #{user.name}<#{user.email}>?", (result) ->

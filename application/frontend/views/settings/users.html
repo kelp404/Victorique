@@ -25,7 +25,7 @@
                             <td>{{ user.create_time|date:'yyyy-MM-dd HH:mm' }}</td>
                             <td>
                                 <a href="/settings/users/{{ user.id }}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-                                <a ng-if="isRoot && currentUser.id != user.id" ng-click="removeUser(user, $event)"
+                                <a ng-if="currentUser.isRoot && currentUser.id != user.id" ng-click="removeUser(user, $event)"
                                         href="/settings/users/{{ user.id }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
                             </td>
                         </tr>
