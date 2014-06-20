@@ -173,8 +173,8 @@ def __add_log(request, application_key, args):
         message = mail.EmailMessage(sender=gae_account, subject="%s has a new log at Victorique." % application.title)
         message.to = [x.email for x in users if not x is None]
         message.body = 'There is a new log at Victorique.\n%s\nhttps://%s/applications/%s/logs/%s' % (
-            domain,
             log.title,
+            domain,
             application.key().id(),
             log.key().id(),
         )
