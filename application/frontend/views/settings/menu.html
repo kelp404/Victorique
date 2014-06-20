@@ -1,5 +1,5 @@
 <ul class="nav nav-pills nav-stacked affix" style="width: 180px;">
     <li ng-class="{active: $state.current.name.indexOf('v.settings-applications')==0}"><a href="/settings/applications">Applications</a></li>
     <li ng-class="{active: $state.current.name.indexOf('v.settings-profile')==0}"><a href="/settings/profile">Profile</a></li>
-    <li ng-if="user.isRoot" ng-class="{active: $state.current.name.indexOf('v.settings-users')==0}"><a href="/settings/users">Users</a></li>
+    <li ng-if="$user.isRoot" ng-class="{active: $state.current.name.indexOf('v.settings-users')==0}"><a href="/settings/users">Users</a></li>
 </ul>

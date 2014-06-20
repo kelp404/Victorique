@@ -122,7 +122,6 @@ angular.module 'v.router', [
         views:
             menu:
                 templateUrl: '/views/settings/menu.html'
-                controller: 'SettingsMenuController'
             content:
                 templateUrl: '/views/settings/profile.html'
                 controller: 'SettingsProfileController'
@@ -141,7 +140,6 @@ angular.module 'v.router', [
         views:
             menu:
                 templateUrl: '/views/settings/menu.html'
-                controller: 'SettingsMenuController'
             content:
                 templateUrl: '/views/settings/applications.html'
                 controller: 'SettingsApplicationsController'
@@ -182,7 +180,6 @@ angular.module 'v.router', [
         views:
             menu:
                 templateUrl: '/views/settings/menu.html'
-                controller: 'SettingsMenuController'
             content:
                 templateUrl: '/views/settings/users.html'
                 controller: 'SettingsUsersController'

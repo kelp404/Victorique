@@ -5,12 +5,6 @@ angular.module 'v.controllers.settings', []
     $state.go 'v.settings-applications'
 ]
 
-.controller 'SettingsMenuController', ['$scope', '$injector', ($scope, $injector) ->
-    $v = $injector.get '$v'
-
-    $scope.user = $v.user
-]
-
 .controller 'SettingsProfileController', ['$scope', '$injector', 'profile', ($scope, $injector, profile) ->
     $v = $injector.get '$v'
     $validator = $injector.get '$validator'
@@ -35,6 +29,8 @@ angular.module 'v.controllers.settings', []
     $validator = $injector.get '$validator'
 
     $scope.applications = applications
+    for application in $scope.applications
+        application.isRoot = $scope.$user.id in application.root_ids
     $scope.removeApplication = (application, $event) ->
         $event.preventDefault()
         $v.alert.confirm "Do you want to delete the application #{application.title}?", (result) ->
@@ -53,6 +49,7 @@ angular.module 'v.controllers.settings', []
         title: ''
         description: ''
         email_notification: yes
+        isRoot: yes
     $scope.modal =
         autoShow: yes
         hide: ->
@@ -72,6 +69,7 @@ angular.module 'v.controllers.settings', []
 
     $scope.mode = 'edit'
     $scope.application = application
+    $scope.application.isRoot = $scope.$user.id in application.root_ids
     for member in application.members
         member.isRoot = member.id in application.root_ids
     $scope.$watch 'application.members', ->

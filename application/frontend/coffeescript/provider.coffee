@@ -8,11 +8,12 @@ angular.module 'v.provider', []
     # -----------------------------------------------------
     # private methods
     # -----------------------------------------------------
-    @setupProviders = (injector) ->
+    @setupProviders = (injector) =>
         $injector = injector
         $http = $injector.get '$http'
         $rootScope = $injector.get '$rootScope'
         $rootScope.$confirmModal = {}
+        $rootScope.$user = @user
 
 
     # -----------------------------------------------------

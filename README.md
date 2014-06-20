@@ -107,6 +107,7 @@ $rootScope =
         message: {string}
         callback: (result) ->
         isShow: {bool}
+    $user: # current user object
 ```
 
 

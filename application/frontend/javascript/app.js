@@ -85,7 +85,6 @@
     '$scope', '$injector', function($scope, $injector) {
       var $v;
       $v = $injector.get('$v');
-      $scope.user = $v.user;
       return $scope.url = $v.url;
     }
   ]);
@@ -100,12 +99,6 @@
       var $state;
       $state = $injector.get('$state');
       return $state.go('v.settings-applications');
-    }
-  ]).controller('SettingsMenuController', [
-    '$scope', '$injector', function($scope, $injector) {
-      var $v;
-      $v = $injector.get('$v');
-      return $scope.user = $v.user;
     }
   ]).controller('SettingsProfileController', [
     '$scope', '$injector', 'profile', function($scope, $injector, profile) {
@@ -130,12 +123,17 @@
     }
   ]).controller('SettingsApplicationsController', [
     '$scope', '$injector', 'applications', function($scope, $injector, applications) {
-      var $state, $stateParams, $v, $validator;
+      var $state, $stateParams, $v, $validator, application, _i, _len, _ref, _ref1;
       $v = $injector.get('$v');
       $state = $injector.get('$state');
       $stateParams = $injector.get('$stateParams');
       $validator = $injector.get('$validator');
       $scope.applications = applications;
+      _ref = $scope.applications;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        application = _ref[_i];
+        application.isRoot = (_ref1 = $scope.$user.id, __indexOf.call(application.root_ids, _ref1) >= 0);
+      }
       return $scope.removeApplication = function(application, $event) {
         $event.preventDefault();
         return $v.alert.confirm("Do you want to delete the application " + application.title + "?", function(result) {
@@ -161,7 +159,8 @@
       $scope.application = {
         title: '',
         description: '',
-        email_notification: true
+        email_notification: true,
+        isRoot: true
       };
       $scope.modal = {
         autoShow: true,
@@ -183,24 +182,25 @@
     }
   ]).controller('SettingsApplicationController', [
     '$scope', '$injector', 'application', function($scope, $injector, application) {
-      var $state, $timeout, $v, $validator, member, _i, _len, _ref, _ref1;
+      var $state, $timeout, $v, $validator, member, _i, _len, _ref, _ref1, _ref2;
       $v = $injector.get('$v');
       $validator = $injector.get('$validator');
       $state = $injector.get('$state');
       $timeout = $injector.get('$timeout');
       $scope.mode = 'edit';
       $scope.application = application;
-      _ref = application.members;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        member = _ref[_i];
-        member.isRoot = (_ref1 = member.id, __indexOf.call(application.root_ids, _ref1) >= 0);
+      $scope.application.isRoot = (_ref = $scope.$user.id, __indexOf.call(application.root_ids, _ref) >= 0);
+      _ref1 = application.members;
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        member = _ref1[_i];
+        member.isRoot = (_ref2 = member.id, __indexOf.call(application.root_ids, _ref2) >= 0);
       }
       $scope.$watch('application.members', function() {
-        var root_ids, _j, _len1, _ref2;
+        var root_ids, _j, _len1, _ref3;
         root_ids = [];
-        _ref2 = $scope.application.members;
-        for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-          member = _ref2[_j];
+        _ref3 = $scope.application.members;
+        for (_j = 0, _len1 = _ref3.length; _j < _len1; _j++) {
+          member = _ref3[_j];
           if (member.isRoot) {
             root_ids.push(member.id);
           }
@@ -251,23 +251,23 @@
           });
         },
         removeMember: function($event, memberId) {
-          var index, _j, _k, _l, _ref2, _ref3, _ref4;
+          var index, _j, _k, _l, _ref3, _ref4, _ref5;
           $event.preventDefault();
-          for (index = _j = 0, _ref2 = $scope.application.members.length; 0 <= _ref2 ? _j < _ref2 : _j > _ref2; index = 0 <= _ref2 ? ++_j : --_j) {
+          for (index = _j = 0, _ref3 = $scope.application.members.length; 0 <= _ref3 ? _j < _ref3 : _j > _ref3; index = 0 <= _ref3 ? ++_j : --_j) {
             if (!($scope.application.members[index].id === memberId)) {
               continue;
             }
             $scope.application.members.splice(index, 1);
             break;
           }
-          for (index = _k = 0, _ref3 = $scope.application.member_ids.length; 0 <= _ref3 ? _k < _ref3 : _k > _ref3; index = 0 <= _ref3 ? ++_k : --_k) {
+          for (index = _k = 0, _ref4 = $scope.application.member_ids.length; 0 <= _ref4 ? _k < _ref4 : _k > _ref4; index = 0 <= _ref4 ? ++_k : --_k) {
             if (!($scope.application.member_ids[index] === memberId)) {
               continue;
             }
             $scope.application.member_ids.splice(index, 1);
             break;
           }
-          for (index = _l = 0, _ref4 = $scope.application.root_ids.length; 0 <= _ref4 ? _l < _ref4 : _l > _ref4; index = 0 <= _ref4 ? ++_l : --_l) {
+          for (index = _l = 0, _ref5 = $scope.application.root_ids.length; 0 <= _ref5 ? _l < _ref5 : _l > _ref5; index = 0 <= _ref5 ? ++_l : --_l) {
             if (!($scope.application.root_ids[index] === memberId)) {
               continue;
             }
@@ -553,12 +553,15 @@
     $injector = null;
     $http = null;
     $rootScope = null;
-    this.setupProviders = function(injector) {
-      $injector = injector;
-      $http = $injector.get('$http');
-      $rootScope = $injector.get('$rootScope');
-      return $rootScope.$confirmModal = {};
-    };
+    this.setupProviders = (function(_this) {
+      return function(injector) {
+        $injector = injector;
+        $http = $injector.get('$http');
+        $rootScope = $injector.get('$rootScope');
+        $rootScope.$confirmModal = {};
+        return $rootScope.$user = _this.user;
+      };
+    })(this);
     this.user = (_ref = window.user) != null ? _ref : {};
     this.user.isLogin = this.user.id != null;
     this.user.isRoot = this.user.permission === 1;
@@ -944,8 +947,7 @@
         },
         views: {
           menu: {
-            templateUrl: '/views/settings/menu.html',
-            controller: 'SettingsMenuController'
+            templateUrl: '/views/settings/menu.html'
           },
           content: {
             templateUrl: '/views/settings/profile.html',
@@ -969,8 +971,7 @@
         },
         views: {
           menu: {
-            templateUrl: '/views/settings/menu.html',
-            controller: 'SettingsMenuController'
+            templateUrl: '/views/settings/menu.html'
           },
           content: {
             templateUrl: '/views/settings/applications.html',
@@ -1021,8 +1022,7 @@
         },
         views: {
           menu: {
-            templateUrl: '/views/settings/menu.html',
-            controller: 'SettingsMenuController'
+            templateUrl: '/views/settings/menu.html'
           },
           content: {
             templateUrl: '/views/settings/users.html',

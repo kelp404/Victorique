@@ -10,21 +10,23 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="input-name">Title</label>
                     <div class="col-sm-10">
-                        <input ng-model="application.title" validator="[required]"
+                        <input ng-show="application.isRoot" ng-model="application.title" validator="[required]"
                                class="form-control" id="input-name" type="text"/>
+                        <p ng-hide="application.isRoot" class="form-control-static">{{ application.title }}</p>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="input-description">Description</label>
                     <div class="col-sm-10">
-                        <input ng-model="application.description"
+                        <input ng-show="application.isRoot" ng-model="application.description"
                                class="form-control" id="input-description" type="text"/>
+                        <p ng-hide="application.isRoot">{{ application.description }}</p>
                     </div>
                 </div>
                 <div ng-if="application.app_key" class="form-group">
                     <label class="col-sm-2 control-label">App key</label>
                     <div class="col-sm-10">
-                        <button ng-click="updateAppKey()" class="btn btn-default btn-sm pull-right" type="button">Update app key</button>
+                        <button ng-if="application.isRoot" ng-click="updateAppKey()" class="btn btn-default btn-sm pull-right" type="button">Update app key</button>
                         <p class="form-control-static">{{ application.app_key }}</p>
                     </div>
                 </div>
@@ -32,7 +34,9 @@
                     <label class="col-sm-2 control-label"></label>
                     <div class="col-sm-10">
                         <label class="checkbox-inline">
-                            <input ng-model="application.email_notification" type="checkbox"/>
+                            <input ng-model="application.email_notification"
+                                   ng-disabled="!application.isRoot"
+                                   type="checkbox"/>
                             Send email notification
                         </label><br/>
                         <small>Send the email to members when the new log has been added.</small>
@@ -48,21 +52,21 @@
                                 <td width="60px">
                                     <label class="checkbox-inline" style="padding-top: 0;">
                                         <input ng-model="member.isRoot"
-                                               ng-disabled="member.isRoot && application.root_ids.length==1"
+                                               ng-disabled="!application.isRoot || (member.isRoot && application.root_ids.length==1)"
                                                type="checkbox"/>
                                         root
                                     </label>
                                 </td>
                                 <td width="36px">
                                     <a ng-click="memberService.removeMember($event, member.id)"
-                                       ng-hide="(member.isRoot && application.root_ids.length==1) || application.member_ids.length == 1"
+                                       ng-hide="!application.isRoot || (member.isRoot && application.root_ids.length==1) || application.member_ids.length == 1"
                                        href="/settings/applications/{{ application.id }}/members/{{ member.id }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
 
-                        <div class="input-group col-sm-6 form-group" style="padding-left: 15px;">
+                        <div ng-show="application.isRoot" class="input-group col-sm-6 form-group" style="padding-left: 15px;">
                             <input ng-model="memberService.email"
                                    validator='/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
                                    v-enter="memberService.invite($event)"
@@ -75,7 +79,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button ng-click="submit()"
+                <button ng-click="submit()" ng-if="application.isRoot"
                         type="submit" class="btn btn-default"><i class="fa fa-check fa-fw"></i> Save</button>
             </div>
         </form>
