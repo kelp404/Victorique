@@ -9,6 +9,15 @@ Victorique is memento for ヴィクトリカ of [GOSICK](http://www.gosick.tv/).
 
 
 
+##Installation
+```bash
+$ git clone https://github.com/kelp404/Victorique.git
+$ git submodule update --init
+```
+
+
+
+
 ##API document
 >####[Victorique on Apiary](http://docs.victorique.apiary.io/)
 
@@ -34,11 +43,11 @@ $ curl -XPOST https://victorique-demo.appspot.com/api/applications/2b0a8cc0-f156
 **AngularJS & jQuery**
 >```coffee
 $http(args).error (data, status, headers, config) =>
+    delete config.data.password
     document =
         'Request Headers': config.headers
         'Request Params': config.params
         'Request Data': config.data
-        'Response Content': data
         'Response Status': status
     $.ajax
         method: 'get'
@@ -59,13 +68,14 @@ https://appengine.google.com
 
 **update [app.yaml](https://github.com/kelp404/Victorique/blob/master/app.yaml)**
 >
-Find `application: victory-demo` then replace `victory-demo` to your Application Identifier.
+Find `application: victorique-demo` then replace `victorique-demo` to your Application Identifier.
 
 **update [application/settings.py](https://github.com/kelp404/Victorique/blob/master/application/settings.py)**
 >
 ```python
 GAE_ACCOUNT = 'kelp.phate@gmail.com' # your gae account
 HOST = 'victorique-demo.appspot.com' # your domain
+ALLOW_REGISTER = False # `False` will not allow register
 ```
 
 **upload victorique**
