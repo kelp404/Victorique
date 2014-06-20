@@ -25,7 +25,7 @@
                             <td>{{ application.create_time|date:'yyyy-MM-dd HH:mm' }}</td>
                             <td>
                                 <a href="/settings/applications/{{ application.id }}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-                                <a ng-if="application.isRoot" ng-click="removeApplication(application, $event)"
+                                <a ng-if="$user.isRoot || application.isRoot" ng-click="removeApplication(application, $event)"
                                         href="/settings/applications/{{ application.id }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
                             </td>
                         </tr>
