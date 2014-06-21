@@ -68,7 +68,7 @@ class UserModel(BaseModel):
                 email=email,
                 permission=UserPermission.normal,
             )
-            user.save()
+            user.put()
             gae_account = getattr(settings, 'GAE_ACCOUNT')
             domain = getattr(settings, 'HOST')
             message = mail.EmailMessage(sender=gae_account, subject="%s has invited you to join Victorique." % request.user.name)

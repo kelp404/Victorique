@@ -54,7 +54,7 @@ def add_application_member(request, application_id):
         raise Http403
     user = UserModel.invite_user(request, form.email.data)
     application.member_ids.append(user.key().id())
-    application.save()
+    application.put()
     return JsonResponse(user)
 
 @authorization(UserPermission.root, UserPermission.normal)
