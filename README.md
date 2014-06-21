@@ -43,7 +43,7 @@ $ curl -XPOST https://victorique-demo.appspot.com/api/applications/2b0a8cc0-f156
 **AngularJS & jQuery**
 >```coffee
 $http(args).error (data, status, headers, config) =>
-    delete config.data.password
+    delete config.data?.password
     document =
         'Request Headers': config.headers
         'Request Params': config.params
