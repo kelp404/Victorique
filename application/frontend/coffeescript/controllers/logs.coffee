@@ -26,6 +26,11 @@ angular.module 'v.controllers.logs', []
 
     $scope.application = application
     $scope.log = log
+    $scope.jsonStringify = (json) ->
+        if typeof(json) is 'object'
+            try
+                return JSON.stringify json, null, 2
+        return json
     $scope.closeLog = ($event) ->
         $event.preventDefault()
         NProgress.start()

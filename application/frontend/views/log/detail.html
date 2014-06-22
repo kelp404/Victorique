@@ -29,6 +29,10 @@
                     <td>{{ log.update_time|date:'yyyy-MM-dd HH:mm' }}</td>
                 </tr>
                 <tr>
+                    <td>Create Time</td>
+                    <td>{{ log.create_time|date:'yyyy-MM-dd HH:mm' }}</td>
+                </tr>
+                <tr>
                     <td ng-switch="log.users.length">
                         <span ng-switch-when="1">User</span>
                         <span ng-switch-default>Users</span>
@@ -52,7 +56,7 @@
                 <tr ng-repeat="(key, value) in log.document">
                     <td>{{ key }}</td>
                     <td>
-                        <pre>{{ value }}</pre>
+                        <pre>{{ jsonStringify(value) }}</pre>
                     </td>
                 </tr>
             </tbody>

@@ -64,6 +64,14 @@
       $v = $injector.get('$v');
       $scope.application = application;
       $scope.log = log;
+      $scope.jsonStringify = function(json) {
+        if (typeof json === 'object') {
+          try {
+            return JSON.stringify(json, null, 2);
+          } catch (_error) {}
+        }
+        return json;
+      };
       return $scope.closeLog = function($event) {
         $event.preventDefault();
         NProgress.start();
