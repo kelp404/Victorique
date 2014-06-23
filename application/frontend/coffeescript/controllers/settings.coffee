@@ -1,8 +1,7 @@
 angular.module 'v.controllers.settings', []
 
-.controller 'SettingsController', ['$scope', '$injector', ($scope, $injector) ->
-    $state = $injector.get '$state'
-    $state.go 'v.settings-applications'
+.controller 'SettingsController', ['$scope', ($scope) ->
+    $scope.$state.go 'v.settings-applications'
 ]
 
 .controller 'SettingsProfileController', ['$scope', '$injector', 'profile', ($scope, $injector, profile) ->
@@ -24,8 +23,7 @@ angular.module 'v.controllers.settings', []
 
 .controller 'SettingsApplicationsController', ['$scope', '$injector', 'applications', ($scope, $injector, applications) ->
     $v = $injector.get '$v'
-    $state = $injector.get '$state'
-    $stateParams = $injector.get '$stateParams'
+    $rootScope = $injector.get '$rootScope'
     $validator = $injector.get '$validator'
 
     $scope.applications = applications
@@ -37,12 +35,13 @@ angular.module 'v.controllers.settings', []
             return if not result
             NProgress.start()
             $v.api.application.removeApplication(application.id).success ->
-                $state.go $state.current, $stateParams, reload: yes
+                $rootScope.$applications = null
+                $scope.$state.go $scope.$state.current, $scope.$stateParams, reload: yes
 ]
 .controller 'SettingsNewApplicationController', ['$scope', '$injector', ($scope, $injector) ->
     $v = $injector.get '$v'
+    $rootScope = $injector.get '$rootScope'
     $validator = $injector.get '$validator'
-    $state = $injector.get '$state'
 
     $scope.mode = 'new'
     $scope.application =
@@ -54,17 +53,18 @@ angular.module 'v.controllers.settings', []
         autoShow: yes
         hide: ->
         hiddenCallback: ->
-            $state.go 'v.settings-applications', null, reload: yes
+            $scope.$state.go 'v.settings-applications', null, reload: yes
     $scope.submit = ->
         $validator.validate($scope, 'application').success ->
             NProgress.start()
             $v.api.application.addApplication($scope.application).success ->
+                $rootScope.$applications = null
                 $scope.modal.hide()
 ]
 .controller 'SettingsApplicationController', ['$scope', '$injector', 'application', ($scope, $injector, application) ->
     $v = $injector.get '$v'
     $validator = $injector.get '$validator'
-    $state = $injector.get '$state'
+    $rootScope = $injector.get '$rootScope'
     $timeout = $injector.get '$timeout'
 
     $scope.mode = 'edit'
@@ -82,7 +82,7 @@ angular.module 'v.controllers.settings', []
         autoShow: yes
         hide: ->
         hiddenCallback: ->
-            $state.go 'v.settings-applications', null, reload: yes
+            $scope.$state.go 'v.settings-applications', null, reload: yes
     $scope.submit = ->
         $validator.validate($scope, 'application').success ->
             NProgress.start()
@@ -94,6 +94,7 @@ angular.module 'v.controllers.settings', []
                 root_ids: $scope.application.root_ids
                 email_notification: $scope.application.email_notification
             $v.api.application.updateApplication(data).success ->
+                $rootScope.$applications = null
                 $scope.modal.hide()
     $scope.memberService =
         email: ''
@@ -131,8 +132,6 @@ angular.module 'v.controllers.settings', []
 
 .controller 'SettingsUsersController', ['$scope', '$injector', 'users', ($scope, $injector, users) ->
     $v = $injector.get '$v'
-    $state = $injector.get '$state'
-    $stateParams = $injector.get '$stateParams'
     $validator = $injector.get '$validator'
 
     $scope.users = users
@@ -143,12 +142,11 @@ angular.module 'v.controllers.settings', []
             return if not result
             NProgress.start()
             $v.api.user.removeUser(user.id).success ->
-                $state.go $state.current, $stateParams, reload: yes
+                $scope.$state.go $scope.$state.current, $scope.$stateParams, reload: yes
 ]
 .controller 'SettingsNewUserController', ['$scope', '$injector', ($scope, $injector) ->
     $v = $injector.get '$v'
     $validator = $injector.get '$validator'
-    $state = $injector.get '$state'
 
     $scope.mode = 'new'
     $scope.user =
@@ -157,7 +155,7 @@ angular.module 'v.controllers.settings', []
         autoShow: yes
         hide: ->
         hiddenCallback: ->
-            $state.go 'v.settings-users', null, reload: yes
+            $scope.$state.go 'v.settings-users', null, reload: yes
     $scope.submit = ->
         $validator.validate($scope, 'user').success ->
             NProgress.start()
@@ -167,7 +165,6 @@ angular.module 'v.controllers.settings', []
 .controller 'SettingsUserController', ['$scope', '$injector', 'user', ($scope, $injector, user) ->
     $v = $injector.get '$v'
     $validator = $injector.get '$validator'
-    $state = $injector.get '$state'
 
     $scope.mode = 'edit'
     $scope.user = user
@@ -175,7 +172,7 @@ angular.module 'v.controllers.settings', []
         autoShow: yes
         hide: ->
         hiddenCallback: ->
-            $state.go 'v.settings-users', null, reload: yes
+            $scope.$state.go 'v.settings-users', null, reload: yes
     $scope.submit = ->
         $validator.validate($scope, 'user').success ->
             NProgress.start()

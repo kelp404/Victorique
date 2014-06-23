@@ -107,6 +107,7 @@ $rootScope =
         message: {string}
         callback: (result) ->
         isShow: {bool}
+    $applications: # all paged applications
     $user: # current user object
 ```
 

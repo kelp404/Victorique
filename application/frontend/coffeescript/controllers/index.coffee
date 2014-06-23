@@ -5,7 +5,7 @@ angular.module 'v.controllers.index', []
     $state = $injector.get '$state'
 
     if $v.user.isLogin
-        $state.go 'v.log-default'
+        $state.go 'v.applications'
     else
         $state.go 'v.login'
 ]

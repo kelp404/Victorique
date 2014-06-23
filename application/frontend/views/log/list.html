@@ -1,21 +1,12 @@
 <div class="row">
-    <div ng-if="!currentApplication" class="col-sm-offset-2 col-sm-8 well">
-        <p>
-            There are no applications. You could create an application at <a href="/settings/applications">/settings/applications</a>.
-        </p>
-        <div class="text-center">
-            <a class="btn btn-default btn-lg" href="/settings/applications">go to applications</a>
-        </div>
-    </div>
-
-    <div ng-if="currentApplication" class="col-sm-12">
+    <div class="col-sm-12">
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                {{ currentApplication.title }}
+                {{ $applications.current.title }}
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li ng-repeat="application in applications.items">
+                <li ng-repeat="application in $applications.items">
                     <a href="/applications/{{ application.id }}/logs">{{ application.title }}</a>
                 </li>
             </ul>
@@ -51,7 +42,7 @@
                 </tr>
             </tbody>
         </table>
-        <ul v-pager="logs" pager-url-template="/applications/{{ currentApplication.id }}/logs?index=#{index}"
+        <ul v-pager="logs" pager-url-template="/applications/{{ $applications.current.id }}/logs?index=#{index}"
             class="pull-right" style="margin-top: 0"></ul>
     </div>
 </div>

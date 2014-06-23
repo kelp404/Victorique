@@ -81,8 +81,7 @@ def get_logs(request, application_id):
 
 @authorization(UserPermission.root, UserPermission.normal)
 def get_log(request, application_id, log_id):
-    log_id = long(log_id)
-    log = LogModel.get_by_id(log_id)
+    log = LogModel.get_by_id(long(log_id))
     if log is None:
         raise Http404
     if request.user.permission != UserPermission.root and\
@@ -96,8 +95,7 @@ def update_log(request, application_id, log_id):
     form = LogForm(**json.loads(request.body))
     if not form.validate():
         raise Http400
-    log_id = long(log_id)
-    log = LogModel.get_by_id(log_id)
+    log = LogModel.get_by_id(long(log_id))
     if log is None:
         raise Http404
     if request.user.permission != UserPermission.root and\

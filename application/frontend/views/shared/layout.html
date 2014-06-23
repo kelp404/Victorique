@@ -12,7 +12,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
             <ul class="nav navbar-nav navbar-right">
                 <li ng-if="$user.isLogin" ng-class="{active: $state.current.name.indexOf('v.log')>=0}">
-                    <a href="/applications">Logs</a>
+                    <a ng-if="!$applications.current" href="/applications">Logs</a>
+                    <a ng-if="$applications.current" href="/applications/{{ $applications.current.id }}/logs">Logs</a>
                 </li>
                 <li ng-if="$user.isLogin" ng-class="{active: $state.current.name.indexOf('v.settings')>=0}">
                     <a href="/settings/applications">Settings</a>
