@@ -53,6 +53,7 @@ describe 'v.provider', ->
         it 'vProvider.http is $http', inject ($httpBackend) ->
             $httpBackend.whenGET('/views/shared/layout.html').respond '' # ui-router
             $httpBackend.whenGET('/views/login.html').respond '' # ui-router
+            $httpBackend.whenGET('/views/index.html').respond '' # ui-router
             $httpBackend.whenGET('/').respond 'result'
             successSpy = jasmine.createSpy 'success'
             vProvider.http

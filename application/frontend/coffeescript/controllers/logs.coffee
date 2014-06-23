@@ -8,7 +8,6 @@ angular.module 'v.controllers.logs', []
         $scope.$state.go $scope.$state.current.name,
             applicationId: $scope.$applications.current.id
             keyword: keyword
-        , reload: yes
     $scope.showDetail = (logId) ->
         $scope.$state.go 'v.application.log',
             applicationId: $scope.$applications.current.id

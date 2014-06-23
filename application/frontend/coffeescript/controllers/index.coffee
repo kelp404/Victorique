@@ -1,11 +1,10 @@
 angular.module 'v.controllers.index', []
 
-.controller 'IndexController', ['$scope', '$injector', ($scope, $injector) ->
-    $v = $injector.get '$v'
-    $state = $injector.get '$state'
-
-    if $v.user.isLogin
-        $state.go 'v.applications'
+.controller 'IndexController', ['$scope', ($scope) ->
+    if $scope.$user.isLogin
+        if $scope.$state.current.name is 'v.index' and $scope.$applications.items.length
+            $scope.$state.go 'v.application.logs',
+                applicationId: $scope.$applications.items[0].id
     else
-        $state.go 'v.login'
+        $scope.$state.go 'v.login'
 ]

@@ -17,6 +17,12 @@ angular.module 'v.router', [
     # ---------------------------------------------------------
     $stateProvider.state 'v',
         url: ''
+        resolve:
+            applications: ['$v', '$rootScope', ($v, $rootScope) ->
+                return null if not $v.user.isLogin
+                $v.api.application.getApplications(0, yes).then (response) ->
+                    $rootScope.$applications = response.data
+            ]
         templateUrl: '/views/shared/layout.html'
 
     # ---------------------------------------------------------
@@ -26,6 +32,7 @@ angular.module 'v.router', [
         url: '/'
         views:
             content:
+                templateUrl: '/views/index.html'
                 controller: 'IndexController'
 
     # ---------------------------------------------------------
@@ -41,39 +48,19 @@ angular.module 'v.router', [
                 controller: 'LoginController'
 
     # ---------------------------------------------------------
-    # /applications
-    # ---------------------------------------------------------
-    $stateProvider.state 'v.applications',
-        url: '/applications'
-        resolve:
-            title: -> 'Applications - '
-            applications: ['$v', ($v) ->
-                $v.api.application.getApplications(0, yes).then (response) ->
-                    response.data
-            ]
-        views:
-            content:
-                templateUrl: '/views/application/list.html'
-                controller: 'ApplicationsController'
-    # ---------------------------------------------------------
     # /applications/:applicationId
     # ---------------------------------------------------------
     $stateProvider.state 'v.application',
         url: '/applications/:applicationId'
         resolve:
             title: -> 'Application - '
-            applications: ['$v', '$rootScope', ($v, $rootScope) ->
-                return $rootScope.$applications if $rootScope.$applications?
-                $v.api.application.getApplications(0, yes).then (response) ->
-                    $rootScope.$applications = response.data
-            ]
             application: ['$v', '$stateParams', ($v, $stateParams) ->
                 $v.api.application.getApplication($stateParams.applicationId).then (response) ->
                     response.data
             ]
         views:
             content:
-                templateUrl: '/views/application/detail.html'
+                template: "<div ui-view></div>"
                 controller: 'ApplicationController'
     # ---------------------------------------------------------
     # /applications/:applicationId/logs

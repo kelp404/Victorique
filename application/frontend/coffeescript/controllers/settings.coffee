@@ -23,7 +23,6 @@ angular.module 'v.controllers.settings', []
 
 .controller 'SettingsApplicationsController', ['$scope', '$injector', 'applications', ($scope, $injector, applications) ->
     $v = $injector.get '$v'
-    $rootScope = $injector.get '$rootScope'
     $validator = $injector.get '$validator'
 
     $scope.applications = applications
@@ -35,12 +34,10 @@ angular.module 'v.controllers.settings', []
             return if not result
             NProgress.start()
             $v.api.application.removeApplication(application.id).success ->
-                $rootScope.$applications = null
                 $scope.$state.go $scope.$state.current, $scope.$stateParams, reload: yes
 ]
 .controller 'SettingsNewApplicationController', ['$scope', '$injector', ($scope, $injector) ->
     $v = $injector.get '$v'
-    $rootScope = $injector.get '$rootScope'
     $validator = $injector.get '$validator'
 
     $scope.mode = 'new'
@@ -58,13 +55,11 @@ angular.module 'v.controllers.settings', []
         $validator.validate($scope, 'application').success ->
             NProgress.start()
             $v.api.application.addApplication($scope.application).success ->
-                $rootScope.$applications = null
                 $scope.modal.hide()
 ]
 .controller 'SettingsApplicationController', ['$scope', '$injector', 'application', ($scope, $injector, application) ->
     $v = $injector.get '$v'
     $validator = $injector.get '$validator'
-    $rootScope = $injector.get '$rootScope'
     $timeout = $injector.get '$timeout'
 
     $scope.mode = 'edit'
@@ -94,7 +89,6 @@ angular.module 'v.controllers.settings', []
                 root_ids: $scope.application.root_ids
                 email_notification: $scope.application.email_notification
             $v.api.application.updateApplication(data).success ->
-                $rootScope.$applications = null
                 $scope.modal.hide()
     $scope.memberService =
         email: ''
