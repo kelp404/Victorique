@@ -1,51 +1,38 @@
 @charset "UTF-8";
-/* font-family */
-@font-face {
-  font-family: CustomFont;
-  src: local("ヒラギノ角ゴ ProN"), local("Ubuntu"), local("微軟正黑體");
-}
-
-/* Latin */
-@font-face {
-  font-family: CustomFont;
-  unicode-range: U+00-024F, U+203F;
-  src: local("Helvetica Neue"), local(Helvetica), local(Ubuntu), local(Arial);
-}
-
-/* line 14, ../sass/site/site.sass */
+/* line 4, ../sass/site/site.sass */
 body {
-  font-family: "CustomFont", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "ヒラギノ角ゴ ProN", "Helvetica Neue", Helvetica, "微軟正黑體", Arial, sans-serif;
 }
 
-/* line 17, ../sass/site/site.sass */
+/* line 7, ../sass/site/site.sass */
 .v-content {
   padding-top: 60px;
 }
 
-/* line 20, ../sass/site/site.sass */
+/* line 10, ../sass/site/site.sass */
 .footer {
   padding-top: 30px;
 }
 
-/* line 24, ../sass/site/site.sass */
+/* line 14, ../sass/site/site.sass */
 ul.nav-pills > li.active > a {
   background-color: #eeeeee;
   color: #2a6496;
 }
-/* line 27, ../sass/site/site.sass */
+/* line 17, ../sass/site/site.sass */
 ul.nav-pills > li.active > a:hover {
   background-color: #eeeeee;
   color: #2a6496;
 }
 
-/* line 31, ../sass/site/site.sass */
+/* line 21, ../sass/site/site.sass */
 pre {
   overflow: auto;
   word-wrap: normal;
   white-space: pre;
 }
 
-/* line 35, ../sass/site/site.sass */
+/* line 25, ../sass/site/site.sass */
 table {
   table-layout: fixed;
   word-wrap: break-word;
