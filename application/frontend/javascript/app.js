@@ -80,7 +80,7 @@
       return $scope.closeLog = function($event) {
         $event.preventDefault();
         NProgress.start();
-        return $v.api.log.updateLog(application.id, {
+        return $v.api.log.updateLog($scope.$applications.current.id, {
           id: log.id,
           is_close: true
         }).success(function(result) {

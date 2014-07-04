@@ -26,7 +26,7 @@ angular.module 'v.controllers.logs', []
     $scope.closeLog = ($event) ->
         $event.preventDefault()
         NProgress.start()
-        $v.api.log.updateLog application.id,
+        $v.api.log.updateLog $scope.$applications.current.id,
             id: log.id
             is_close: yes
         .success (result) ->
