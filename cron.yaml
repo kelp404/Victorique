@@ -2,4 +2,4 @@ cron:
 - description: clean logs
   target: backend-dynamic
   url: /cron_jobs/cleanup
-  schedule: every 6 hours
+  schedule: every 24 hours
