@@ -68,6 +68,7 @@
 
                         <div ng-show="$user.isRoot || application.isRoot" class="input-group col-sm-6 form-group" style="padding-left: 15px;">
                             <input ng-model="memberService.email"
+                                   ng-disabled="$loadings.hasAny()"
                                    validator='/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
                                    v-enter="memberService.invite($event)"
                                    type="text" class="form-control input-sm" placeholder="email@gmail.com"/>
@@ -80,6 +81,7 @@
             </div>
             <div class="modal-footer">
                 <button ng-click="submit()" ng-if="$user.isRoot || application.isRoot"
+                        ng-disabled="$loadings.hasAny()"
                         type="submit" class="btn btn-default"><i class="fa fa-check fa-fw"></i> Save</button>
             </div>
         </form>

@@ -7,7 +7,8 @@
         </ol>
 
         <div class="text-right">
-            <button ng-click="closeLog($event)" ng-disabled="log.is_close" class="btn btn-default" type="button">
+            <button ng-click="closeLog($event)" ng-disabled="$loadings.hasAny() || log.is_close"
+                    class="btn btn-default" type="button">
                 <i class="fa fa-check fa-fw"></i> Close
             </button>
         </div>

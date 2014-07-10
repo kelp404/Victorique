@@ -107,8 +107,13 @@ $rootScope =
         message: {string}
         callback: (result) ->
         isShow: {bool}
-    $applications: # all paged applications
-    $user: # current user object
+    $loadings:
+        # current $http instances
+        hasAny: -> # is any $http processing?
+    $applications:
+        # all paged applications
+    $user:
+        # current user object
 ```
 
 

@@ -562,7 +562,18 @@
         $http = $injector.get('$http');
         $rootScope = $injector.get('$rootScope');
         $rootScope.$confirmModal = {};
-        return $rootScope.$user = _this.user;
+        $rootScope.$user = _this.user;
+        return $rootScope.$loadings = {
+          hasAny: function() {
+            var key;
+            for (key in this) {
+              if (key !== 'hasAny') {
+                return true;
+              }
+            }
+            return false;
+          }
+        };
       };
     })(this);
     this.user = (_ref = window.user) != null ? _ref : {};
@@ -590,9 +601,19 @@
         return $rootScope.$confirmModal.isShow = true;
       }
     };
+    this.httpId = 0;
     this.http = (function(_this) {
       return function(args) {
-        return $http(args).error(function() {
+        var httpId;
+        httpId = _this.httpId++;
+        $rootScope.$loadings[httpId] = {
+          method: args.method,
+          url: args.url
+        };
+        return $http(args).success(function() {
+          return delete $rootScope.$loadings[httpId];
+        }).error(function() {
+          delete $rootScope.$loadings[httpId];
           $.av.pop({
             title: 'Server Error',
             message: 'Please try again or refresh this page.',

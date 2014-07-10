@@ -14,6 +14,11 @@ angular.module 'v.provider', []
         $rootScope = $injector.get '$rootScope'
         $rootScope.$confirmModal = {}
         $rootScope.$user = @user
+        $rootScope.$loadings =
+            hasAny: ->
+                for key of @ when key isnt 'hasAny'
+                    return yes
+                no
 
 
     # -----------------------------------------------------
@@ -38,9 +43,17 @@ angular.module 'v.provider', []
             $rootScope.$confirmModal.callback = callback
             $rootScope.$confirmModal.isShow = yes
 
+    @httpId = 0
     @http = (args) =>
+        httpId = @httpId++
+        $rootScope.$loadings[httpId] =
+            method: args.method
+            url: args.url
         $http args
+        .success ->
+            delete $rootScope.$loadings[httpId]
         .error ->
+            delete $rootScope.$loadings[httpId]
             $.av.pop
                 title: 'Server Error'
                 message: 'Please try again or refresh this page.'

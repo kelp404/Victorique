@@ -21,6 +21,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button ng-click="profile.submit($event)"
+                                ng-disabled="$loadings.hasAny()"
                                 type="submit" class="btn btn-default"><i class="fa fa-check fa-fw"></i> Save</button>
                     </div>
                 </div>
