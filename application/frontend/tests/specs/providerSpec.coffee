@@ -23,12 +23,12 @@ describe 'v.provider', ->
             expect($v.user.isLogin).toBeTruthy()
         it '$rootScope.$user is $v.user', inject ($v, $rootScope) ->
             expect($rootScope.$user).toBe $v.user
-        describe '$v.user.isRoot = yes', ->
+        describe '$v.user.isRoot is yes when the permission is 1', ->
             beforeEach ->
                 window.user.permission = 1
             it '$v.user.isRoot is yes when permission is 1', inject ($v) ->
                 expect($v.user.isRoot).toBeTruthy()
-        describe '$v.user.isRoot = no', ->
+        describe '$v.user.isRoot is no when the permission is 0', ->
             beforeEach ->
                 window.user.permission = 0
             it '$v.user.isRoot is yes when permission is 1', inject ($v) ->
@@ -68,11 +68,12 @@ describe 'v.provider', ->
             expect($rootScope.$confirmModal.isShow).toBeTruthy()
 
     describe 'vProvider.http', ->
-        it 'vProvider.http is $http', inject ($httpBackend) ->
+        beforeEach inject ($httpBackend) ->
             $httpBackend.whenGET('/views/shared/layout.html').respond '' # ui-router
             $httpBackend.whenGET('/views/login.html').respond '' # ui-router
             $httpBackend.whenGET('/views/index.html').respond '' # ui-router
             $httpBackend.whenGET('/').respond 'result'
+        it 'vProvider.http is $http', inject ($httpBackend) ->
             successSpy = jasmine.createSpy 'success'
             vProvider.http
                 method: 'get'
@@ -81,6 +82,26 @@ describe 'v.provider', ->
                 successSpy()
                 expect(result).toEqual 'result'
             $httpBackend.flush()
+            expect(successSpy).toHaveBeenCalled()
+
+    describe '$rootScope.$loadings', ->
+        beforeEach inject ($httpBackend) ->
+            $httpBackend.whenGET('/views/shared/layout.html').respond '' # ui-router
+            $httpBackend.whenGET('/views/login.html').respond '' # ui-router
+            $httpBackend.whenGET('/views/index.html').respond '' # ui-router
+            $httpBackend.whenGET('/').respond 'result'
+        it '$rootScope.$loadings.hasAny() will return yes when vProvider.http is progress', inject ($httpBackend, $rootScope) ->
+            expect($rootScope.$loadings.hasAny()).toBeFalsy()
+            successSpy = jasmine.createSpy 'success'
+            vProvider.http
+                method: 'get'
+                url: '/'
+            .success (result) ->
+                successSpy()
+                expect(result).toEqual 'result'
+            expect($rootScope.$loadings.hasAny()).toBeTruthy()
+            $httpBackend.flush()
+            expect($rootScope.$loadings.hasAny()).toBeFalsy()
             expect(successSpy).toHaveBeenCalled()
 
     describe '$v.api.settings', ->
