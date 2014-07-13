@@ -2,6 +2,11 @@ describe 'v.provider', ->
     fakeModule = null
     vProvider = null
 
+    mackUiRouter = ($httpBackend) ->
+        $httpBackend.whenGET('/views/shared/layout.html').respond ''
+        $httpBackend.whenGET('/views/login.html').respond ''
+        $httpBackend.whenGET('/views/index.html').respond ''
+
     beforeEach module('v')
     beforeEach ->
         # mock NProgress
@@ -69,9 +74,7 @@ describe 'v.provider', ->
 
     describe 'vProvider.http', ->
         beforeEach inject ($httpBackend) ->
-            $httpBackend.whenGET('/views/shared/layout.html').respond '' # ui-router
-            $httpBackend.whenGET('/views/login.html').respond '' # ui-router
-            $httpBackend.whenGET('/views/index.html').respond '' # ui-router
+            mackUiRouter $httpBackend
             $httpBackend.whenGET('/').respond 'result'
         it 'vProvider.http is $http', inject ($httpBackend) ->
             successSpy = jasmine.createSpy 'success'
@@ -86,9 +89,7 @@ describe 'v.provider', ->
 
     describe '$rootScope.$loadings', ->
         beforeEach inject ($httpBackend) ->
-            $httpBackend.whenGET('/views/shared/layout.html').respond '' # ui-router
-            $httpBackend.whenGET('/views/login.html').respond '' # ui-router
-            $httpBackend.whenGET('/views/index.html').respond '' # ui-router
+            mackUiRouter $httpBackend
             $httpBackend.whenGET('/').respond 'result'
         it '$rootScope.$loadings.hasAny() will return yes when vProvider.http is progress', inject ($httpBackend, $rootScope) ->
             expect($rootScope.$loadings.hasAny()).toBeFalsy()
