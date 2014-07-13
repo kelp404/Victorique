@@ -27,7 +27,7 @@ $ git submodule update --init
 ##Example API Calls
 **curl**
 >```bash
-$ curl -XPOST https://victorique-demo.appspot.com/api/applications/2b0a8cc0-f156-11e3-ae66-bf0516da091e/logs --header "Content-Type:application/json" -d '
+$ curl -XPOST https://{your_host}/api/applications/{your_app_key}/logs --header "Content-Type:application/json" -d '
 {
   "title": "__52-[ManaNetwork getEventsWithQuery:completionHandler:]_block_invoke +696",
   "user": "kelp<kelp@phate.org>",
@@ -52,12 +52,57 @@ $http(args).error (data, status, headers, config) =>
     $.ajax
         method: 'get'
         dataType: 'jsonp'
-        url: 'https://victorique-demo.appspot.com/api/applications/#{yourAppKey}/logs'
+        url: 'https://#{yourHost}/api/applications/#{yourAppKey}/logs'
         data:
             title: "#{config.method} #{location.origin}#{config.url} failed"
             user: "#{@user.name} <#{@user.email}>"
             document: JSON.stringify(document)
 ```
+
+**Python django**
+>```python
+# Victorique class
+# you should import https://github.com/kennethreitz/requests
+import json, requests
+class Victorique(object):
+    def __init__(self, api_url, user):
+        self.api_url = api_url
+        self.user = user
+    def send(self, title, document=None):
+        headers = {'Content-type': 'application/json'}
+        data = {
+            'title': title,
+            'user': self.user,
+            'document': document,
+        }
+        try:
+            requests.post(self.api_url, data=json.dumps(data), headers=headers)
+        except Exception as e:
+            import logging
+            logging.error('error report send failed. %s' % e.message)
+```
+```python
+# update your wsgi for send exception logs
+import os, traceback
+from django.core.wsgi import get_wsgi_application
+from application.victorique import Victorique # Victorique class
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "application.settings") # django settings
+app = get_wsgi_application() # wsgi
+# update handle_uncaught_exception for handle exceptions.
+origin_handler = app.handle_uncaught_exception
+def exception_handler(request, resolver, exc_info):
+    api_url = 'https://{your_host}/api/applications/{your_app_key}/logs'
+    exc_type, exc_value, exc_traceback = exc_info
+    v = Victorique(api_url, str(request.user))
+    v.send('exception: %s' % str(exc_value), {
+        'method': request.method,
+        'path': request.get_host() + request.get_full_path(),
+        'traceback': traceback.format_exc(20),
+    })
+    return origin_handler(request, resolver, exc_info)
+app.handle_uncaught_exception = exception_handler
+```
+![screenshot](_images/00.png)
 
 
 

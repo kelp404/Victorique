@@ -16,6 +16,7 @@ skip_files:
 - ^(.*/)?.*\.rb
 - ^(.*/)?tests/.*
 - ^(.*/)?test\.py
+- ^_images/.*
 - ^application/frontend/bower_components/.*
 - ^bower_components/.*
 - ^node_modules/.*
