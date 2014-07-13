@@ -16,8 +16,9 @@ angular.module 'v.controllers.settings', []
                 NProgress.start()
                 $v.api.settings.updateProfile
                     name: $scope.profile.model.name
-                .success ->
+                .success (user) ->
                     NProgress.done()
+                    $v.user.name = user.name
                     $v.alert.saved()
 ]
 

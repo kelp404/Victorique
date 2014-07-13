@@ -124,8 +124,9 @@
             NProgress.start();
             return $v.api.settings.updateProfile({
               name: $scope.profile.model.name
-            }).success(function() {
+            }).success(function(user) {
               NProgress.done();
+              $v.user.name = user.name;
               return $v.alert.saved();
             });
           });
