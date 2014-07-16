@@ -515,7 +515,7 @@
         _results = [];
         for (index = _i = _ref = scope.pageList.index - 3, _ref1 = scope.pageList.index + 3; _i <= _ref1; index = _i += 1) {
           _results.push(scope.links.numbers.push({
-            show: index >= 0 && index <= scope.pageList.max_index,
+            show: (0 <= index && index <= scope.pageList.max_index),
             isCurrent: index === scope.pageList.index,
             pageNumber: index + 1,
             url: scope.urlTemplate.replace('#{index}', index)
