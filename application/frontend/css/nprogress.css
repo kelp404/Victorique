@@ -1,13 +1,12 @@
 /* Make clicks pass-through */
-/* line 4, ../sass/site/nprogress.sass */
+/* line 5, ../sass/site/nprogress.sass */
 #nprogress {
   pointer-events: none;
-  -webkit-pointer-events: none;
 }
 
 /* line 8, ../sass/site/nprogress.sass */
 #nprogress .bar {
-  background: #444444;
+  background: #dd4444;
   position: fixed;
   z-index: 10000;
   top: 0;
@@ -24,106 +23,80 @@
   right: 0px;
   width: 100px;
   height: 100%;
-  box-shadow: 0 0 10px #444444, 0 0 5px #444444;
+  box-shadow: 0 0 10px #dd4444, 0 0 5px #dd4444;
   opacity: 1;
   -webkit-transform: rotate(3deg) translate(0px, -4px);
-  -moz-transform: rotate(3deg) translate(0px, -4px);
   -ms-transform: rotate(3deg) translate(0px, -4px);
-  -o-transform: rotate(3deg) translate(0px, -4px);
   transform: rotate(3deg) translate(0px, -4px);
 }
 
 /* Remove these to get rid of the spinner */
-/* line 36, ../sass/site/nprogress.sass */
+/* line 34, ../sass/site/nprogress.sass */
 #nprogress .spinner {
   display: block;
   position: fixed;
-  z-index: 100;
+  z-index: 10000;
   top: 15px;
   right: 15px;
 }
 
-/* line 44, ../sass/site/nprogress.sass */
+/* line 42, ../sass/site/nprogress.sass */
 #nprogress .spinner-icon {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   border: solid 2px transparent;
-  border-top-color: #444444;
-  border-left-color: #444444;
-  border-radius: 10px;
+  border-top-color: #dd4444;
+  border-left-color: #dd4444;
+  border-radius: 50%;
   -webkit-animation: nprogress-spinner 400ms linear infinite;
-  -moz-animation: nprogress-spinner 400ms linear infinite;
-  -ms-animation: nprogress-spinner 400ms linear infinite;
-  -o-animation: nprogress-spinner 400ms linear infinite;
   animation: nprogress-spinner 400ms linear infinite;
 }
 
+/* line 54, ../sass/site/nprogress.sass */
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
 @-webkit-keyframes nprogress-spinner {
-  /* line 61, ../sass/site/nprogress.sass */
+  /* line 59, ../sass/site/nprogress.sass */
   0% {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
 
-  /* line 64, ../sass/site/nprogress.sass */
+  /* line 62, ../sass/site/nprogress.sass */
   100% {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
 
-@-moz-keyframes nprogress-spinner {
-  /* line 69, ../sass/site/nprogress.sass */
+/* line 66, ../sass/site/nprogress.sass */
+.nprogress-custom-parent #nprogress .spinner, .nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+
+@-webkit-keyframes nprogress-spinner {
+  /* line 70, ../sass/site/nprogress.sass */
   0% {
-    -moz-transform: rotate(0deg);
-    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
   }
 
   /* line 72, ../sass/site/nprogress.sass */
   100% {
-    -moz-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-@-o-keyframes nprogress-spinner {
-  /* line 77, ../sass/site/nprogress.sass */
-  0% {
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  /* line 80, ../sass/site/nprogress.sass */
-  100% {
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-@-ms-keyframes nprogress-spinner {
-  /* line 85, ../sass/site/nprogress.sass */
-  0% {
-    -ms-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  /* line 88, ../sass/site/nprogress.sass */
-  100% {
-    -ms-transform: rotate(360deg);
-    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
   }
 }
 
 @keyframes nprogress-spinner {
-  /* line 93, ../sass/site/nprogress.sass */
+  /* line 75, ../sass/site/nprogress.sass */
   0% {
-    transform: rotate(0deg);
     transform: rotate(0deg);
   }
 
-  /* line 96, ../sass/site/nprogress.sass */
+  /* line 77, ../sass/site/nprogress.sass */
   100% {
-    transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }

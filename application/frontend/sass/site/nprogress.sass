@@ -1,14 +1,14 @@
 /* Make clicks pass-through */
-$them-color: #444
+$them-color: #d44
+$z-index: 10000
 
 #nprogress
     pointer-events: none
-    -webkit-pointer-events: none
 
 #nprogress .bar
     background: $them-color
     position: fixed
-    z-index: 10000
+    z-index: $z-index
     top: 0
     left: 0
     width: 100%
@@ -26,9 +26,7 @@ $them-color: #444
     opacity: 1.0
 
     -webkit-transform: rotate(3deg) translate(0px, -4px)
-    -moz-transform: rotate(3deg) translate(0px, -4px)
     -ms-transform: rotate(3deg) translate(0px, -4px)
-    -o-transform: rotate(3deg) translate(0px, -4px)
     transform: rotate(3deg) translate(0px, -4px)
 
 
@@ -36,26 +34,26 @@ $them-color: #444
 #nprogress .spinner
     display: block
     position: fixed
-    z-index: 100
+    z-index: $z-index
     top: 15px
     right: 15px
 
 
 #nprogress .spinner-icon
-    width: 14px
-    height: 14px
+    width: 18px
+    height: 18px
 
     border: solid 2px transparent
     border-top-color: $them-color
     border-left-color: $them-color
-    border-radius: 10px
+    border-radius: 50%
 
     -webkit-animation: nprogress-spinner 400ms linear infinite
-    -moz-animation: nprogress-spinner 400ms linear infinite
-    -ms-animation: nprogress-spinner 400ms linear infinite
-    -o-animation: nprogress-spinner 400ms linear infinite
     animation: nprogress-spinner 400ms linear infinite
 
+.nprogress-custom-parent
+    overflow: hidden
+    position: relative
 
 @-webkit-keyframes nprogress-spinner
     0%
@@ -65,34 +63,16 @@ $them-color: #444
         -webkit-transform: rotate(360deg)
         transform: rotate(360deg)
 
-@-moz-keyframes nprogress-spinner
-    0%
-        -moz-transform: rotate(0deg)
-        transform: rotate(0deg)
-    100%
-        -moz-transform: rotate(360deg)
-        transform: rotate(360deg)
+.nprogress-custom-parent #nprogress .spinner, .nprogress-custom-parent #nprogress .bar
+    position: absolute
 
-@-o-keyframes nprogress-spinner
+@-webkit-keyframes nprogress-spinner
     0%
-        -o-transform: rotate(0deg)
-        transform: rotate(0deg)
+        -webkit-transform: rotate(0deg)
     100%
-        -o-transform: rotate(360deg)
-        transform: rotate(360deg)
-
-@-ms-keyframes nprogress-spinner
-    0%
-        -ms-transform: rotate(0deg)
-        transform: rotate(0deg)
-    100%
-        -ms-transform: rotate(360deg)
-        transform: rotate(360deg)
-
+        -webkit-transform: rotate(360deg)
 @keyframes nprogress-spinner
     0%
         transform: rotate(0deg)
-        transform: rotate(0deg)
     100%
-        transform: rotate(360deg)
         transform: rotate(360deg)
