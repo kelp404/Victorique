@@ -9,8 +9,7 @@ node_js:
 
 install:
   # google app engine
-  - curl -O https://googleappengine.googlecode.com/files/google_appengine_1.8.9.zip
-  - unzip -q google_appengine_1.8.9.zip
+  - svn checkout http://googleappengine.googlecode.com/svn/trunk/python google_appengine
   # pip requirements
   - pip install -r pip_requirements.txt
   # node modules
