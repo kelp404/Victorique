@@ -9,7 +9,11 @@ node_js:
 
 install:
   # google app engine
-  - svn checkout http://googleappengine.googlecode.com/svn/trunk/python google_appengine
+  - svn checkout http://googleappengine.googlecode.com/svn/trunk/python/google google_appengine/google
+  - svn checkout http://googleappengine.googlecode.com/svn/trunk/python/lib/webapp2 google_appengine/lib/webapp2
+  - svn checkout http://googleappengine.googlecode.com/svn/trunk/python/lib/webapp2-2.5.2 google_appengine/lib/webapp2-2.5.2
+  - svn checkout http://googleappengine.googlecode.com/svn/trunk/python/lib/yaml google_appengine/lib/yaml
+  - svn checkout http://googleappengine.googlecode.com/svn/trunk/python/lib/yaml-3.10 google_appengine/lib/yaml-3.10
   # pip requirements
   - pip install -r pip_requirements.txt
   # node modules
