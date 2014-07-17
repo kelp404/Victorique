@@ -125,6 +125,10 @@ ALLOW_REGISTER = False # `False` will not allow register
 
 **upload victorique**
 >https://developers.google.com/appengine/docs/python/gettingstartedpython27/uploading
+```bash
+$ appcfg.py update .
+$ appcfg.py backends update .
+```
 
 
 
