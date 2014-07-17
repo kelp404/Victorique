@@ -10,6 +10,8 @@ if __name__ == '__main__':
     libs = [
         gae_path,
         os.path.join(gae_path, 'google'),
+        os.path.join(gae_path, 'lib', 'webapp2-2.5.2'),
+        os.path.join(gae_path, 'lib', 'webob-1.2.3'),
         os.path.join(gae_path, 'lib', 'yaml', 'lib'),
     ]
     sys.path.extend(libs)
