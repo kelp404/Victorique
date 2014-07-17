@@ -17,7 +17,6 @@ if __name__ == '__main__':
     sys.path.extend(libs)
 
     # extend tests
-    application_name = 'application'
     base_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     sys.path.extend([
         base_dir,
