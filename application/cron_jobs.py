@@ -7,8 +7,10 @@ from application.models.datastore.application_model import ApplicationModel
 from application.models.datastore.log_model import LogModel
 
 
-# clear log data
 class ClearLogsHandler(webapp2.RequestHandler):
+    """
+    Clear log data.
+    """
     def get(self):
         date_tag = datetime.utcnow() - timedelta(days=LOG_EXPIRATION)
         options = search.QueryOptions(returned_fields=['doc_id'])

@@ -14,5 +14,5 @@ class TestMiddleware(unittest.TestCase):
     def test_middleware_authentication_middleware_process_request(self):
         middleware = AuthenticationMiddleware()
         middleware.process_request(self.request)
-        UserModel.authorization.assert_any_call()
+        UserModel.authorization.assert_called_with()
         self.assertEqual(self.request.user, 'auth')
