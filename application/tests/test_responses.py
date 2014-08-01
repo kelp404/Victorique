@@ -9,8 +9,9 @@ class TestResponses(unittest.TestCase):
             'user': 'kelp@phate.org'
         }
         response = JsonResponse(result)
-        self.assertDictEqual(response._headers,
-                             {'content-type': ('Content-Type', 'application/json')}
+        self.assertEqual(
+            response._headers['content-type'],
+            ('Content-Type', 'application/json'),
         )
         self.assertDictEqual(json.loads(response.content), result)
 
@@ -20,7 +21,8 @@ class TestResponses(unittest.TestCase):
             'user': 'kelp@phate.org'
         }
         response = JsonResponse(result)
-        self.assertDictEqual(response._headers,
-                             {'content-type': ('Content-Type', 'application/json')}
+        self.assertEqual(
+            response._headers['content-type'],
+            ('Content-Type', 'application/json'),
         )
         self.assertDictEqual(json.loads(response.content), result.dict())
