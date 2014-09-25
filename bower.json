@@ -16,8 +16,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "1.2.20",
-    "angular-mocks": "1.2.20",
+    "angular": "1.2.25",
+    "angular-mocks": "1.2.25",
     "jquery": "2.1.1",
     "nprogress": "0.1.6",
     "angular-ui-router": "0.2.10",
