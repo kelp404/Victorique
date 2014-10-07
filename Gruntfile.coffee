@@ -7,6 +7,7 @@ module.exports = (grunt) ->
                 options:
                     sassDir: 'application/frontend/sass/site'
                     cssDir: 'application/frontend/css'
+                    config: 'application/frontend/sass/config.rb'
 
         coffee:
             build:
