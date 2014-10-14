@@ -831,7 +831,10 @@
 (function() {
   angular.module('v.router', ['v.provider', 'v.controllers', 'ui.router']).config([
     '$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
-      $locationProvider.html5Mode(true);
+      $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: false
+      });
       $urlRouterProvider.otherwise('/');
       $stateProvider.state('v', {
         url: '',

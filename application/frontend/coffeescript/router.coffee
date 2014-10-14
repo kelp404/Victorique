@@ -7,7 +7,9 @@ angular.module 'v.router', [
 .config ['$stateProvider', '$urlRouterProvider', '$locationProvider', ($stateProvider, $urlRouterProvider, $locationProvider) ->
 
     # html5 mode
-    $locationProvider.html5Mode yes
+    $locationProvider.html5Mode
+        enabled: yes
+        requireBase: no
 
     # redirect other urls
     $urlRouterProvider.otherwise '/'
