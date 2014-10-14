@@ -102,6 +102,7 @@ angular.module 'v.directive', []
     replace: yes
     template:
         """
+        <div>
         <ul ng-if="pageList.total > 0" class="pagination pagination-sm">
             <li ng-class="{disabled: !links.previous.enable}">
                 <a ng-href="{{ links.previous.url }}">&laquo;</a>
@@ -115,6 +116,7 @@ angular.module 'v.directive', []
                 <a ng-href="{{ links.next.url }}">&raquo;</a>
             </li>
         </ul>
+        </div>
         """
     link: (scope) ->
         scope.links =
