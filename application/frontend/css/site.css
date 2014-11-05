@@ -5,34 +5,39 @@ body {
 }
 
 /* line 7, ../sass/site/site.sass */
+.disabled {
+  pointer-events: none;
+}
+
+/* line 10, ../sass/site/site.sass */
 .v-content {
   padding-top: 60px;
 }
 
-/* line 10, ../sass/site/site.sass */
+/* line 13, ../sass/site/site.sass */
 .footer {
   padding-top: 30px;
 }
 
-/* line 14, ../sass/site/site.sass */
+/* line 17, ../sass/site/site.sass */
 ul.nav-pills > li.active > a {
   background-color: #eeeeee;
   color: #2a6496;
 }
-/* line 17, ../sass/site/site.sass */
+/* line 20, ../sass/site/site.sass */
 ul.nav-pills > li.active > a:hover {
   background-color: #eeeeee;
   color: #2a6496;
 }
 
-/* line 21, ../sass/site/site.sass */
+/* line 24, ../sass/site/site.sass */
 pre {
   overflow: auto;
   word-wrap: normal;
   white-space: pre;
 }
 
-/* line 25, ../sass/site/site.sass */
+/* line 28, ../sass/site/site.sass */
 table {
   table-layout: fixed;
   word-wrap: break-word;
