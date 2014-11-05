@@ -119,18 +119,27 @@ angular.module 'v.directive', []
         </div>
         """
     link: (scope) ->
-        scope.links =
-            previous:
-                enable: scope.pageList.has_previous_page
-                url: scope.urlTemplate.replace '#{index}', scope.pageList.index - 1
-            numbers: []
-            next:
-                enable: scope.pageList.has_next_page
-                url: scope.urlTemplate.replace '#{index}', scope.pageList.index + 1
+        scope.queryString = location.search.replace /index=\d*/, ''
+        scope.queryString = scope.queryString.replace '?', ''
 
-        for index in [(scope.pageList.index - 3)..(scope.pageList.index + 3)] by 1
-            scope.links.numbers.push
-                show: 0 <= index <= scope.pageList.max_index
-                isCurrent: index is scope.pageList.index
-                pageNumber: index + 1
-                url: scope.urlTemplate.replace '#{index}', index
+        scope.$watch 'queryString', ->
+            scope.links =
+                previous:
+                    enable: scope.pageList.has_previous_page
+                    url: "#{scope.urlTemplate.replace '#{index}', scope.pageList.index - 1}#{scope.queryString}"
+                numbers: []
+                next:
+                    enable: scope.pageList.has_next_page
+                    url: "#{scope.urlTemplate.replace '#{index}', scope.pageList.index + 1}#{scope.queryString}"
+
+            for index in [(scope.pageList.index - 3)..(scope.pageList.index + 3)] by 1
+                scope.links.numbers.push
+                    show: 0 <= index <= scope.pageList.max_index
+                    isCurrent: index is scope.pageList.index
+                    pageNumber: index + 1
+                    url: "#{scope.urlTemplate.replace '#{index}', index}#{scope.queryString}"
+
+        $timeout ->
+            # ui-router update location too late
+            scope.queryString = location.search.replace /index=\d*/, ''
+            scope.queryString = scope.queryString.replace '?', ''

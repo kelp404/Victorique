@@ -500,28 +500,36 @@
       replace: true,
       template: "<div>\n<ul ng-if=\"pageList.total > 0\" class=\"pagination pagination-sm\">\n    <li ng-class=\"{disabled: !links.previous.enable}\">\n        <a ng-href=\"{{ links.previous.url }}\">&laquo;</a>\n    </li>\n    <li ng-repeat='item in links.numbers'\n        ng-if='item.show'\n        ng-class='{active: item.isCurrent}'>\n        <a ng-href=\"{{ item.url }}\">{{ item.pageNumber }}</a>\n    </li>\n    <li ng-class=\"{disabled: !links.next.enable}\">\n        <a ng-href=\"{{ links.next.url }}\">&raquo;</a>\n    </li>\n</ul>\n</div>",
       link: function(scope) {
-        var index, _i, _ref, _ref1, _results;
-        scope.links = {
-          previous: {
-            enable: scope.pageList.has_previous_page,
-            url: scope.urlTemplate.replace('#{index}', scope.pageList.index - 1)
-          },
-          numbers: [],
-          next: {
-            enable: scope.pageList.has_next_page,
-            url: scope.urlTemplate.replace('#{index}', scope.pageList.index + 1)
+        scope.queryString = location.search.replace(/index=\d*/, '');
+        scope.queryString = scope.queryString.replace('?', '');
+        scope.$watch('queryString', function() {
+          var index, _i, _ref, _ref1, _results;
+          scope.links = {
+            previous: {
+              enable: scope.pageList.has_previous_page,
+              url: "" + (scope.urlTemplate.replace('#{index}', scope.pageList.index - 1)) + scope.queryString
+            },
+            numbers: [],
+            next: {
+              enable: scope.pageList.has_next_page,
+              url: "" + (scope.urlTemplate.replace('#{index}', scope.pageList.index + 1)) + scope.queryString
+            }
+          };
+          _results = [];
+          for (index = _i = _ref = scope.pageList.index - 3, _ref1 = scope.pageList.index + 3; _i <= _ref1; index = _i += 1) {
+            _results.push(scope.links.numbers.push({
+              show: (0 <= index && index <= scope.pageList.max_index),
+              isCurrent: index === scope.pageList.index,
+              pageNumber: index + 1,
+              url: "" + (scope.urlTemplate.replace('#{index}', index)) + scope.queryString
+            }));
           }
-        };
-        _results = [];
-        for (index = _i = _ref = scope.pageList.index - 3, _ref1 = scope.pageList.index + 3; _i <= _ref1; index = _i += 1) {
-          _results.push(scope.links.numbers.push({
-            show: (0 <= index && index <= scope.pageList.max_index),
-            isCurrent: index === scope.pageList.index,
-            pageNumber: index + 1,
-            url: scope.urlTemplate.replace('#{index}', index)
-          }));
-        }
-        return _results;
+          return _results;
+        });
+        return $timeout(function() {
+          scope.queryString = location.search.replace(/index=\d*/, '');
+          return scope.queryString = scope.queryString.replace('?', '');
+        });
       }
     };
   });
