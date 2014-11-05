@@ -94,7 +94,9 @@ angular.module 'v.directive', []
 # ---------------------------------------------------------
 # v-pager
 # ---------------------------------------------------------
-.directive 'vPager', ->
+.directive 'vPager', ['$injector', ($injector) ->
+    $timeout = $injector.get '$timeout'
+
     restrict: 'A'
     scope:
         pageList: '=vPager'
@@ -143,3 +145,4 @@ angular.module 'v.directive', []
             # ui-router update location too late
             scope.queryString = location.search.replace /index=\d*/, ''
             scope.queryString = scope.queryString.replace '?', ''
+]
