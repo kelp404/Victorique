@@ -123,6 +123,7 @@ angular.module 'v.directive', []
     link: (scope) ->
         scope.queryString = location.search.replace /index=\d*/, ''
         scope.queryString = scope.queryString.replace '?', ''
+        scope.queryString = "&#{scope.queryString}" if scope.queryString and scope.queryString[0] isnt '&'
 
         scope.$watch 'queryString', ->
             scope.links =
@@ -145,4 +146,5 @@ angular.module 'v.directive', []
             # ui-router update location too late
             scope.queryString = location.search.replace /index=\d*/, ''
             scope.queryString = scope.queryString.replace '?', ''
+            scope.queryString = "&#{scope.queryString}" if scope.queryString and scope.queryString[0] isnt '&'
 ]

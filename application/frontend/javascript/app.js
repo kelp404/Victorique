@@ -53,6 +53,7 @@
       $scope.search = function($event, keyword) {
         $event.preventDefault();
         return $scope.$state.go($scope.$state.current.name, {
+          index: 0,
           applicationId: $scope.$applications.current.id,
           keyword: keyword
         });
@@ -505,6 +506,9 @@
         link: function(scope) {
           scope.queryString = location.search.replace(/index=\d*/, '');
           scope.queryString = scope.queryString.replace('?', '');
+          if (scope.queryString && scope.queryString[0] !== '&') {
+            scope.queryString = "&" + scope.queryString;
+          }
           scope.$watch('queryString', function() {
             var index, _i, _ref, _ref1, _results;
             scope.links = {
@@ -531,7 +535,10 @@
           });
           return $timeout(function() {
             scope.queryString = location.search.replace(/index=\d*/, '');
-            return scope.queryString = scope.queryString.replace('?', '');
+            scope.queryString = scope.queryString.replace('?', '');
+            if (scope.queryString && scope.queryString[0] !== '&') {
+              return scope.queryString = "&" + scope.queryString;
+            }
           });
         }
       };

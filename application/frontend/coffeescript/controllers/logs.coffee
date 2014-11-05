@@ -6,6 +6,7 @@ angular.module 'v.controllers.logs', []
     $scope.search = ($event, keyword) ->
         $event.preventDefault()
         $scope.$state.go $scope.$state.current.name,
+            index: 0
             applicationId: $scope.$applications.current.id
             keyword: keyword
     $scope.showDetail = (logId) ->
