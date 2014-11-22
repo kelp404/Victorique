@@ -41,5 +41,5 @@ class PageList(list):
             'has_next_page': self.has_next_page,
             'has_previous_page': self.has_previous_page,
             'max_index': self.max_index,
-            'items': [x.dict() if 'dict' in dir(x) and callable(x.dict) else x for x in self]
+            'items': [x.dict() if hasattr(x, 'dict') and callable(x.dict) else x for x in self]
         }

@@ -12,7 +12,7 @@ def get_json(object):
     :param object: The class instance.
     :return: 'json string'
     """
-    if 'dict' in dir(object) and callable(object.dict):
+    if hasattr(object, 'dict') and callable(object.dict):
         return mark_safe(json.dumps(object.dict()))
     elif isinstance(object, dict):
         return mark_safe(json.dumps(object))
