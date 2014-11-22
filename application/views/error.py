@@ -5,7 +5,7 @@ from django import http
 from application.models.dto.error_model import ErrorModel
 
 
-def bad_request(request):
+def bad_request(request, *args, **kwargs):
     template = loader.get_template('error/default.html')
     model = ErrorModel(
         status=400,
@@ -13,7 +13,7 @@ def bad_request(request):
     )
     return http.HttpResponseBadRequest(template.render(RequestContext(request, model)))
 
-def permission_denied(request):
+def permission_denied(request, *args, **kwargs):
     template = loader.get_template('error/default.html')
     model = ErrorModel(
         status=403,
@@ -21,7 +21,7 @@ def permission_denied(request):
     )
     return http.HttpResponseForbidden(template.render(RequestContext(request, model)))
 
-def page_not_found(request):
+def page_not_found(request, *args, **kwargs):
     template = loader.get_template('error/default.html')
     model = ErrorModel(
         status=404,
@@ -29,7 +29,7 @@ def page_not_found(request):
     )
     return http.HttpResponseNotFound(template.render(RequestContext(request, model)))
 
-def method_not_allowed(request):
+def method_not_allowed(request, *args, **kwargs):
     template = loader.get_template('error/default.html')
     model = ErrorModel(
         status=405,
@@ -37,7 +37,7 @@ def method_not_allowed(request):
     )
     return http.HttpResponse(status=405, content=template.render(RequestContext(request, model)))
 
-def server_error(request):
+def server_error(*args, **kwargs):
     template = loader.get_template('error/default.html')
     model = ErrorModel(
         status=500,
