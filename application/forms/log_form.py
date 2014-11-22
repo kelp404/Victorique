@@ -7,11 +7,11 @@ class APILogForm(Form):
     The form for adding a log.
     """
     key = StringField(
-        validators=[validators.required()],
+        validators=[validators.data_required()],
         filters=[lambda x: x.strip() if isinstance(x, basestring) else None],
     )
     title = StringField(
-        validators=[validators.required()],
+        validators=[validators.data_required()],
         filters=[lambda x: x.strip() if isinstance(x, basestring) else None],
     )
     user = StringField(

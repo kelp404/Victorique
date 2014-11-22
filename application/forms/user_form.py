@@ -8,7 +8,7 @@ class UserForm(Form):
     The form for update the user.
     """
     name = StringField(
-        validators=[validators.required()],
+        validators=[validators.data_required()],
         filters=[lambda x: x.strip() if isinstance(x, basestring) else None],
     )
     email = StringField(

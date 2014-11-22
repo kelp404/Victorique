@@ -7,7 +7,7 @@ class ApplicationForm(Form):
     The form for update the application.
     """
     title = StringField(
-        validators=[validators.required()],
+        validators=[validators.data_required()],
         filters=[lambda x: x.strip() if isinstance(x, basestring) else None],
     )
     description = StringField(
