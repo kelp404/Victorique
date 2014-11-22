@@ -8,7 +8,7 @@ class JsonResponse(HttpResponse):
     A response class for json result.
     """
     def __init__(self, content, *args, **kwargs):
-        if 'dict' in dir(content) and callable(content.dict):
+        if hasattr(content, 'dict') and callable(content.dict):
             dict_content = content.dict()
         else:
             dict_content = content
