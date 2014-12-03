@@ -1,4 +1,5 @@
 from django.template.response import TemplateResponse
+from django.utils.cache import add_never_cache_headers
 from google.appengine.api import users
 
 
@@ -11,6 +12,8 @@ def base_view(request):
         url = {
             'login': users.create_login_url()
         }
-    return TemplateResponse(request, 'base.html', {
+    response = TemplateResponse(request, 'base.html', {
         'url': url
     })
+    add_never_cache_headers(response)
+    return response
